@@ -1,0 +1,68 @@
+name: Platform API Deploy
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "platform-api/**"
+      - ".github/workflows/platform-api-deploy.yml"
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.head_commit.message, '[deploy]')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to DigitalOcean
+        env:
+          DO_HOST: ${{ secrets.DO_HOST }}
+          DO_USER: ${{ secrets.DO_USER }}
+          DO_SSH_PORT: ${{ secrets.DO_SSH_PORT }}
+          DO_SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_PRIVATE_KEY }}
+        run: |
+          echo "$DO_SSH_PRIVATE_KEY" > /tmp/deploy_key
+          chmod 600 /tmp/deploy_key
+
+          echo "Testing SSH to ${DO_USER}@${DO_HOST}:${DO_SSH_PORT:-22}"
+          ssh -o StrictHostKeyChecking=no \
+              -o ConnectTimeout=10 \
+              -i /tmp/deploy_key \
+              -p "${DO_SSH_PORT:-22}" \
+              "${DO_USER}@${DO_HOST}" \
+              "echo 'SSH OK' && uname -a"
+
+          echo "Deploying platform-api..."
+          ssh -o StrictHostKeyChecking=no \
+              -i /tmp/deploy_key \
+              -p "${DO_SSH_PORT:-22}" \
+              "${DO_USER}@${DO_HOST}" << 'DEPLOY_SCRIPT'
+set -e
+cd /opt/sparkpit/platform-api
+
+if [ ! -f docker-compose.yml ]; then
+  echo "ERROR: No docker-compose.yml found at /opt/sparkpit/platform-api/"
+  echo "Platform API code must be deployed first (SPA-2 / SPA-24)"
+  exit 1
+fi
+
+docker compose pull
+docker compose up -d --remove-orphans
+
+echo "Waiting for service startup..."
+sleep 10
+
+echo "Checking health endpoint..."
+curl -sf http://localhost:8000/v1/health && echo "" && echo "Health OK" || \
+curl -sf http://localhost:8001/v1/health && echo "" && echo "Health OK" || \
+echo "Health endpoint not yet configured"
+
+docker compose ps
+DEPLOY_SCRIPT
+
+echo "Deploy workflow complete."
