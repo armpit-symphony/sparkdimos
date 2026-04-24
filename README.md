@@ -23,7 +23,7 @@
 [Blueprints](#blueprints) •
 [Development](#development)
 
-⚠️ **Pre-Release Beta** ⚠️
+[Pre-Release Beta]
 
 </big></big>
 
@@ -104,33 +104,33 @@ LIMA Robotics is agent native -- "vibecode" your robots in natural language and 
 
   <tr>
     <td align="center" width="20%">
-      🟩 <a href="docs/platforms/quadruped/go2/index.md">Unitree Go2 pro/air</a><br>
-      🟥 <a href="LIMA/robot/unitree/b1">Unitree B1</a><br>
+      stable <a href="docs/platforms/quadruped/go2/index.md">Unitree Go2 pro/air</a><br>
+      <a href="LIMA/robot/unitree/b1">Unitree B1</a><br>
     </td>
     <td align="center" width="20%">
-      🟨 <a href="docs/platforms/humanoid/g1/index.md">Unitree G1</a><br>
+      <a href="docs/platforms/humanoid/g1/index.md">Unitree G1</a><br>
     </td>
     <td align="center" width="20%">
-      🟨 <a href="docs/capabilities/manipulation/readme.md">Xarm</a><br>
-      🟨 <a href="docs/capabilities/manipulation/readme.md">AgileX Piper</a><br>
+      <a href="docs/capabilities/manipulation/readme.md">Xarm</a><br>
+      <a href="docs/capabilities/manipulation/readme.md">AgileX Piper</a><br>
     </td>
     <td align="center" width="20%">
-      🟧 <a href="LIMA/robot/drone/README.md">MAVLink</a><br>
-      🟧 <a href="LIMA/robot/drone/README.md">DJI Mavic</a><br>
+      <a href="LIMA/robot/drone/README.md">MAVLink</a><br>
+      <a href="LIMA/robot/drone/README.md">DJI Mavic</a><br>
     </td>
     <td align="center" width="20%">
-      🟥 <a href="https://github.com/armpit-symphony/lima-robotics">Force Torque Sensor</a><br>
+      <a href="https://github.com/armpit-symphony/lima-robotics">Force Torque Sensor</a><br>
     </td>
   </tr>
 </table>
 <br>
 <div align="right">
-🟩 stable 🟨 beta 🟧 alpha 🟥 experimental
+stable | beta | alpha | experimental
 
 </div>
 
 > [!IMPORTANT]
-> 🤖 Direct your favorite Agent (OpenClaw, Claude Code, etc.) to [AGENTS.md](AGENTS.md) and our [CLI and MCP](#agent-cli-and-mcp) interfaces to start building powerful LIMA Robotics applications.
+> Direct your favorite Agent (OpenClaw, Claude Code, etc.) to [AGENTS.md](AGENTS.md) and our [CLI and MCP](#agent-cli-and-mcp) interfaces to start building powerful LIMA Robotics applications.
 
 # Installation
 
@@ -146,9 +146,9 @@ curl -fsSL https://raw.githubusercontent.com/LIMA Robotics/LIMA/main/scripts/ins
 
 To set up your system dependencies, follow one of these guides:
 
-- 🟩 [Ubuntu 22.04 / 24.04](docs/installation/ubuntu.md)
-- 🟩 [NixOS / General Linux](docs/installation/nix.md)
-- 🟧 [macOS](docs/installation/osx.md)
+- [Ubuntu 22.04 / 24.04](docs/installation/ubuntu.md)
+- [NixOS / General Linux](docs/installation/nix.md)
+- [macOS](docs/installation/osx.md)
 
 > Full system requirements, tested configs, and dependency tiers: [docs/requirements.md](docs/requirements.md)
 

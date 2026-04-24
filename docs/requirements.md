@@ -16,12 +16,12 @@
 
 | Config | GPU | CPU | RAM | Status |
 |--------|-----|-----|-----|--------|
-| Dev workstation | RTX 4090 (24 GB) | i9-13900K | 64 GB | ✅ Primary dev |
-| Mid-range | RTX 4070 (12 GB) | i7-12700 | 32 GB | ✅ Tested |
-| Laptop | RTX 4060 Mobile (8 GB) | i7-13700H | 16 GB | ✅ Tested |
-| Headless server | No GPU | Xeon | 32 GB | ✅ Control only |
-| Jetson AGX Orin | Orin (32 GB shared) | ARM A78AE | 32 GB | ✅ Tested |
-| Jetson Orin Nano | Orin (8 GB shared) | ARM A78AE | 8 GB | 🟧 Experimental |
+| Dev workstation | RTX 4090 (24 GB) | i9-13900K | 64 GB | Primary dev |
+| Mid-range | RTX 4070 (12 GB) | i7-12700 | 32 GB | Tested |
+| Laptop | RTX 4060 Mobile (8 GB) | i7-13700H | 16 GB | Tested |
+| Headless server | No GPU | Xeon | 32 GB | Control only |
+| Jetson AGX Orin | Orin (32 GB shared) | ARM A78AE | 32 GB | Tested |
+| Jetson Orin Nano | Orin (8 GB shared) | ARM A78AE | 8 GB | Experimental |
 
 ## Dependency Tiers
 
