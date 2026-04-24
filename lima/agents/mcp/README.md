@@ -1,6 +1,6 @@
 # LIMA MCP Server
 
-Expose LIMA robot skills to Claude Code via Model Context Protocol.
+Expose LIMA robot skills to Sparkbot via Model Context Protocol.
 
 ## Setup
 
@@ -8,11 +8,13 @@ Expose LIMA robot skills to Claude Code via Model Context Protocol.
 uv sync --extra base --extra unitree
 ```
 
-Add to Claude Code (one command)
+Add to Sparkbot (one command):
 
 ```bash
 claude mcp add --transport http --scope project LIMA http://localhost:9990/mcp
 ```
+
+> **Note:** The `claude` command here refers to Sparkbot's MCP integration command. Adjust according to Sparkbot's CLI interface if named differently.
 
 Verify that it was added:
 
@@ -41,7 +43,7 @@ Change **Transport Type** to "Streamable HTTP", change **URL** to `http://localh
 uv run LIMA run unitree-go2-agentic-mcp
 ```
 
-**Claude Code** - Use robot skills:
+**Sparkbot** - Use robot skills:
 ```
 > move forward 1 meter
 > go to the kitchen
@@ -51,5 +53,5 @@ uv run LIMA run unitree-go2-agentic-mcp
 ## How It Works
 
 1. `McpServer` in the blueprint starts a FastAPI server on port 9990
-2. Claude Code connects directly to `http://localhost:9990/mcp`
+2. Sparkbot connects directly to `http://localhost:9990/mcp`
 3. Skills are exposed as MCP tools (e.g., `relative_move`, `navigate_with_text`)

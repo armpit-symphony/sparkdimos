@@ -2,7 +2,7 @@
 
 <img width="1000" alt="banner_bordered_trimmed" src="https://github.com/user-attachments/assets/64f13b39-da06-4f58-add0-cfc44f04db4e" />
 
-<h2>The Agentive Operating System for Physical Space</h2>
+<h2>The Robotics Runtime for Sparkbot — Powered by MCP</h2>
 
 [![Discord](https://img.shields.io/discord/1341146487186391173?style=flat-square&logo=discord&logoColor=white&label=Discord&color=5865F2)](https://discord.gg/LIMA)
 [![Stars](https://img.shields.io/github/stars/armpit-symphony/lima-robotics?style=flat-square)](https://github.com/armpit-symphony/lima-robotics/stargazers)
@@ -13,13 +13,13 @@
 ![CUDA](https://img.shields.io/badge/CUDA-supported-76B900?style=flat-square&logo=nvidia&logoColor=white)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 
-<a href="https://trendshift.io/repositories/23169" target="_blank"><img src="https://trendshift.io/api/badge/repositories/23169" alt="LIMA Robotics%2FLIMA | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+<!-- <a href="https://trendshift.io/repositories/23169" target="_blank"><img src="https://trendshift.io/api/badge/repositories/23169" alt="LIMA Robotics%2FLIMA | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a> -->
 
 <big><big>
 
 [Hardware](#hardware) •
 [Installation](#installation) •
-[Agent CLI & MCP](#agent-cli-and-mcp) •
+[Robotics CLI & MCP](#agent-cli-and-mcp) •
 [Blueprints](#blueprints) •
 [Development](#development)
 
@@ -35,7 +35,7 @@ LIMA Robotics is the modern operating system for generalist robotics. We are set
 
 With a simple install and no ROS required, build physical applications entirely in python that run on any humanoid, quadruped, or drone.
 
-LIMA Robotics is agent native -- "vibecode" your robots in natural language and build (local & hosted) multi-agent systems that work seamlessly with your hardware. Agents run as native modules — subscribing to any embedded stream, from perception (lidar, camera) and spatial memory down to control loops and motor drivers.
+LIMA Robotics is Sparkbot-native — control your robots in natural language and build (local & hosted) multi-agent systems that work seamlessly with your hardware. Agents run as native modules — subscribing to any embedded stream, from perception (lidar, camera) and spatial memory down to control loops and motor drivers.
 <table>
   <tr>
     <td align="center" width="50%">
@@ -130,7 +130,7 @@ stable | beta | alpha | experimental
 </div>
 
 > [!IMPORTANT]
-> Direct your favorite Agent (OpenClaw, Claude Code, etc.) to [AGENTS.md](AGENTS.md) and our [CLI and MCP](#agent-cli-and-mcp) interfaces to start building powerful LIMA Robotics applications.
+> Direct Sparkbot to [AGENTS.md](AGENTS.md) and our [CLI and MCP](#agent-cli-and-mcp) interfaces to start building powerful LIMA Robotics applications.
 
 # Installation
 
@@ -199,7 +199,7 @@ LIMA run unitree-go2
 
 > Full blueprint docs: [docs/usage/blueprints.md](docs/usage/blueprints.md)
 
-# Agent CLI and MCP
+# Robotics CLI and MCP
 
 The `LIMA` CLI manages the full lifecycle — run blueprints, inspect state, interact with agents, and call skills via MCP.
 
