@@ -24,11 +24,11 @@ Features:
 - Arrow keys / WASD for control
 - Click buttons to send twist commands
 
-The browser imports `@dimos/msgs` via [esm.sh](https://esm.sh) and encodes/decodes LCM packets directly - the server just forwards raw binary between WebSocket and UDP multicast.
+The browser imports `@LIMA/msgs` via [esm.sh](https://esm.sh) and encodes/decodes LCM packets directly - the server just forwards raw binary between WebSocket and UDP multicast.
 
 ## Dependencies
 
 Main documentation for TS interop:
 
-- [@dimos/lcm](https://jsr.io/@dimos/lcm)
-- [@dimos/msgs](https://jsr.io/@dimos/msgs)
+- [@LIMA/lcm](https://jsr.io/@LIMA/lcm)
+- [@LIMA/msgs](https://jsr.io/@LIMA/msgs)

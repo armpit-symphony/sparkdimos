@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
-# Copyright 2025-2026 Dimensional Inc.
+# Copyright 2025-2026 LIMA Robotics Inc.
 # Licensed under the Apache License, Version 2.0
 #
-# Interactive installer for DimOS — the agentive operating system for generalist robotics.
+# Interactive installer for LIMA — the agentive operating system for generalist robotics.
 #
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/dimensionalOS/dimos/dev/scripts/install.sh | bash
-#   curl -fsSL https://raw.githubusercontent.com/dimensionalOS/dimos/dev/scripts/install.sh | bash -s -- --help
+#   curl -fsSL https://raw.githubusercontent.com/armpit-symphony/lima-robotics/dev/scripts/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/armpit-symphony/lima-robotics/dev/scripts/install.sh | bash -s -- --help
 #
 # Non-interactive:
-#   curl -fsSL https://raw.githubusercontent.com/dimensionalOS/dimos/dev/scripts/install.sh | bash -s -- --non-interactive --mode library --extras base,unitree
+#   curl -fsSL https://raw.githubusercontent.com/armpit-symphony/lima-robotics/dev/scripts/install.sh | bash -s -- --non-interactive --mode library --extras base,unitree
 #
 set -euo pipefail
 
@@ -20,7 +20,7 @@ trap 'printf "\n"; exit 130' INT
 # If piped from curl (stdin is not a TTY and $0 is the shell),
 # save to temp file and re-execute so interactive prompts get proper TTY input.
 if [ ! -t 0 ] && { [ "$0" = "bash" ] || [ "$0" = "-bash" ] || [ "$0" = "/bin/bash" ] || [ "$0" = "/usr/bin/bash" ] || [ "$0" = "sh" ] || [ "$0" = "/bin/sh" ]; }; then
-    TMPSCRIPT="$(mktemp /tmp/dimos-install.XXXXXX.sh)"
+    TMPSCRIPT="$(mktemp /tmp/lima-install.XXXXXX.sh)"
     cat > "$TMPSCRIPT"
     chmod +x "$TMPSCRIPT"
     exec bash "$TMPSCRIPT" "$@"
@@ -32,18 +32,18 @@ INSTALLER_VERSION="0.3.0"
 UBUNTU_PACKAGES="curl g++ portaudio19-dev git-lfs libturbojpeg python3-dev pre-commit libgl1 libegl1"
 MACOS_PACKAGES="gnu-sed gcc portaudio git-lfs libjpeg-turbo python pre-commit"
 
-INSTALL_MODE="${DIMOS_INSTALL_MODE:-}"
-EXTRAS="${DIMOS_EXTRAS:-}"
-NON_INTERACTIVE="${DIMOS_NO_PROMPT:-0}"
-GIT_BRANCH="${DIMOS_BRANCH:-dev}"
-NO_CUDA="${DIMOS_NO_CUDA:-0}"
-NO_SYSCTL="${DIMOS_NO_SYSCTL:-0}"
-DRY_RUN="${DIMOS_DRY_RUN:-0}"
-PROJECT_DIR="${DIMOS_PROJECT_DIR:-}"
+INSTALL_MODE="${LIMA_INSTALL_MODE:-}"
+EXTRAS="${LIMA_EXTRAS:-}"
+NON_INTERACTIVE="${LIMA_NO_PROMPT:-0}"
+GIT_BRANCH="${LIMA_BRANCH:-dev}"
+NO_CUDA="${LIMA_NO_CUDA:-0}"
+NO_SYSCTL="${LIMA_NO_SYSCTL:-0}"
+DRY_RUN="${LIMA_DRY_RUN:-0}"
+PROJECT_DIR="${LIMA_PROJECT_DIR:-}"
 VERBOSE=0
-USE_NIX="${DIMOS_USE_NIX:-0}"
-NO_NIX="${DIMOS_NO_NIX:-0}"
-SKIP_TESTS="${DIMOS_SKIP_TESTS:-0}"
+USE_NIX="${LIMA_USE_NIX:-0}"
+NO_NIX="${LIMA_NO_NIX:-0}"
+SKIP_TESTS="${LIMA_SKIP_TESTS:-0}"
 HAS_NIX=0
 SETUP_METHOD=""
 INSTALL_DIR=""
@@ -211,7 +211,7 @@ prompt_spin() {
 
 # ─── ascii banner ─────────────────────────────────────────────────────────────
 show_banner() {
-    if [[ "$NON_INTERACTIVE" == "1" ]] && [[ -z "${DIMOS_SHOW_BANNER:-}" ]]; then return; fi
+    if [[ "$NON_INTERACTIVE" == "1" ]] && [[ -z "${LIMA_SHOW_BANNER:-}" ]]; then return; fi
     # stty </dev/tty works when stdin is a pipe (curl | bash), tput needs a real stdin
     local cols
     cols=$(stty size </dev/tty 2>/dev/null | awk '{print $2}') \
@@ -234,7 +234,7 @@ show_banner() {
   ▇▇▇▇▇▇╔╝▇▇║▇▇║ ╚═╝ ▇▇║╚▇▇▇▇▇▇╔╝▇▇▇▇▇▇▇║
   ╚═════╝ ╚═╝╚═╝     ╚═╝ ╚═════╝ ╚══════╝'
     else
-        printf "\n  %s%sDimOS Installer%s v%s\n\n" "$CYAN" "$BOLD" "$RESET" "$INSTALLER_VERSION"
+        printf "\n  %s%sLIMA Installer%s v%s\n\n" "$CYAN" "$BOLD" "$RESET" "$INSTALLER_VERSION"
         return
     fi
     if [[ -n "$GUM" ]]; then
@@ -254,11 +254,11 @@ show_banner() {
 # ─── argument parsing ─────────────────────────────────────────────────────────
 usage() {
     cat <<EOF
-${BOLD}DimOS Interactive Installer${RESET} v${INSTALLER_VERSION}
+${BOLD}LIMA Interactive Installer${RESET} v${INSTALLER_VERSION}
 
 ${BOLD}USAGE${RESET}
-    curl -fsSL https://raw.githubusercontent.com/dimensionalOS/dimos/dev/scripts/install.sh | bash
-    curl -fsSL https://raw.githubusercontent.com/dimensionalOS/dimos/dev/scripts/install.sh | bash -s -- [OPTIONS]
+    curl -fsSL https://raw.githubusercontent.com/armpit-symphony/lima-robotics/dev/scripts/install.sh | bash
+    curl -fsSL https://raw.githubusercontent.com/armpit-symphony/lima-robotics/dev/scripts/install.sh | bash -s -- [OPTIONS]
 
 ${BOLD}OPTIONS${RESET}
     --mode library|dev     Install mode (default: interactive prompt)
@@ -276,10 +276,10 @@ ${BOLD}OPTIONS${RESET}
     --help                 Show this help
 
 ${BOLD}EXAMPLES${RESET}
-    curl -fsSL https://raw.githubusercontent.com/dimensionalOS/dimos/dev/scripts/install.sh | bash
-    curl -fsSL https://raw.githubusercontent.com/dimensionalOS/dimos/dev/scripts/install.sh | bash -s -- --mode dev --no-cuda
-    curl -fsSL https://raw.githubusercontent.com/dimensionalOS/dimos/dev/scripts/install.sh | bash -s -- --non-interactive --extras base,unitree
-    curl -fsSL https://raw.githubusercontent.com/dimensionalOS/dimos/dev/scripts/install.sh | bash -s -- --dry-run
+    curl -fsSL https://raw.githubusercontent.com/armpit-symphony/lima-robotics/dev/scripts/install.sh | bash
+    curl -fsSL https://raw.githubusercontent.com/armpit-symphony/lima-robotics/dev/scripts/install.sh | bash -s -- --mode dev --no-cuda
+    curl -fsSL https://raw.githubusercontent.com/armpit-symphony/lima-robotics/dev/scripts/install.sh | bash -s -- --non-interactive --extras base,unitree
+    curl -fsSL https://raw.githubusercontent.com/armpit-symphony/lima-robotics/dev/scripts/install.sh | bash -s -- --dry-run
 EOF
     exit 0
 }
@@ -402,7 +402,7 @@ print_sysinfo() {
     printf "\n"
 
     if [[ "$DETECTED_DISK_GB" -lt 10 ]] 2>/dev/null; then
-        warn "only ${DETECTED_DISK_GB}GB disk space free — DimOS needs at least 10GB (50GB+ recommended)"
+        warn "only ${DETECTED_DISK_GB}GB disk space free — LIMA needs at least 10GB (50GB+ recommended)"
         if [[ "$DRY_RUN" != "1" ]]; then
             prompt_confirm "Continue with low disk space?" "no" || die "not enough disk space"
         fi
@@ -416,7 +416,7 @@ install_nix() {
 
     if ! prompt_confirm "Install Nix now? (official nixos.org multi-user installer)" "yes"; then
         if [[ "$DETECTED_OS" == "linux" ]]; then
-            warn "skipping Nix — see https://github.com/dimensionalOS/dimos/?tab=readme-ov-file#installation"
+            warn "skipping Nix — see https://github.com/armpit-symphony/lima-robotics/?tab=readme-ov-file#installation"
             SETUP_METHOD="manual"
         else
             warn "skipping Nix installation — falling back to system packages"
@@ -493,7 +493,7 @@ prompt_setup_method() {
             SETUP_METHOD="nix"; USE_NIX=1; ok "will use Nix for system dependencies" ;;
         *Manual*)
             SETUP_METHOD="manual"
-            info "see https://github.com/dimensionalOS/dimos/?tab=readme-ov-file#installation" ;;
+            info "see https://github.com/armpit-symphony/lima-robotics/?tab=readme-ov-file#installation" ;;
         *)
             SETUP_METHOD="system"; ok "will use system package manager" ;;
     esac
@@ -565,7 +565,7 @@ install_system_deps() {
             warn "you declined Nix setup; run 'nix develop' manually for system deps"
             ;;
         linux)
-            info "see https://github.com/dimensionalOS/dimos/?tab=readme-ov-file#installation"
+            info "see https://github.com/armpit-symphony/lima-robotics/?tab=readme-ov-file#installation"
             warn "install system dependencies manually, then re-run this script"
             return
             ;;
@@ -591,7 +591,7 @@ install_uv() {
 prompt_install_mode() {
     [[ -n "$INSTALL_MODE" ]] && return
     local choice
-    prompt_select "How do you want to use DimOS?" \
+    prompt_select "How do you want to use LIMA?" \
         "Library — pip install into your project (recommended)" \
         "Developer — git clone + editable install (contributors)"
     choice="$PROMPT_RESULT"
@@ -649,11 +649,11 @@ prompt_install_dir() {
 
     if [[ -n "$GUM" ]]; then
         local result
-        result=$("$GUM" input --header "Where should we install DimOS? (${hint})"             --placeholder "$default" --value "$default"             --header.foreground="255" --header.bold             --cursor.foreground="44" </dev/tty) || { printf "\n" >/dev/tty; exit $CANCELLED_EXIT; }
+        result=$("$GUM" input --header "Where should we install LIMA? (${hint})"             --placeholder "$default" --value "$default"             --header.foreground="255" --header.bold             --cursor.foreground="44" </dev/tty) || { printf "\n" >/dev/tty; exit $CANCELLED_EXIT; }
         [[ -z "$result" ]] && result="$default"
         echo "$result"
     else
-        printf "\n%sWhere should we install DimOS?%s (%s)\n" "$BOLD" "$RESET" "$hint" >/dev/tty
+        printf "\n%sWhere should we install LIMA?%s (%s)\n" "$BOLD" "$RESET" "$hint" >/dev/tty
         printf "  path [%s]: " "$default" >/dev/tty
         local result
         read -r result </dev/tty || result=""
@@ -665,7 +665,7 @@ prompt_install_dir() {
 # ─── installation ─────────────────────────────────────────────────────────────
 do_install_library() {
     local dir="${PROJECT_DIR:-}"
-    if [[ -z "$dir" ]]; then dir=$(prompt_install_dir "$PWD/dimensional-applications" "library") || die "cancelled"; fi
+    if [[ -z "$dir" ]]; then dir=$(prompt_install_dir "$PWD/lima-applications" "library") || die "cancelled"; fi
     INSTALL_DIR="$dir"
     info "library install → ${dir}"
     run_cmd "mkdir -p '$dir'"
@@ -674,10 +674,10 @@ do_install_library() {
     printf "\n"
     info "next step: create .venv and install Python packages"
     if [[ "$USE_NIX" == "1" ]]; then
-        dim "  will run: ${CYAN}cd ${dir} && nix develop --command bash -c \"uv venv && uv pip install 'dimos[${EXTRAS}]'\"${RESET}"
+        dim "  will run: ${CYAN}cd ${dir} && nix develop --command bash -c \"uv venv && uv pip install 'lima[${EXTRAS}]'\"${RESET}"
         dim "  nix develop provides system libraries (libGL, mesa, etc.)"
     else
-        dim "  will run: ${CYAN}cd ${dir} && uv venv --python 3.12 && uv pip install \"dimos[${EXTRAS}]\"${RESET}"
+        dim "  will run: ${CYAN}cd ${dir} && uv venv --python 3.12 && uv pip install \"lima[${EXTRAS}]\"${RESET}"
     fi
     printf "\n"
 
@@ -690,11 +690,11 @@ do_install_library() {
             dim "    nix develop"
             dim "    uv venv --python 3.12"
             dim "    source .venv/bin/activate"
-            dim "    uv pip install \"dimos[${EXTRAS}]\""
+            dim "    uv pip install \"lima[${EXTRAS}]\""
         else
             dim "    uv venv --python 3.12"
             dim "    source .venv/bin/activate"
-            dim "    uv pip install \"dimos[${EXTRAS}]\""
+            dim "    uv pip install \"lima[${EXTRAS}]\""
         fi
         ok "project directory created at ${dir}"
         return
@@ -702,7 +702,7 @@ do_install_library() {
 
     if [[ "$USE_NIX" == "1" ]]; then
         info "downloading flake files..."
-        local base="https://raw.githubusercontent.com/dimensionalOS/dimos/refs/heads/${GIT_BRANCH}"
+        local base="https://raw.githubusercontent.com/armpit-symphony/lima-robotics/refs/heads/${GIT_BRANCH}"
         if [[ "$DRY_RUN" == "1" ]]; then dim "[dry-run] curl flake.nix + flake.lock"
         else
             curl -fsSL "${base}/flake.nix" -o "${dir}/flake.nix"
@@ -710,7 +710,7 @@ do_install_library() {
         fi
         [[ "$DRY_RUN" != "1" ]] && [[ ! -d "${dir}/.git" ]] && (cd "$dir" && git init -q && git add flake.nix flake.lock && git commit -q -m "init" --allow-empty)
         verify_nix_develop "$dir"
-        info "installing dimos[${EXTRAS}] via nix develop..."
+        info "installing lima[${EXTRAS}] via nix develop..."
         if [[ "$DRY_RUN" == "1" ]]; then dim "[dry-run] nix develop + uv venv + uv pip install"
         else
             local venv_flag=""
@@ -723,7 +723,7 @@ do_install_library() {
                     venv_flag="SKIP_VENV=1"
                 fi
             fi
-            (cd "$dir" && nix develop --command bash -c "set -euo pipefail; [[ \"\${SKIP_VENV:-}\" != 1 ]] && ${venv_flag} uv venv --python 3.12; source .venv/bin/activate; uv pip install 'dimos[${EXTRAS}]'")
+            (cd "$dir" && nix develop --command bash -c "set -euo pipefail; [[ \"\${SKIP_VENV:-}\" != 1 ]] && ${venv_flag} uv venv --python 3.12; source .venv/bin/activate; uv pip install 'lima[${EXTRAS}]'")
         fi
     else
         if [[ -d "${dir}/.venv" ]] && [[ "$DRY_RUN" != "1" ]]; then
@@ -739,16 +739,16 @@ do_install_library() {
             if [[ "$DRY_RUN" == "1" ]]; then dim "[dry-run] uv venv --python 3.12"
             else pushd "$dir" >/dev/null && uv venv --python 3.12 && popd >/dev/null; fi
         fi
-        info "installing dimos[${EXTRAS}]..."
-        if [[ "$DRY_RUN" == "1" ]]; then dim "[dry-run] uv pip install 'dimos[${EXTRAS}]'"
-        else pushd "$dir" >/dev/null && source .venv/bin/activate && uv pip install "dimos[${EXTRAS}]" && popd >/dev/null; fi
+        info "installing lima[${EXTRAS}]..."
+        if [[ "$DRY_RUN" == "1" ]]; then dim "[dry-run] uv pip install 'lima[${EXTRAS}]'"
+        else pushd "$dir" >/dev/null && source .venv/bin/activate && uv pip install "lima[${EXTRAS}]" && popd >/dev/null; fi
     fi
-    ok "dimos installed in ${dir}"
+    ok "lima installed in ${dir}"
 }
 
 do_install_dev() {
     local dir="${PROJECT_DIR:-}"
-    if [[ -z "$dir" ]]; then dir=$(prompt_install_dir "$PWD/dimos" "dev") || die "cancelled"; fi
+    if [[ -z "$dir" ]]; then dir=$(prompt_install_dir "$PWD/lima" "dev") || die "cancelled"; fi
     INSTALL_DIR="$dir"
     info "developer install → ${dir}"
 
@@ -757,8 +757,8 @@ do_install_dev() {
         info "existing clone found, pulling latest..."
         run_cmd "cd '$dir' && git pull --rebase origin $GIT_BRANCH"
     else
-        info "cloning dimos (branch: ${GIT_BRANCH})..."
-        run_cmd "GIT_LFS_SKIP_SMUDGE=1 git clone -b $GIT_BRANCH https://github.com/dimensionalOS/dimos.git '$dir'"
+        info "cloning lima (branch: ${GIT_BRANCH})..."
+        run_cmd "GIT_LFS_SKIP_SMUDGE=1 git clone -b $GIT_BRANCH https://github.com/armpit-symphony/lima-robotics.git '$dir'"
     fi
 
     # Step 2: Install dependencies (ask first — this is the heavy part)
@@ -815,7 +815,7 @@ configure_system() {
     if [[ "$current_rmem" -ge 67108864 ]]; then ok "LCM buffers already configured"; return; fi
 
     printf "\n"
-    info "DimOS uses LCM transport which needs larger UDP buffers:"
+    info "LIMA uses LCM transport which needs larger UDP buffers:"
     dim "  sudo sysctl -w net.core.rmem_max=67108864"
     dim "  sudo sysctl -w net.core.rmem_default=67108864"
     printf "\n"
@@ -825,8 +825,8 @@ configure_system() {
         run_cmd "sudo sysctl -w net.core.rmem_default=67108864"
         if prompt_confirm "Persist across reboots?" "yes"; then
             if [[ "$DRY_RUN" != "1" ]]; then
-                printf "# DimOS LCM transport buffers\nnet.core.rmem_max=67108864\nnet.core.rmem_default=67108864\n" | sudo tee /etc/sysctl.d/99-dimos.conf >/dev/null
-            else dim "[dry-run] would write /etc/sysctl.d/99-dimos.conf"; fi
+                printf "# LIMA LCM transport buffers\nnet.core.rmem_max=67108864\nnet.core.rmem_default=67108864\n" | sudo tee /etc/sysctl.d/99-lima.conf >/dev/null
+            else dim "[dry-run] would write /etc/sysctl.d/99-lima.conf"; fi
         fi
         ok "LCM buffers configured"
     fi
@@ -841,12 +841,12 @@ verify_install() {
     [[ ! -f "$venv_python" ]] && { warn "venv not found, skipping verification"; return; }
 
     if [[ "$USE_NIX" == "1" ]]; then
-        (cd "$dir" && nix develop --command bash -c "source .venv/bin/activate && python3 -c 'import dimos'" 2>/dev/null) && ok "python import: dimos ✓" || warn "import check failed"
+        (cd "$dir" && nix develop --command bash -c "source .venv/bin/activate && python3 -c 'import lima'" 2>/dev/null) && ok "python import: lima ✓" || warn "import check failed"
     else
-        "$venv_python" -c "import dimos" 2>/dev/null && ok "python import: dimos ✓" || warn "import check failed"
+        "$venv_python" -c "import lima" 2>/dev/null && ok "python import: lima ✓" || warn "import check failed"
     fi
 
-    [[ -x "${dir}/.venv/bin/dimos" ]] && ok "dimos CLI available" || dim "  activate venv for CLI: source .venv/bin/activate"
+    [[ -x "${dir}/.venv/bin/lima" ]] && ok "lima CLI available" || dim "  activate venv for CLI: source .venv/bin/activate"
 
     if [[ "$DETECTED_GPU" == "nvidia" ]] && [[ "$NO_CUDA" != "1" ]] && [[ "$EXTRAS" == *"cuda"* ]]; then
         "$venv_python" -c "import torch; assert torch.cuda.is_available()" 2>/dev/null && ok "CUDA available" || dim "  CUDA not available in this environment"
@@ -877,9 +877,9 @@ run_post_install_tests() {
 
     local cmd
     if [[ "$EXTRAS" == *"sim"* ]] || [[ "$EXTRAS" == "all" ]]; then
-        cmd="dimos --simulation run unitree-go2"
+        cmd="lima --simulation run unitree-go2"
     else
-        cmd="dimos --replay run unitree-go2"
+        cmd="lima --replay run unitree-go2"
     fi
 
     info "running: ${DIM}${cmd}${RESET} (Ctrl+C to stop)"
@@ -915,28 +915,28 @@ print_quickstart() {
     fi
 
     if [[ "$EXTRAS" == *"unitree"* ]] || [[ "$EXTRAS" == "all" ]] || [[ "$EXTRAS" == *"base"* ]]; then
-        printf "    %s# simulation%s\n    dimos --simulation run unitree-go2\n\n" "$DIM" "$RESET"
-        printf "    %s# real hardware%s\n    ROBOT_IP=192.168.1.100 dimos run unitree-go2\n\n" "$DIM" "$RESET"
+        printf "    %s# simulation%s\n    lima --simulation run unitree-go2\n\n" "$DIM" "$RESET"
+        printf "    %s# real hardware%s\n    ROBOT_IP=192.168.1.100 lima run unitree-go2\n\n" "$DIM" "$RESET"
     fi
     if [[ "$EXTRAS" == *"sim"* ]] || [[ "$EXTRAS" == "all" ]]; then
-        printf "    %s# MuJoCo simulation%s\n    dimos --simulation run unitree-go2\n\n" "$DIM" "$RESET"
+        printf "    %s# MuJoCo simulation%s\n    lima --simulation run unitree-go2\n\n" "$DIM" "$RESET"
     fi
     if [[ "$INSTALL_MODE" == "dev" ]]; then
-        printf "    %s# tests%s\n    uv run pytest dimos\n\n    %s# type check%s\n    uv run mypy dimos\n\n" "$DIM" "$RESET" "$DIM" "$RESET"
+        printf "    %s# tests%s\n    uv run pytest lima\n\n    %s# type check%s\n    uv run mypy lima\n\n" "$DIM" "$RESET" "$DIM" "$RESET"
     fi
     if [[ "$USE_NIX" == "1" ]]; then
-        printf "  %s⚠%s open a %snew terminal%s first, then run 'nix develop' before working with DimOS\n" "$YELLOW" "$RESET" "$BOLD" "$RESET"
+        printf "  %s⚠%s open a %snew terminal%s first, then run 'nix develop' before working with LIMA\n" "$YELLOW" "$RESET" "$BOLD" "$RESET"
         printf "  %s⚠%s or run: %sexec bash -l%s  to reload this shell\n\n" "$YELLOW" "$RESET" "$CYAN" "$RESET"
     fi
-    printf "  %sdocs:%s       https://github.com/dimensionalOS/dimos\n" "$DIM" "$RESET"
-    printf "  %sdiscord:%s    https://discord.gg/dimos\n\n" "$DIM" "$RESET"
+    printf "  %sdocs:%s       https://github.com/armpit-symphony/lima-robotics\n" "$DIM" "$RESET"
+    printf "  %sdiscord:%s    https://discord.gg/limarobotics\n\n" "$DIM" "$RESET"
 }
 
 # ─── cleanup ─────────────────────────────────────────────────────────────────
 cleanup() {
     local ec=$?
     [[ $ec -eq 130 ]] && { warn "interrupted"; }
-    [[ $ec -ne 0 ]] && [[ $ec -ne 130 ]] && { printf "\n"; err "installation failed (exit ${ec})"; err "help: https://github.com/dimensionalOS/dimos/issues"; }
+    [[ $ec -ne 0 ]] && [[ $ec -ne 130 ]] && { printf "\n"; err "installation failed (exit ${ec})"; err "help: https://github.com/armpit-symphony/lima-robotics/issues"; }
 }
 trap cleanup EXIT
 

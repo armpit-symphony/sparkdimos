@@ -1,11 +1,11 @@
 # Data Loading
 
-The [`get_data`](/dimos/utils/data.py) function provides access to test data and model files, handling Git LFS downloads automatically.
+The [`get_data`](/LIMA/utils/data.py) function provides access to test data and model files, handling Git LFS downloads automatically.
 
 ## Basic Usage
 
 ```python
-from dimos.utils.data import get_data
+from LIMA.utils.data import get_data
 
 # Get path to a data file/directory
 data_path = get_data("cafe.jpg")
@@ -15,7 +15,7 @@ print(f"Exists: {data_path.exists()}")
 
 <!--Result:-->
 ```
-Path: /home/lesh/coding/dimos/data/cafe.jpg
+Path: /home/lesh/coding/LIMA/data/cafe.jpg
 Exists: True
 ```
 
@@ -59,8 +59,8 @@ F: box "Return path" rad 5px fit wid 170% ht 170%
 ### Loading Images
 
 ```python
-from dimos.utils.data import get_data
-from dimos.msgs.sensor_msgs import Image
+from LIMA.utils.data import get_data
+from LIMA.msgs.sensor_msgs import Image
 
 image = Image.from_file(get_data("cafe.jpg"))
 print(f"Image shape: {image.data.shape}")
@@ -74,7 +74,7 @@ Image shape: (771, 1024, 3)
 ### Loading Model Checkpoints
 
 ```python
-from dimos.utils.data import get_data
+from LIMA.utils.data import get_data
 
 model_dir = get_data("models_yolo")
 checkpoint = model_dir / "yolo11n.pt"
@@ -89,8 +89,8 @@ Checkpoint: yolo11n.pt (5482KB)
 ### Loading Recorded Data for Replay
 
 ```python
-from dimos.utils.data import get_data
-from dimos.utils.testing.replay import TimedSensorReplay
+from LIMA.utils.data import get_data
+from LIMA.utils.testing.replay import TimedSensorReplay
 
 data_dir = get_data("unitree_office_walk")
 replay = TimedSensorReplay(data_dir / "lidar")
@@ -100,7 +100,7 @@ print(replay.find_closest_seek(1))
 
 <!--Result:-->
 ```
-Replay <dimos.utils.testing.replay.TimedSensorReplay object at 0x7fdc24c708f0> loaded from: unitree_office_walk
+Replay <LIMA.utils.testing.replay.TimedSensorReplay object at 0x7fdc24c708f0> loaded from: unitree_office_walk
 {'type': 'msg', 'topic': 'rt/utlidar/voxel_map_compressed', 'data': {'stamp': 1751591000.0, 'frame_id': 'odom', 'resolution': 0.05, 'src_size': 77824, 'origin': [-3.625, -3.275, -0.575], 'width': [128, 128, 38], 'data': {'points': array([[ 2.725, -1.025, -0.575],
        [ 2.525, -0.275, -0.575],
        [ 2.575, -0.275, -0.575],
@@ -113,8 +113,8 @@ Replay <dimos.utils.testing.replay.TimedSensorReplay object at 0x7fdc24c708f0> l
 ### Loading Point Clouds
 
 ```python
-from dimos.utils.data import get_data
-from dimos.mapping.pointclouds.util import read_pointcloud
+from LIMA.utils.data import get_data
+from LIMA.mapping.pointclouds.util import read_pointcloud
 
 pointcloud = read_pointcloud(get_data("apartment") / "sum.ply")
 print(f"Loaded pointcloud with {len(pointcloud.points)} points")
@@ -201,6 +201,6 @@ A pre-commit hook ([`bin/hooks/lfs_check`](/bin/hooks/lfs_check#L26)) blocks com
 When running from:
 - **Git repo**: Uses `{repo}/data/`
 - **Installed package**: Clones repo to user data dir:
-  - Linux: `~/.local/share/dimos/repo/data/`
-  - macOS: `~/Library/Application Support/dimos/repo/data/`
-  - Fallback: `/tmp/dimos/repo/data/`
+  - Linux: `~/.local/share/LIMA/repo/data/`
+  - macOS: `~/Library/Application Support/LIMA/repo/data/`
+  - Fallback: `/tmp/LIMA/repo/data/`

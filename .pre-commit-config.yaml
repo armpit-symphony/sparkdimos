@@ -1,6 +1,6 @@
 default_stages: [pre-commit]
 default_install_hook_types: [pre-commit, commit-msg]
-exclude: (dimos/models/.*)|(deprecated)
+exclude: (LIMA/models/.*)|(deprecated)
 repos:
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
@@ -10,7 +10,7 @@ repos:
       - id: remove-crlf
       - id: insert-license
         files: \.py$
-        exclude: (__init__\.py$)|(dimos/rxpy_backpressure/)
+        exclude: (__init__\.py$)|(LIMA/rxpy_backpressure/)
         args:
           # use if you want to remove licences from all files
           # (for globally changing wording or something)
@@ -90,7 +90,7 @@ repos:
         name: Doclinks
         always_run: true
         pass_filenames: false
-        entry: python -m dimos.utils.docs.doclinks docs/
+        entry: python -m LIMA.utils.docs.doclinks docs/
         language: system
         files: ^docs/.*\.md$
 

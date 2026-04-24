@@ -19,23 +19,23 @@ After adding a link to a doc run
 
 ### Code file references
 ```markdown
-See [`service/spec.py`](/dimos/protocol/service/spec.py) for the implementation.
+See [`service/spec.py`](/LIMA/protocol/service/spec.py) for the implementation.
 ```
 
 After running doclinks, becomes:
 ```markdown
-See [`service/spec.py`](/dimos/protocol/service/spec.py) for the implementation.
+See [`service/spec.py`](/LIMA/protocol/service/spec.py) for the implementation.
 ```
 
 ### Symbol auto-linking
 Mention a symbol on the same line to auto-link to its line number:
 ```markdown
-The `Configurable` class is defined in [`service/spec.py`](/dimos/protocol/service/spec.py#L22).
+The `Configurable` class is defined in [`service/spec.py`](/LIMA/protocol/service/spec.py#L22).
 ```
 
 Becomes:
 ```markdown
-The `Configurable` class is defined in [`service/spec.py`](/dimos/protocol/service/spec.py#L22).
+The `Configurable` class is defined in [`service/spec.py`](/LIMA/protocol/service/spec.py#L22).
 ```
 ### Doc-to-doc references
 Use `.md` as the link target:

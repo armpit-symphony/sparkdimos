@@ -9,9 +9,9 @@ Motion planning and teleoperation for robotic manipulators. Uses Drake for physi
 Each blueprint launches the full stack — keyboard UI, mock controller, IK solver, and Drake visualization:
 
 ```bash
-dimos run keyboard-teleop-piper   # Piper 6-DOF
-dimos run keyboard-teleop-xarm6   # XArm6 6-DOF
-dimos run keyboard-teleop-xarm7   # XArm7 7-DOF
+LIMA run keyboard-teleop-piper   # Piper 6-DOF
+LIMA run keyboard-teleop-xarm6   # XArm6 6-DOF
+LIMA run keyboard-teleop-xarm7   # XArm7 7-DOF
 ```
 
 Open the Meshcat URL printed in the terminal (default `http://localhost:7000`) to see the robot.
@@ -33,16 +33,16 @@ Keyboard controls:
 
 ```bash
 # Terminal 1: Mock coordinator
-dimos run coordinator-mock
+LIMA run coordinator-mock
 
 # Terminal 2: Planner with Drake visualization
-dimos run xarm7-planner-coordinator
+LIMA run xarm7-planner-coordinator
 ```
 
 Then use the IPython client:
 
 ```bash
-python -m dimos.manipulation.planning.examples.manipulation_client
+python -m LIMA.manipulation.planning.examples.manipulation_client
 ```
 
 ```python
@@ -56,10 +56,10 @@ execute()               # Execute via coordinator
 
 ```bash
 # Terminal 1: Coordinator with real xarm7
-dimos run coordinator-xarm7
+LIMA run coordinator-xarm7
 
 # Terminal 2: Perception + manipulation + LLM agent
-dimos run xarm-perception-agent
+LIMA run xarm-perception-agent
 ```
 
 ## Architecture
@@ -107,10 +107,10 @@ KeyboardTeleopModule ──→ ControlCoordinator ──→ ManipulationModule
 
 | File | Description |
 |------|-------------|
-| [`manipulation_module.py`](/dimos/manipulation/manipulation_module.py) | Main module (RPC interface, state machine) |
-| [`manipulation/blueprints.py`](/dimos/manipulation/blueprints.py) | Planner and perception blueprints |
-| [`robot/manipulators/piper/blueprints.py`](/dimos/robot/manipulators/piper/blueprints.py) | Piper keyboard teleop blueprint |
-| [`robot/manipulators/xarm/blueprints.py`](/dimos/robot/manipulators/xarm/blueprints.py) | XArm keyboard teleop blueprints |
-| [`teleop/keyboard/keyboard_teleop_module.py`](/dimos/teleop/keyboard/keyboard_teleop_module.py) | Keyboard teleop module |
-| [`planning/world/drake_world.py`](/dimos/manipulation/planning/world/drake_world.py) | Drake physics backend |
-| [`planning/planners/rrt_planner.py`](/dimos/manipulation/planning/planners/rrt_planner.py) | RRT-Connect motion planner |
+| [`manipulation_module.py`](/LIMA/manipulation/manipulation_module.py) | Main module (RPC interface, state machine) |
+| [`manipulation/blueprints.py`](/LIMA/manipulation/blueprints.py) | Planner and perception blueprints |
+| [`robot/manipulators/piper/blueprints.py`](/LIMA/robot/manipulators/piper/blueprints.py) | Piper keyboard teleop blueprint |
+| [`robot/manipulators/xarm/blueprints.py`](/LIMA/robot/manipulators/xarm/blueprints.py) | XArm keyboard teleop blueprints |
+| [`teleop/keyboard/keyboard_teleop_module.py`](/LIMA/teleop/keyboard/keyboard_teleop_module.py) | Keyboard teleop module |
+| [`planning/world/drake_world.py`](/LIMA/manipulation/planning/world/drake_world.py) | Drake physics backend |
+| [`planning/planners/rrt_planner.py`](/LIMA/manipulation/planning/planners/rrt_planner.py) | RRT-Connect motion planner |

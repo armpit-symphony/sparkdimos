@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2025-2026 Dimensional Inc.
+# Copyright 2025-2026 LIMA Robotics Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import time
 class ROSLaunchWrapper:
     def __init__(self):
         self.ros_process = None
-        self.dimos_process = None
+        self.lima_process = None
         self.shutdown_in_progress = False
 
     def signal_handler(self, _signum, _frame):
@@ -39,17 +39,17 @@ class ROSLaunchWrapper:
         self.shutdown_in_progress = True
         print("\n\nShutdown signal received. Stopping services gracefully...")
 
-        # Stop DimOS first
-        if self.dimos_process and self.dimos_process.poll() is None:
-            print("Stopping DimOS...")
-            self.dimos_process.terminate()
+        # Stop LIMA first
+        if self.lima_process and self.lima_process.poll() is None:
+            print("Stopping LIMA...")
+            self.lima_process.terminate()
             try:
-                self.dimos_process.wait(timeout=5)
-                print("DimOS stopped cleanly.")
+                self.lima_process.wait(timeout=5)
+                print("LIMA stopped cleanly.")
             except subprocess.TimeoutExpired:
-                print("Force stopping DimOS...")
-                self.dimos_process.kill()
-                self.dimos_process.wait()
+                print("Force stopping LIMA...")
+                self.lima_process.kill()
+                self.lima_process.wait()
 
         # Stop ROS - send SIGINT first for graceful shutdown
         if self.ros_process and self.ros_process.poll() is None:
@@ -97,7 +97,7 @@ class ROSLaunchWrapper:
         signal.signal(signal.SIGINT, self.signal_handler)
         signal.signal(signal.SIGTERM, self.signal_handler)
 
-        print("Starting ROS route planner and DimOS...")
+        print("Starting ROS route planner and LIMA...")
 
         # Change to the ROS workspace directory
         os.chdir("/ros2_ws/src/ros-navigation-autonomy-stack")
@@ -112,14 +112,14 @@ class ROSLaunchWrapper:
         print("Waiting for ROS to initialize...")
         time.sleep(5)
 
-        print("Starting DimOS navigation bot...")
+        print("Starting LIMA navigation bot...")
 
-        nav_bot_path = "/workspace/dimos/dimos/navigation/demo_ros_navigation.py"
-        venv_python = "/opt/dimos-venv/bin/python"
+        nav_bot_path = "/workspace/lima/lima/navigation/demo_ros_navigation.py"
+        venv_python = "/opt/lima-venv/bin/python"
 
         if not os.path.exists(nav_bot_path):
             print(f"ERROR: demo_ros_navigation.py not found at {nav_bot_path}")
-            nav_dir = "/workspace/dimos/dimos/navigation/"
+            nav_dir = "/workspace/lima/lima/navigation/"
             if os.path.exists(nav_dir):
                 print(f"Contents of {nav_dir}:")
                 for item in os.listdir(nav_dir):
@@ -137,7 +137,7 @@ class ROSLaunchWrapper:
 
         # Use the venv Python explicitly
         try:
-            self.dimos_process = subprocess.Popen(
+            self.lima_process = subprocess.Popen(
                 [venv_python, nav_bot_path],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
@@ -148,27 +148,27 @@ class ROSLaunchWrapper:
 
             # Give it a moment to start and check if it's still running
             time.sleep(2)
-            poll_result = self.dimos_process.poll()
+            poll_result = self.lima_process.poll()
             if poll_result is not None:
                 # Process exited immediately
-                stdout, stderr = self.dimos_process.communicate(timeout=1)
-                print(f"ERROR: DimOS failed to start (exit code: {poll_result})")
+                stdout, stderr = self.lima_process.communicate(timeout=1)
+                print(f"ERROR: LIMA failed to start (exit code: {poll_result})")
                 if stdout:
                     print(f"STDOUT: {stdout}")
                 if stderr:
                     print(f"STDERR: {stderr}")
-                self.dimos_process = None
+                self.lima_process = None
             else:
-                print(f"DimOS started successfully (PID: {self.dimos_process.pid})")
+                print(f"LIMA started successfully (PID: {self.lima_process.pid})")
 
         except Exception as e:
-            print(f"ERROR: Failed to start DimOS: {e}")
-            self.dimos_process = None
+            print(f"ERROR: Failed to start LIMA: {e}")
+            self.lima_process = None
 
-        if self.dimos_process:
+        if self.lima_process:
             print("Both systems are running. Press Ctrl+C to stop.")
         else:
-            print("ROS is running (DimOS failed to start). Press Ctrl+C to stop.")
+            print("ROS is running (LIMA failed to start). Press Ctrl+C to stop.")
         print("")
 
         # Wait for processes
@@ -180,9 +180,9 @@ class ROSLaunchWrapper:
                     print("ROS process has stopped unexpectedly.")
                     self.signal_handler(signal.SIGTERM, None)
                     break
-                if self.dimos_process and self.dimos_process.poll() is not None:
-                    print("DimOS process has stopped.")
-                    # DimOS stopping is less critical, but we should still clean up ROS
+                if self.lima_process and self.lima_process.poll() is not None:
+                    print("LIMA process has stopped.")
+                    # LIMA stopping is less critical, but we should still clean up ROS
                     self.signal_handler(signal.SIGTERM, None)
                     break
                 time.sleep(1)

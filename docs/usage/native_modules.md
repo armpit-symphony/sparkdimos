@@ -1,14 +1,14 @@
 # Native Modules
 
-Prerequisite for this is to understand dimos [Modules](/docs/usage/modules.md) and [Blueprints](/docs/usage/blueprints.md).
+Prerequisite for this is to understand LIMA [Modules](/docs/usage/modules.md) and [Blueprints](/docs/usage/blueprints.md).
 
-Native modules let you wrap **any executable** as a first-class DimOS module, given it speaks LCM.
+Native modules let you wrap **any executable** as a first-class LIMA module, given it speaks LCM.
 
 Python will handle blueprint wiring, lifecycle, and logging. Native binary handles the actual computation, publishing and subscribing directly on LCM.
 
 Python module **never touches the pubsub data**. It just passes configuration and LCM topic to use via CLI args to your executable.
 
-On how to speak LCM with the rest of dimos, you can read our [LCM intro](/docs/usage/lcm.md)
+On how to speak LCM with the rest of LIMA, you can read our [LCM intro](/docs/usage/lcm.md)
 
 ## Defining a native module
 
@@ -18,11 +18,11 @@ Both the config dataclass and pubsub topics get converted to CLI args passed dow
 
 ```python no-result session=nativemodule
 from dataclasses import dataclass
-from dimos.core.stream import Out
-from dimos.core.transport import LCMTransport
-from dimos.core.native_module import NativeModule, NativeModuleConfig
-from dimos.msgs.sensor_msgs.PointCloud2 import PointCloud2
-from dimos.msgs.sensor_msgs.Imu import Imu
+from LIMA.core.stream import Out
+from LIMA.core.transport import LCMTransport
+from LIMA.core.native_module import NativeModule, NativeModuleConfig
+from LIMA.msgs.sensor_msgs.PointCloud2 import PointCloud2
+from LIMA.msgs.sensor_msgs.Imu import Imu
 import time
 
 @dataclass(kw_only=True)
@@ -39,7 +39,7 @@ class MyLidar(NativeModule):
 
 ```
 
-That's it. `MyLidar` is a full DimOS module. You can use it with `autoconnect`, blueprints, transport overrides, and specs. Once this module is started, your `./build/my_lidar` will get called with specific CLI args.
+That's it. `MyLidar` is a full LIMA module. You can use it with `autoconnect`, blueprints, transport overrides, and specs. Once this module is started, your `./build/my_lidar` will get called with specific CLI args.
 
 
 ## How it works
@@ -71,7 +71,7 @@ mylidar.start()
 
 <!--Result:-->
 ```
-2026-02-14T11:22:12.123963Z [info     ] Starting native process   [dimos/core/native_module.py] cmd='./build/my_lidar --pointcloud /lidar#sensor_msgs.PointCloud2 --imu /imu#sensor_msgs.Imu --host_ip 192.168.1.5 --frequency 10.0' cwd=/home/lesh/coding/dimos/docs/usage/build
+2026-02-14T11:22:12.123963Z [info     ] Starting native process   [LIMA/core/native_module.py] cmd='./build/my_lidar --pointcloud /lidar#sensor_msgs.PointCloud2 --imu /imu#sensor_msgs.Imu --host_ip 192.168.1.5 --frequency 10.0' cwd=/home/lesh/coding/LIMA/docs/usage/build
 ```
 
 Topic strings use the format `/<name>#<msg_type>`, which is the LCM channel name that Python `LCMTransport` subscribers use. The native binary publishes on these exact channels.
@@ -138,7 +138,7 @@ class FastLio2Config(NativeModuleConfig):
 Native modules work with `autoconnect` exactly like Python modules:
 
 ```python skip
-from dimos.core.blueprints import autoconnect
+from LIMA.core.blueprints import autoconnect
 
 class PointCloudConsumer(Module):
     pointcloud: In[PointCloud2]
@@ -189,14 +189,14 @@ Malformed lines fall back to plain text logging.
 
 ## Writing the C++ side
 
-A header-only helper is provided at [`dimos/hardware/sensors/lidar/common/dimos_native_module.hpp`](/dimos/hardware/sensors/lidar/common/dimos_native_module.hpp):
+A header-only helper is provided at [`LIMA/hardware/sensors/lidar/common/LIMA_native_module.hpp`](/LIMA/hardware/sensors/lidar/common/LIMA_native_module.hpp):
 
 ```cpp
-#include "dimos_native_module.hpp"
+#include "LIMA_native_module.hpp"
 #include "sensor_msgs/PointCloud2.hpp"
 
 int main(int argc, char** argv) {
-    dimos::NativeModule mod(argc, argv);
+    LIMA::NativeModule mod(argc, argv);
 
     // Get the LCM channel for a declared port
     std::string pc_topic = mod.topic("pointcloud");
@@ -223,18 +223,18 @@ It also includes `make_header()` and `time_from_seconds()` for building ROS-comp
 
 ## Examples
 
-For language interop examples (subscribing to DimOS topics from C++, TypeScript, Lua), see [/examples/language-interop/](/examples/language-interop/README.md).
+For language interop examples (subscribing to LIMA topics from C++, TypeScript, Lua), see [/examples/language-interop/](/examples/language-interop/README.md).
 
 ### Livox Mid-360 Module
 
-The Livox Mid-360 LiDAR driver is a complete example at [`dimos/hardware/sensors/lidar/livox/module.py`](/dimos/hardware/sensors/lidar/livox/module.py):
+The Livox Mid-360 LiDAR driver is a complete example at [`LIMA/hardware/sensors/lidar/livox/module.py`](/LIMA/hardware/sensors/lidar/livox/module.py):
 
 ```python skip
-from dimos.core.stream import Out
-from dimos.core.native_module import NativeModule, NativeModuleConfig
-from dimos.msgs.sensor_msgs.PointCloud2 import PointCloud2
-from dimos.msgs.sensor_msgs.Imu import Imu
-from dimos.spec import perception
+from LIMA.core.stream import Out
+from LIMA.core.native_module import NativeModule, NativeModuleConfig
+from LIMA.msgs.sensor_msgs.PointCloud2 import PointCloud2
+from LIMA.msgs.sensor_msgs.Imu import Imu
+from LIMA.spec import perception
 
 @dataclass(kw_only=True)
 class Mid360Config(NativeModuleConfig):
@@ -257,7 +257,7 @@ class Mid360(NativeModule, perception.Lidar, perception.IMU):
 Usage:
 
 ```python skip
-from dimos.hardware.sensors.lidar.livox.module import Mid360
+from LIMA.hardware.sensors.lidar.livox.module import Mid360
 
 autoconnect(
     Mid360.blueprint(host_ip="192.168.1.5"),

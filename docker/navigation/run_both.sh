@@ -1,11 +1,11 @@
 #!/bin/bash
-# Script to run both ROS route planner and DimOS together
+# Script to run both ROS route planner and LIMA together
 
-echo "Starting ROS route planner and DimOS..."
+echo "Starting ROS route planner and LIMA..."
 
 # Variables for process IDs
 ROS_PID=""
-DIMOS_PID=""
+LIMA_PID=""
 RVIZ_PID=""
 UNITY_PID=""
 SHUTDOWN_IN_PROGRESS=false
@@ -40,24 +40,24 @@ cleanup() {
         fi
     fi
 
-    # Then, try to gracefully stop DimOS
-    if [ -n "$DIMOS_PID" ] && kill -0 $DIMOS_PID 2>/dev/null; then
-        echo "Stopping DimOS..."
-        kill -TERM $DIMOS_PID 2>/dev/null || true
+    # Then, try to gracefully stop LIMA
+    if [ -n "$LIMA_PID" ] && kill -0 $LIMA_PID 2>/dev/null; then
+        echo "Stopping LIMA..."
+        kill -TERM $LIMA_PID 2>/dev/null || true
 
-        # Wait up to 5 seconds for DimOS to stop
+        # Wait up to 5 seconds for LIMA to stop
         for i in {1..10}; do
-            if ! kill -0 $DIMOS_PID 2>/dev/null; then
-                echo "DimOS stopped cleanly."
+            if ! kill -0 $LIMA_PID 2>/dev/null; then
+                echo "LIMA stopped cleanly."
                 break
             fi
             sleep 0.5
         done
 
         # Force kill if still running
-        if kill -0 $DIMOS_PID 2>/dev/null; then
-            echo "Force stopping DimOS..."
-            kill -9 $DIMOS_PID 2>/dev/null || true
+        if kill -0 $LIMA_PID 2>/dev/null; then
+            echo "Force stopping LIMA..."
+            kill -9 $LIMA_PID 2>/dev/null || true
         fi
     fi
 
@@ -141,62 +141,62 @@ RVIZ_PID=$!
 echo "Waiting for ROS to initialize..."
 sleep 5
 
-# Start DimOS
-echo "Starting DimOS navigation bot..."
+# Start LIMA
+echo "Starting LIMA navigation bot..."
 
 # Check if the script exists
-if [ ! -f "/workspace/dimos/dimos/navigation/demo_ros_navigation.py" ]; then
-    echo "ERROR: demo_ros_navigation.py not found at /workspace/dimos/dimos/navigation/demo_ros_navigation.py"
-    echo "Available files in /workspace/dimos/dimos/navigation/:"
-    ls -la /workspace/dimos/dimos/navigation/ 2>/dev/null || echo "Directory not found"
+if [ ! -f "/workspace/lima/lima/navigation/demo_ros_navigation.py" ]; then
+    echo "ERROR: demo_ros_navigation.py not found at /workspace/lima/lima/navigation/demo_ros_navigation.py"
+    echo "Available files in /workspace/lima/lima/navigation/:"
+    ls -la /workspace/lima/lima/navigation/ 2>/dev/null || echo "Directory not found"
 else
     echo "Found demo_ros_navigation.py, activating virtual environment..."
-    if [ -f "/opt/dimos-venv/bin/activate" ]; then
-        source /opt/dimos-venv/bin/activate
+    if [ -f "/opt/lima-venv/bin/activate" ]; then
+        source /opt/lima-venv/bin/activate
         echo "Python path: $(which python)"
         echo "Python version: $(python --version)"
 
-        # Install dimos package if not already installed
-        if ! python -c "import dimos" 2>/dev/null; then
-            echo "Installing dimos package..."
-            if [ -f "/workspace/dimos/setup.py" ] || [ -f "/workspace/dimos/pyproject.toml" ]; then
+        # Install lima package if not already installed
+        if ! python -c "import lima" 2>/dev/null; then
+            echo "Installing lima package..."
+            if [ -f "/workspace/lima/setup.py" ] || [ -f "/workspace/lima/pyproject.toml" ]; then
                 # Install Unitree extra (includes agents stack + unitree deps used by demo)
-                pip install -e "/workspace/dimos[unitree]" --quiet
+                pip install -e "/workspace/lima[unitree]" --quiet
             else
-                echo "WARNING: dimos package not found at /workspace/dimos"
+                echo "WARNING: lima package not found at /workspace/lima"
             fi
         fi
     else
-        echo "WARNING: Virtual environment not found at /opt/dimos-venv, using system Python"
+        echo "WARNING: Virtual environment not found at /opt/lima-venv, using system Python"
     fi
 
     echo "Starting demo_ros_navigation.py..."
     # Capture any startup errors
-    python /workspace/dimos/dimos/navigation/demo_ros_navigation.py 2>&1 &
-    DIMOS_PID=$!
+    python /workspace/lima/lima/navigation/demo_ros_navigation.py 2>&1 &
+    LIMA_PID=$!
 
     # Give it a moment to start and check if it's still running
     sleep 2
-    if kill -0 $DIMOS_PID 2>/dev/null; then
-        echo "DimOS started successfully with PID: $DIMOS_PID"
+    if kill -0 $LIMA_PID 2>/dev/null; then
+        echo "LIMA started successfully with PID: $LIMA_PID"
     else
-        echo "ERROR: DimOS failed to start (process exited immediately)"
+        echo "ERROR: LIMA failed to start (process exited immediately)"
         echo "Check the logs above for error messages"
-        DIMOS_PID=""
+        LIMA_PID=""
     fi
 fi
 
 echo ""
-if [ -n "$DIMOS_PID" ]; then
+if [ -n "$LIMA_PID" ]; then
     echo "Both systems are running. Press Ctrl+C to stop."
 else
-    echo "ROS is running (DimOS failed to start). Press Ctrl+C to stop."
+    echo "ROS is running (LIMA failed to start). Press Ctrl+C to stop."
 fi
 echo ""
 
 # Wait for processes
-if [ -n "$DIMOS_PID" ]; then
-    wait $ROS_PID $DIMOS_PID 2>/dev/null || true
+if [ -n "$LIMA_PID" ]; then
+    wait $ROS_PID $LIMA_PID 2>/dev/null || true
 else
     wait $ROS_PID 2>/dev/null || true
 fi

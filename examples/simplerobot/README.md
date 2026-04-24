@@ -1,6 +1,6 @@
 # SimpleRobot
 
-A minimal virtual robot for testing and development. It implements some of the same LCM interface as real robots, making it ideal for testing third-party integrations (see `examples/language-interop/`) or experimeting with dimos Module patterns
+A minimal virtual robot for testing and development. It implements some of the same LCM interface as real robots, making it ideal for testing third-party integrations (see `examples/language-interop/`) or experimeting with LIMA Module patterns
 
 ## Interface
 
@@ -33,8 +33,8 @@ Use `lcmspy` in another terminal to inspect messages. Press `q` or `Esc` to quit
 From any language with LCM bindings, publish `Twist` messages to `/cmd_vel`:
 
 ```python
-from dimos.core.transport import LCMTransport
-from dimos.msgs.geometry_msgs import Twist
+from LIMA.core.transport import LCMTransport
+from LIMA.msgs.geometry_msgs import Twist
 
 transport = LCMTransport("/cmd_vel", Twist)
 transport.publish(Twist(linear=(0.5, 0, 0), angular=(0, 0, 0.3)))

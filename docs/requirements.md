@@ -25,22 +25,22 @@
 
 ## Dependency Tiers
 
-Bare `pip install dimos` installs the **core** tier. Extras add capabilities on top.
+Bare `pip install LIMA` installs the **core** tier. Extras add capabilities on top.
 
 ```bash
-pip install dimos                           # Core only
-pip install 'dimos[base,unitree]'             # Full stack + Unitree
-pip install 'dimos[base,unitree,sim]'         # + MuJoCo simulation
-pip install 'dimos[base,unitree,drone]'       # + Drone support
-pip install 'dimos[base,unitree,manipulation]' # + Arm control
+pip install LIMA                           # Core only
+pip install 'LIMA[base,unitree]'             # Full stack + Unitree
+pip install 'LIMA[base,unitree,sim]'         # + MuJoCo simulation
+pip install 'LIMA[base,unitree,drone]'       # + Drone support
+pip install 'LIMA[base,unitree,manipulation]' # + Arm control
 ```
 
 | Extra | What it adds | Key packages | GPU? |
 |-------|-------------|--------------|------|
-| *(core)* | Transport, streams, CLI, blueprints, occupancy maps | dimos-lcm, numpy, scipy, opencv, open3d, numba, Pinocchio, typer, textual | No |
+| *(core)* | Transport, streams, CLI, blueprints, occupancy maps | LIMA-lcm, numpy, scipy, opencv, open3d, numba, Pinocchio, typer, textual | No |
 | `agents` | LLM agent, speech, tool use | langchain, openai, whisper, anthropic | No |
 | `perception` | Object detection, VLMs, tracking | ultralytics, transformers, moondream | **Yes** |
-| `visualization` | Rerun viewer + bridge | rerun-sdk, dimos-viewer | No |
+| `visualization` | Rerun viewer + bridge | rerun-sdk, LIMA-viewer | No |
 | `web` | FastAPI web interface, audio | fastapi, uvicorn, ffmpeg-python | No |
 | `sim` | MuJoCo simulation | mujoco, playground, pygame | No |
 | `unitree` | Unitree Go2 / G1 support | unitree-webrtc-connect | No |
@@ -49,7 +49,7 @@ pip install 'dimos[base,unitree,manipulation]' # + Arm control
 | `cuda` | GPU acceleration | cupy, onnxruntime-gpu, xformers | **Yes** |
 | `cpu` | CPU inference backends | onnxruntime, ctransformers | No |
 | `misc` | Extra models, embeddings, hardware SDKs | cerebras, edgetam, sentence-transformers, tiktoken | Varies |
-| `docker` | Minimal set for Docker sidecar modules | dimos-lcm, numpy, opencv-headless, rerun-sdk | No |
+| `docker` | Minimal set for Docker sidecar modules | LIMA-lcm, numpy, opencv-headless, rerun-sdk | No |
 | `base` | Kitchen sink (agents + web + perception + viz + sim) | All of the above | **Yes** |
 | `dev` | Linting, testing, type stubs | ruff, mypy, pytest, pre-commit | No |
 | `psql` | PostgreSQL storage | psycopg2 | No |

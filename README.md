@@ -4,16 +4,16 @@
 
 <h2>The Agentive Operating System for Physical Space</h2>
 
-[![Discord](https://img.shields.io/discord/1341146487186391173?style=flat-square&logo=discord&logoColor=white&label=Discord&color=5865F2)](https://discord.gg/dimos)
-[![Stars](https://img.shields.io/github/stars/dimensionalOS/dimos?style=flat-square)](https://github.com/dimensionalOS/dimos/stargazers)
-[![Forks](https://img.shields.io/github/forks/dimensionalOS/dimos?style=flat-square)](https://github.com/dimensionalOS/dimos/fork)
-[![Contributors](https://img.shields.io/github/contributors/dimensionalOS/dimos?style=flat-square)](https://github.com/dimensionalOS/dimos/graphs/contributors)
+[![Discord](https://img.shields.io/discord/1341146487186391173?style=flat-square&logo=discord&logoColor=white&label=Discord&color=5865F2)](https://discord.gg/LIMA)
+[![Stars](https://img.shields.io/github/stars/armpit-symphony/lima-robotics?style=flat-square)](https://github.com/armpit-symphony/lima-robotics/stargazers)
+[![Forks](https://img.shields.io/github/forks/armpit-symphony/lima-robotics?style=flat-square)](https://github.com/armpit-symphony/lima-robotics/fork)
+[![Contributors](https://img.shields.io/github/contributors/armpit-symphony/lima-robotics?style=flat-square)](https://github.com/armpit-symphony/lima-robotics/graphs/contributors)
 ![Nix](https://img.shields.io/badge/Nix-flakes-5277C3?style=flat-square&logo=NixOS&logoColor=white)
 ![NixOS](https://img.shields.io/badge/NixOS-supported-5277C3?style=flat-square&logo=NixOS&logoColor=white)
 ![CUDA](https://img.shields.io/badge/CUDA-supported-76B900?style=flat-square&logo=nvidia&logoColor=white)
 [![Docker](https://img.shields.io/badge/Docker-ready-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 
-<a href="https://trendshift.io/repositories/23169" target="_blank"><img src="https://trendshift.io/api/badge/repositories/23169" alt="dimensionalOS%2Fdimos | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+<a href="https://trendshift.io/repositories/23169" target="_blank"><img src="https://trendshift.io/api/badge/repositories/23169" alt="LIMA Robotics%2FLIMA | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 <big><big>
 
@@ -31,11 +31,11 @@
 
 # Intro
 
-Dimensional is the modern operating system for generalist robotics. We are setting the next-generation SDK standard, integrating with the majority of robot manufacturers.
+LIMA Robotics is the modern operating system for generalist robotics. We are setting the next-generation SDK standard, integrating with the majority of robot manufacturers.
 
 With a simple install and no ROS required, build physical applications entirely in python that run on any humanoid, quadruped, or drone.
 
-Dimensional is agent native -- "vibecode" your robots in natural language and build (local & hosted) multi-agent systems that work seamlessly with your hardware. Agents run as native modules — subscribing to any embedded stream, from perception (lidar, camera) and spatial memory down to control loops and motor drivers.
+LIMA Robotics is agent native -- "vibecode" your robots in natural language and build (local & hosted) multi-agent systems that work seamlessly with your hardware. Agents run as native modules — subscribing to any embedded stream, from perception (lidar, camera) and spatial memory down to control loops and motor drivers.
 <table>
   <tr>
     <td align="center" width="50%">
@@ -48,7 +48,7 @@ Dimensional is agent native -- "vibecode" your robots in natural language and bu
   <tr>
     <td align="center" width="50%">
       <h3><a href="docs/capabilities/navigation/native/index.md">Navigation and Mapping</a></h3>
-      SLAM, dynamic obstacle avoidance, route planning, and autonomous exploration — via both DimOS native and ROS<br><a href="https://x.com/stash_pomichter/status/2010471593806545367">Watch video</a>
+      SLAM, dynamic obstacle avoidance, route planning, and autonomous exploration — via both LIMA native and ROS<br><a href="https://x.com/stash_pomichter/status/2010471593806545367">Watch video</a>
     </td>
     <td align="center" width="50%">
       <h3>Perception</h3>
@@ -105,7 +105,7 @@ Dimensional is agent native -- "vibecode" your robots in natural language and bu
   <tr>
     <td align="center" width="20%">
       🟩 <a href="docs/platforms/quadruped/go2/index.md">Unitree Go2 pro/air</a><br>
-      🟥 <a href="dimos/robot/unitree/b1">Unitree B1</a><br>
+      🟥 <a href="LIMA/robot/unitree/b1">Unitree B1</a><br>
     </td>
     <td align="center" width="20%">
       🟨 <a href="docs/platforms/humanoid/g1/index.md">Unitree G1</a><br>
@@ -115,11 +115,11 @@ Dimensional is agent native -- "vibecode" your robots in natural language and bu
       🟨 <a href="docs/capabilities/manipulation/readme.md">AgileX Piper</a><br>
     </td>
     <td align="center" width="20%">
-      🟧 <a href="dimos/robot/drone/README.md">MAVLink</a><br>
-      🟧 <a href="dimos/robot/drone/README.md">DJI Mavic</a><br>
+      🟧 <a href="LIMA/robot/drone/README.md">MAVLink</a><br>
+      🟧 <a href="LIMA/robot/drone/README.md">DJI Mavic</a><br>
     </td>
     <td align="center" width="20%">
-      🟥 <a href="https://github.com/dimensionalOS/openFT-sensor">Force Torque Sensor</a><br>
+      🟥 <a href="https://github.com/armpit-symphony/lima-robotics">Force Torque Sensor</a><br>
     </td>
   </tr>
 </table>
@@ -130,14 +130,14 @@ Dimensional is agent native -- "vibecode" your robots in natural language and bu
 </div>
 
 > [!IMPORTANT]
-> 🤖 Direct your favorite Agent (OpenClaw, Claude Code, etc.) to [AGENTS.md](AGENTS.md) and our [CLI and MCP](#agent-cli-and-mcp) interfaces to start building powerful Dimensional applications.
+> 🤖 Direct your favorite Agent (OpenClaw, Claude Code, etc.) to [AGENTS.md](AGENTS.md) and our [CLI and MCP](#agent-cli-and-mcp) interfaces to start building powerful LIMA Robotics applications.
 
 # Installation
 
 ## Interactive Install
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/dimensionalOS/dimos/main/scripts/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/LIMA Robotics/LIMA/main/scripts/install.sh | bash
 ```
 
 > See [`scripts/install.sh --help`](scripts/install.sh) for non-interactive and advanced options.
@@ -159,58 +159,58 @@ To set up your system dependencies, follow one of these guides:
 ```bash
 uv venv --python "3.12"
 source .venv/bin/activate
-uv pip install 'dimos[base,unitree]'
+uv pip install 'LIMA[base,unitree]'
 
 # Replay a recorded quadruped session (no hardware needed)
 # NOTE: First run will show a black rerun window while ~75 MB downloads from LFS
-dimos --replay run unitree-go2
+LIMA --replay run unitree-go2
 ```
 
 ```bash
 # Install with simulation support
-uv pip install 'dimos[base,unitree,sim]'
+uv pip install 'LIMA[base,unitree,sim]'
 
 # Run quadruped in MuJoCo simulation
-dimos --simulation run unitree-go2
+LIMA --simulation run unitree-go2
 
 # Run humanoid in simulation
-dimos --simulation run unitree-g1-sim
+LIMA --simulation run unitree-g1-sim
 ```
 
 ```bash
 # Control a real robot (Unitree quadruped over WebRTC)
 export ROBOT_IP=<YOUR_ROBOT_IP>
-dimos run unitree-go2
+LIMA run unitree-go2
 ```
 
 # Featured Runfiles
 
 | Run command | What it does |
 |-------------|-------------|
-| `dimos --replay run unitree-go2` | Quadruped navigation replay — SLAM, costmap, A* planning |
-| `dimos --replay --replay-dir unitree_go2_office_walk2 run unitree-go2-temporal-memory` | Quadruped temporal memory replay |
-| `dimos --simulation run unitree-go2-agentic-mcp` | Quadruped agentic + MCP server in simulation |
-| `dimos --simulation run unitree-g1` | Humanoid in MuJoCo simulation |
-| `dimos --replay run drone-basic` | Drone video + telemetry replay |
-| `dimos --replay run drone-agentic` | Drone + LLM agent with flight skills (replay) |
-| `dimos run demo-camera` | Webcam demo — no hardware needed |
-| `dimos run keyboard-teleop-xarm7` | Keyboard teleop with mock xArm7 (requires `dimos[manipulation]` extra) |
-| `dimos --simulation run unitree-go2-agentic-ollama` | Quadruped agentic with local LLM (requires [Ollama](https://ollama.com) + `ollama serve`) |
+| `LIMA --replay run unitree-go2` | Quadruped navigation replay — SLAM, costmap, A* planning |
+| `LIMA --replay --replay-dir unitree_go2_office_walk2 run unitree-go2-temporal-memory` | Quadruped temporal memory replay |
+| `LIMA --simulation run unitree-go2-agentic-mcp` | Quadruped agentic + MCP server in simulation |
+| `LIMA --simulation run unitree-g1` | Humanoid in MuJoCo simulation |
+| `LIMA --replay run drone-basic` | Drone video + telemetry replay |
+| `LIMA --replay run drone-agentic` | Drone + LLM agent with flight skills (replay) |
+| `LIMA run demo-camera` | Webcam demo — no hardware needed |
+| `LIMA run keyboard-teleop-xarm7` | Keyboard teleop with mock xArm7 (requires `LIMA[manipulation]` extra) |
+| `LIMA --simulation run unitree-go2-agentic-ollama` | Quadruped agentic with local LLM (requires [Ollama](https://ollama.com) + `ollama serve`) |
 
 > Full blueprint docs: [docs/usage/blueprints.md](docs/usage/blueprints.md)
 
 # Agent CLI and MCP
 
-The `dimos` CLI manages the full lifecycle — run blueprints, inspect state, interact with agents, and call skills via MCP.
+The `LIMA` CLI manages the full lifecycle — run blueprints, inspect state, interact with agents, and call skills via MCP.
 
 ```bash
-dimos run unitree-go2-agentic-mcp --daemon   # Start in background
-dimos status                              # Check what's running
-dimos log -f                              # Follow logs
-dimos agent-send "explore the room"       # Send agent a command
-dimos mcp list-tools                      # List available MCP skills
-dimos mcp call relative_move --arg forward=0.5  # Call a skill directly
-dimos stop                                # Shut down
+LIMA run unitree-go2-agentic-mcp --daemon   # Start in background
+LIMA status                              # Check what's running
+LIMA log -f                              # Follow logs
+LIMA agent-send "explore the room"       # Send agent a command
+LIMA mcp list-tools                      # List available MCP skills
+LIMA mcp call relative_move --arg forward=0.5  # Call a skill directly
+LIMA stop                                # Shut down
 ```
 
 > Full CLI reference: [docs/usage/cli.md](docs/usage/cli.md)
@@ -218,18 +218,18 @@ dimos stop                                # Shut down
 
 # Usage
 
-## Use DimOS as a Library
+## Use LIMA as a Library
 
-See below a simple robot connection module that sends streams of continuous `cmd_vel` to the robot and receives `color_image` to a simple `Listener` module. DimOS Modules are subsystems on a robot that communicate with other modules using standardized messages.
+See below a simple robot connection module that sends streams of continuous `cmd_vel` to the robot and receives `color_image` to a simple `Listener` module. LIMA Modules are subsystems on a robot that communicate with other modules using standardized messages.
 
 ```py
 import threading, time, numpy as np
-from dimos.core.blueprints import autoconnect
-from dimos.core.core import rpc
-from dimos.core.module import Module
-from dimos.core.stream import In, Out
-from dimos.msgs.geometry_msgs import Twist
-from dimos.msgs.sensor_msgs import Image, ImageFormat
+from LIMA.core.blueprints import autoconnect
+from LIMA.core.core import rpc
+from LIMA.core.module import Module
+from LIMA.core.stream import In, Out
+from LIMA.msgs.geometry_msgs import Twist
+from LIMA.msgs.sensor_msgs import Image, ImageFormat
 
 class RobotConnection(Module):
     cmd_vel: In[Twist]
@@ -272,11 +272,11 @@ Blueprints can be composed, remapped, and have transports overridden if `autocon
 
 A blueprint example that connects the image stream from a robot to an LLM Agent for reasoning and action execution.
 ```py
-from dimos.core.blueprints import autoconnect
-from dimos.core.transport import LCMTransport
-from dimos.msgs.sensor_msgs import Image
-from dimos.robot.unitree.go2.connection import go2_connection
-from dimos.agents.agent import agent
+from LIMA.core.blueprints import autoconnect
+from LIMA.core.transport import LCMTransport
+from LIMA.msgs.sensor_msgs import Image
+from LIMA.robot.unitree.go2.connection import go2_connection
+from LIMA.agents.agent import agent
 
 blueprint = autoconnect(
     go2_connection(),
@@ -300,21 +300,21 @@ if __name__ == "__main__":
 
 ## Demos
 
-<img src="assets/readme/dimos_demo.gif" alt="DimOS Demo" width="100%">
+<img src="assets/readme/LIMA_demo.gif" alt="LIMA Demo" width="100%">
 
 # Development
 
-## Develop on DimOS
+## Develop on LIMA
 
 ```sh
 export GIT_LFS_SKIP_SMUDGE=1
-git clone -b dev https://github.com/dimensionalOS/dimos.git
-cd dimos
+git clone -b dev https://github.com/armpit-symphony/lima-robotics.git
+cd LIMA
 
 uv sync --all-extras --no-extra dds
 
 # Run fast test suite
-uv run pytest dimos
+uv run pytest LIMA
 ```
 
 

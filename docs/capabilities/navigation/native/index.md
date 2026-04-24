@@ -41,15 +41,15 @@ text "Twist" italic at (M4.x, Nav.s.y - 0.45in)
 ![output](assets/go2nav_dataflow.svg)
 ## Pipeline Steps
 
-### 1. LiDAR Frame — [`GO2Connection`](/dimos/robot/unitree/go2/connection.py)
+### 1. LiDAR Frame — [`GO2Connection`](/LIMA/robot/unitree/go2/connection.py)
 
 We don't connect to the LiDAR directly — instead we use Unitree's WebRTC client (via [legion's webrtc driver](https://github.com/legion1581/unitree_webrtc_connect)), which streams a heavily preprocessed 5cm voxel grid rather than raw point cloud data. This allows us to support stock, unjailbroken Go2 Air and Pro models out of the box.
 
 ![LiDAR frame](assets/1-lidar.png)
 
-### 2. Global Voxel Map — [`VoxelGridMapper`](/dimos/mapping/voxels.py)
+### 2. Global Voxel Map — [`VoxelGridMapper`](/LIMA/mapping/voxels.py)
 
-The [`VoxelGridMapper`](/dimos/mapping/voxels.py) maintains a sparse 3D occupancy grid using Open3D's `VoxelBlockGrid` backed by a hash map. Each voxel is a 5cm cube by default.
+The [`VoxelGridMapper`](/LIMA/mapping/voxels.py) maintains a sparse 3D occupancy grid using Open3D's `VoxelBlockGrid` backed by a hash map. Each voxel is a 5cm cube by default.
 
 Voxel hash map provides O(1) insert/erase/lookup, so this is efficient even with millions of voxels. The grid runs on **CUDA** by default for speed, with CPU fallback.
 
@@ -74,11 +74,11 @@ We don't have proper loop closure and stable odometry, we trust the data go2 odo
 
 ![Global map](assets/2-globalmap.png)
 
-### 3. Global Costmap — [`CostMapper`](/dimos/mapping/costmapper.py)
+### 3. Global Costmap — [`CostMapper`](/LIMA/mapping/costmapper.py)
 
-The [`CostMapper`](/dimos/mapping/costmapper.py) converts the 3D voxel map into a 2D occupancy grid. The default algorithm (`height_cost`) maps rate of change of Z, with some smoothing.
+The [`CostMapper`](/LIMA/mapping/costmapper.py) converts the 3D voxel map into a 2D occupancy grid. The default algorithm (`height_cost`) maps rate of change of Z, with some smoothing.
 
-algo settings are in [`occupancy.py`](/dimos/mapping/pointclouds/occupancy.py) and can be configured per robot
+algo settings are in [`occupancy.py`](/LIMA/mapping/pointclouds/occupancy.py) and can be configured per robot
 
 
 #### Configuration
@@ -102,7 +102,7 @@ class HeightCostConfig(OccupancyConfig):
 
 ![Global costmap](assets/3-globalcostmap.png)
 
-### 4. Navigation Costmap — [`ReplanningAStarPlanner`](/dimos/navigation/replanning_a_star/module.py)
+### 4. Navigation Costmap — [`ReplanningAStarPlanner`](/LIMA/navigation/replanning_a_star/module.py)
 
 The planner will process the terrain gradient and compute it's own algo-relevant costmap, prioritizing safe free paths, while be willing to path aggressively through tight spaces if it has to
 
@@ -118,16 +118,16 @@ All visualization layers shown together
 
 ## Blueprint Composition
 
-The navigation stack is composed in the [`unitree_go2`](/dimos/robot/unitree/go2/blueprints/__init__.py) blueprint:
+The navigation stack is composed in the [`unitree_go2`](/LIMA/robot/unitree/go2/blueprints/__init__.py) blueprint:
 
 ```python fold output=assets/go2_blueprint.svg
-from dimos.core.blueprints import autoconnect
-from dimos.core.introspection import to_svg
-from dimos.mapping.costmapper import cost_mapper
-from dimos.mapping.voxels import voxel_mapper
-from dimos.navigation.frontier_exploration import wavefront_frontier_explorer
-from dimos.navigation.replanning_a_star.module import replanning_a_star_planner
-from dimos.robot.unitree.go2.blueprints.basic.unitree_go2_basic import unitree_go2_basic
+from LIMA.core.blueprints import autoconnect
+from LIMA.core.introspection import to_svg
+from LIMA.mapping.costmapper import cost_mapper
+from LIMA.mapping.voxels import voxel_mapper
+from LIMA.navigation.frontier_exploration import wavefront_frontier_explorer
+from LIMA.navigation.replanning_a_star.module import replanning_a_star_planner
+from LIMA.robot.unitree.go2.blueprints.basic.unitree_go2_basic import unitree_go2_basic
 
 unitree_go2 = autoconnect(
     unitree_go2_basic,                    # robot connection + visualization

@@ -1,6 +1,6 @@
 # Docker Images
 
-Dimos uses parallel Docker image hierarchies for ROS and non-ROS builds, allowing you to choose the environment that fits your use case.
+LIMA uses parallel Docker image hierarchies for ROS and non-ROS builds, allowing you to choose the environment that fits your use case.
 
 ## Image Hierarchy
 
@@ -46,14 +46,14 @@ text "same dockerfiles" at (D.e.x + 1.2in, D.e.y + 0.4in)
 
 ## Images
 
-All images are published to `ghcr.io/dimensionalos/`.
+All images are published to `ghcr.io/LIMA Robotics/`.
 
 | Image        | Base                        | Purpose                                            |
 |--------------|-----------------------------|----------------------------------------------------|
-| `python`     | ubuntu:22.04                | Core dimos with Python dependencies, no ROS        |
+| `python`     | ubuntu:22.04                | Core LIMA with Python dependencies, no ROS        |
 | `dev`        | python                      | Development environment (editors, git, pre-commit) |
 | `ros`        | ubuntu:22.04                | ROS2 Humble with navigation packages               |
-| `ros-python` | ros                         | ROS + dimos Python dependencies                    |
+| `ros-python` | ros                         | ROS + LIMA Python dependencies                    |
 | `ros-dev`    | ros-python                  | Full ROS development environment                   |
 
 ## Tags
@@ -71,7 +71,7 @@ Images are tagged based on the git branch:
 ### Non-ROS Track (`python` → `dev`)
 
 ```sh skip
-docker run -it ghcr.io/dimensionalos/dev:latest bash
+docker run -it ghcr.io/LIMA Robotics/dev:latest bash
 ```
 
 ### ROS Track (`ros` → `ros-python` → `ros-dev`)
@@ -83,7 +83,7 @@ Use when you need ROS2 integration:
 - Running ROS tests (`pytest -m ros`)
 
 ```sh skip
-docker run -it ghcr.io/dimensionalos/ros-dev:latest bash
+docker run -it ghcr.io/LIMA Robotics/ros-dev:latest bash
 ```
 
 ## Local Development
@@ -126,7 +126,7 @@ After images build, tests run in parallel:
 | `run-heavy-tests`       | dev     | `pytest -m heavy`         |
 | `run-lcm-tests`         | dev     | `pytest -m lcm`           |
 | `run-integration-tests` | dev     | `pytest -m integration`   |
-| `run-mypy`              | ros-dev | `mypy dimos`              |
+| `run-mypy`              | ros-dev | `mypy LIMA`              |
 
 ## Dockerfile Structure
 

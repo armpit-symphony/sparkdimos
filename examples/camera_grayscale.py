@@ -1,4 +1,4 @@
-# Copyright 2026 Dimensional Inc.
+# Copyright 2025-2026 LIMA Robotics Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from dimos.core.blueprints import autoconnect
-from dimos.core.core import rpc
-from dimos.core.module import Module
-from dimos.core.stream import In, Out
-from dimos.hardware.sensors.camera.module import CameraModule
-from dimos.msgs.sensor_msgs.Image import Image
-from dimos.visualization.rerun.bridge import RerunBridgeModule
+from lima.core.blueprints import autoconnect
+from lima.core.core import rpc
+from lima.core.module import Module
+from lima.core.stream import In, Out
+from lima.hardware.sensors.camera.module import CameraModule
+from lima.msgs.sensor_msgs.Image import Image
+from lima.visualization.rerun.bridge import RerunBridgeModule
 
 
 class Grayscale(Module):

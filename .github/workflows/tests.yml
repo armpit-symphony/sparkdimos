@@ -23,7 +23,7 @@ jobs:
   run-tests:
     runs-on: [self-hosted, Linux]
     container:
-      image: ghcr.io/dimensionalos/${{ inputs.dev-image }}
+      image: ghcr.io/armpit-symphony/lima-robotics/${{ inputs.dev-image }}
       env:
         OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

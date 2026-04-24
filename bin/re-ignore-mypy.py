@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Copyright 2026 Dimensional Inc.
+# Copyright 2025-2026 LIMA Robotics Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -138,9 +138,9 @@ def add_type_ignore_comments(root: Path, errors: dict[Path, dict[int, list[str]]
 
 def main() -> None:
     root = Path(__file__).parent.parent
-    dimos_dir = root / "dimos"
+    lima_dir = root / "lima"
 
-    remove_type_ignore_comments(dimos_dir)
+    remove_type_ignore_comments(lima_dir)
     mypy_output = run_mypy(root)
     errors = parse_mypy_errors(mypy_output)
     add_type_ignore_comments(root, errors)

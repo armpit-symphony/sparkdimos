@@ -14,4 +14,4 @@ make
 ## Dependencies
 
 - [lcm](https://lcm-proj.github.io/) - install via package manager
-- Message headers fetched automatically from [dimos-lcm](https://github.com/dimensionalOS/dimos-lcm)
+- Message headers fetched automatically from [LIMA-lcm](https://github.com/LIMA Robotics/LIMA-lcm)

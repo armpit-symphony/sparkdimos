@@ -38,8 +38,8 @@ You can read more about [sensor storage here](/docs/usage/data_streams/storage_r
 
 ```python session=align no-result
 from reactivex import Subject
-from dimos.utils.testing import TimedSensorReplay
-from dimos.types.timestamped import Timestamped, align_timestamped
+from LIMA.utils.testing import TimedSensorReplay
+from LIMA.types.timestamped import Timestamped, align_timestamped
 from reactivex import operators as ops
 import reactivex as rx
 
@@ -70,7 +70,7 @@ lidar_stream = lidar_replay.stream(from_timestamp=seek_ts, duration=2.0).pipe(
 
 </details>
 
-Streams would normally come from an actual robot into your module via `In` inputs. [`detection/module3D.py`](/dimos/perception/detection/module3D.py#L11) is a good example of this.
+Streams would normally come from an actual robot into your module via `In` inputs. [`detection/module3D.py`](/LIMA/perception/detection/module3D.py#L11) is a good example of this.
 
 Assume we have them. Let's align them.
 
@@ -199,7 +199,7 @@ plot_alignment_timeline(video_frames, lidar_scans, aligned_pairs, '{output}')
 More on [quality filtering here](/docs/usage/data_streams/quality_filter.md).
 
 ```python session=align
-from dimos.msgs.sensor_msgs.Image import Image, sharpness_barrier
+from LIMA.msgs.sensor_msgs.Image import Image, sharpness_barrier
 
 # Lists to collect items as they flow through streams
 video_frames = []
@@ -293,7 +293,7 @@ text "waiting..." at (Buffer.w.x - 0.4in, Buffer.w.y - 0.15in)
 
 Every module `In` port exposes an `.observable()` method that returns a backpressured stream of incoming messages. This makes it easy to align inputs from multiple sensors.
 
-From [`detection/module3D.py`](/dimos/perception/detection/module3D.py), projecting 2D detections into 3D pointclouds:
+From [`detection/module3D.py`](/LIMA/perception/detection/module3D.py), projecting 2D detections into 3D pointclouds:
 
 ```python skip
 class Detection3DModule(Detection2DModule):

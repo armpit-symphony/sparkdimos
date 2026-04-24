@@ -7,4 +7,4 @@
 
 ## ROS
 
-See [ROS Transports](/docs/usage/transports/index.md) for bridging DimOS streams to ROS topics.
+See [ROS Transports](/docs/usage/transports/index.md) for bridging LIMA streams to ROS topics.

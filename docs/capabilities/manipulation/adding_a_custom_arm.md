@@ -1,10 +1,10 @@
 # How to Integrate a New Manipulator Arm
 
-This guide walks through integrating a new robot arm with DimOS, from writing the hardware adapter to creating blueprints for planning and control.
+This guide walks through integrating a new robot arm with LIMA, from writing the hardware adapter to creating blueprints for planning and control.
 
 ## Architecture Overview
 
-DimOS uses a **Protocol-based adapter pattern** — no base class inheritance required. Your adapter wraps the vendor SDK and exposes a standard interface that the rest of the system consumes:
+LIMA uses a **Protocol-based adapter pattern** — no base class inheritance required. Your adapter wraps the vendor SDK and exposes a standard interface that the rest of the system consumes:
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -30,7 +30,7 @@ DimOS uses a **Protocol-based adapter pattern** — no base class inheritance re
 └──────────────────────────────────────────────────────────────┘
 ```
 
-> See also: `dimos/hardware/manipulators/README.md` for a quick reference.
+> See also: `LIMA/hardware/manipulators/README.md` for a quick reference.
 
 ## Prerequisites
 
@@ -40,10 +40,10 @@ DimOS uses a **Protocol-based adapter pattern** — no base class inheritance re
 
 ## Step 1: Create the Adapter
 
-Create a new directory for your arm under `dimos/hardware/manipulators/`:
+Create a new directory for your arm under `LIMA/hardware/manipulators/`:
 
 ```
-dimos/hardware/manipulators/
+LIMA/hardware/manipulators/
 ├── spec.py              # ManipulatorAdapter Protocol (don't modify)
 ├── registry.py          # Auto-discovery registry (don't modify)
 ├── mock/
@@ -70,7 +70,7 @@ Below is a complete annotated adapter. Implement each method by wrapping your ve
 """YourArm adapter — implements ManipulatorAdapter protocol.
 
 SDK Units: <describe your SDK's native units here>
-DimOS Units: angles=radians, distance=meters, velocity=rad/s
+LIMA Units: angles=radians, distance=meters, velocity=rad/s
 """
 
 from __future__ import annotations
@@ -82,9 +82,9 @@ from typing import TYPE_CHECKING
 from yourarm_sdk import YourArmSDK
 
 if TYPE_CHECKING:
-    from dimos.hardware.manipulators.registry import AdapterRegistry
+    from LIMA.hardware.manipulators.registry import AdapterRegistry
 
-from dimos.hardware.manipulators.spec import (
+from LIMA.hardware.manipulators.spec import (
     ControlMode,
     JointLimits,
     ManipulatorInfo,
@@ -180,7 +180,7 @@ class YourArmAdapter:
     def set_control_mode(self, mode: ControlMode) -> bool:
         """Set control mode.
 
-        Map DimOS ControlMode enum values to your SDK's mode codes.
+        Map LIMA ControlMode enum values to your SDK's mode codes.
         Return False for modes your arm doesn't support.
         """
         if not self._sdk:
@@ -397,22 +397,22 @@ __all__ = ["YourArmAdapter"]
 """YourArm manipulator hardware adapter.
 
 Usage:
-    >>> from dimos.hardware.manipulators.yourarm import YourArmAdapter
+    >>> from LIMA.hardware.manipulators.yourarm import YourArmAdapter
     >>> adapter = YourArmAdapter(address="192.168.1.100", dof=6)
     >>> adapter.connect()
     >>> positions = adapter.read_joint_positions()
 """
 
-from dimos.hardware.manipulators.yourarm.adapter import YourArmAdapter
+from LIMA.hardware.manipulators.yourarm.adapter import YourArmAdapter
 
 __all__ = ["YourArmAdapter"]
 ```
 
 ### How auto-discovery works
 
-The `AdapterRegistry` in `dimos/hardware/manipulators/registry.py` automatically discovers your adapter at import time:
+The `AdapterRegistry` in `LIMA/hardware/manipulators/registry.py` automatically discovers your adapter at import time:
 
-1. It iterates over all subpackages under `dimos/hardware/manipulators/`
+1. It iterates over all subpackages under `LIMA/hardware/manipulators/`
 2. For each subpackage, it tries to import `<subpackage>.adapter`
 3. If that module has a `register()` function, it calls it
 
@@ -421,18 +421,18 @@ This means **no manual registration is needed** — just having the `register()`
 You can verify discovery works:
 
 ```python
-from dimos.hardware.manipulators.registry import adapter_registry
+from LIMA.hardware.manipulators.registry import adapter_registry
 print(adapter_registry.available())  # Should include "yourarm"
 ```
 
 ## Step 3: Create Your Robot Folder and Blueprints
 
-Each robot in DimOS gets its own folder under `dimos/robot/`. This is where you define all blueprints for your arm — coordinator, planning, perception, etc. This follows the same pattern as Unitree robots (`dimos/robot/unitree/`).
+Each robot in LIMA gets its own folder under `LIMA/robot/`. This is where you define all blueprints for your arm — coordinator, planning, perception, etc. This follows the same pattern as Unitree robots (`LIMA/robot/unitree/`).
 
 ### 3a. Create the robot directory
 
 ```
-dimos/robot/
+LIMA/robot/
 ├── unitree/                 # Unitree robots (reference example)
 │   ├── go2/
 │   │   └── blueprints/
@@ -445,18 +445,18 @@ dimos/robot/
 
 ### 3b. Define your blueprints
 
-Create `dimos/robot/yourarm/blueprints.py` with your coordinator and (optionally) planning blueprints:
+Create `LIMA/robot/yourarm/blueprints.py` with your coordinator and (optionally) planning blueprints:
 
 ```python
 """Blueprints for YourArm robot.
 
 Usage:
     # Run via CLI:
-    dimos run coordinator-yourarm          # Start coordinator with real hardware
-    dimos run yourarm-planner              # Start planner (optional, for motion planning)
+    LIMA run coordinator-yourarm          # Start coordinator with real hardware
+    LIMA run yourarm-planner              # Start planner (optional, for motion planning)
 
     # Or programmatically:
-    from dimos.robot.yourarm.blueprints import coordinator_yourarm
+    from LIMA.robot.yourarm.blueprints import coordinator_yourarm
     coordinator = coordinator_yourarm.build()
     coordinator.loop()
 """
@@ -465,10 +465,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from dimos.control.components import HardwareComponent, HardwareType, make_joints
-from dimos.control.coordinator import TaskConfig, control_coordinator
-from dimos.core.transport import LCMTransport
-from dimos.msgs.sensor_msgs import JointState
+from LIMA.control.components import HardwareComponent, HardwareType, make_joints
+from LIMA.control.coordinator import TaskConfig, control_coordinator
+from LIMA.core.transport import LCMTransport
+from LIMA.msgs.sensor_msgs import JointState
 
 # =============================================================================
 # Coordinator Blueprints
@@ -528,10 +528,10 @@ If you want motion planning (collision-free trajectories via Drake), you need a 
 Place your URDF/xacro files under LFS data so they can be resolved via `LfsPath`. `LfsPath` is a `Path` subclass that lazily downloads LFS data on first access — this avoids downloading at import time when the blueprint module is loaded.
 
 ```python
-from dimos.utils.data import LfsPath
-from dimos.manipulation.manipulation_module import manipulation_module
-from dimos.manipulation.planning.spec import RobotModelConfig
-from dimos.msgs.geometry_msgs import PoseStamped, Quaternion, Vector3
+from LIMA.utils.data import LfsPath
+from LIMA.manipulation.manipulation_module import manipulation_module
+from LIMA.manipulation.planning.spec import RobotModelConfig
+from LIMA.msgs.geometry_msgs import PoseStamped, Quaternion, Vector3
 
 # LfsPath defers download until the path is actually accessed
 _YOURARM_URDF_PATH = LfsPath("yourarm_description/urdf/yourarm.urdf")
@@ -586,7 +586,7 @@ def _make_yourarm_config(
 
 ### 4c. Create a planning blueprint
 
-Add this to your `dimos/robot/yourarm/blueprints.py` alongside the coordinator blueprint:
+Add this to your `LIMA/robot/yourarm/blueprints.py` alongside the coordinator blueprint:
 
 ```python
 # =============================================================================
@@ -619,16 +619,16 @@ yourarm_planner = manipulation_module(
 
 ## Step 5: Register Blueprints
 
-The blueprint registry in `dimos/robot/all_blueprints.py` is **auto-generated** by scanning the codebase for blueprint declarations. After adding your blueprints:
+The blueprint registry in `LIMA/robot/all_blueprints.py` is **auto-generated** by scanning the codebase for blueprint declarations. After adding your blueprints:
 
 1. Run the generation test to update the registry:
    ```bash
-   pytest dimos/robot/test_all_blueprints_generation.py
+   pytest LIMA/robot/test_all_blueprints_generation.py
    ```
 3. Now you can run your arm via CLI:
    ```bash
-   dimos run coordinator-yourarm
-   dimos run yourarm-planner        # If you added a planning blueprint
+   LIMA run coordinator-yourarm
+   LIMA run yourarm-planner        # If you added a planning blueprint
    ```
 
 ## Step 6: Testing
@@ -636,7 +636,7 @@ The blueprint registry in `dimos/robot/all_blueprints.py` is **auto-generated** 
 ### Verify adapter registration
 
 ```python
-from dimos.hardware.manipulators.registry import adapter_registry
+from LIMA.hardware.manipulators.registry import adapter_registry
 
 # Check your adapter shows up
 assert "yourarm" in adapter_registry.available()
@@ -652,7 +652,7 @@ You can test coordinator logic without hardware by using `unittest.mock`:
 ```python
 import pytest
 from unittest.mock import MagicMock
-from dimos.hardware.manipulators.spec import ManipulatorAdapter
+from LIMA.hardware.manipulators.spec import ManipulatorAdapter
 
 @pytest.fixture
 def mock_adapter():
@@ -677,7 +677,7 @@ def test_write_positions(mock_adapter):
 ### Integration test with coordinator
 
 ```python
-from dimos.control.blueprints import coordinator_mock
+from LIMA.control.blueprints import coordinator_mock
 
 # Build and start coordinator with mock hardware
 coordinator = coordinator_mock.build()
@@ -690,7 +690,7 @@ coordinator.start()
 ### Test the real adapter standalone
 
 ```python
-from dimos.hardware.manipulators.yourarm import YourArmAdapter
+from LIMA.hardware.manipulators.yourarm import YourArmAdapter
 
 adapter = YourArmAdapter(address="192.168.1.100", dof=6)
 assert adapter.connect() is True
@@ -714,10 +714,10 @@ adapter.disconnect()
 
 Files to create:
 
-- [ ] `dimos/hardware/manipulators/yourarm/__init__.py`
-- [ ] `dimos/hardware/manipulators/yourarm/adapter.py` (implements Protocol + `register()`)
-- [ ] `dimos/robot/yourarm/__init__.py`
-- [ ] `dimos/robot/yourarm/blueprints.py` (coordinator + planning blueprints)
+- [ ] `LIMA/hardware/manipulators/yourarm/__init__.py`
+- [ ] `LIMA/hardware/manipulators/yourarm/adapter.py` (implements Protocol + `register()`)
+- [ ] `LIMA/robot/yourarm/__init__.py`
+- [ ] `LIMA/robot/yourarm/blueprints.py` (coordinator + planning blueprints)
 
 Files to modify:
 
@@ -726,5 +726,5 @@ Files to modify:
 Verification:
 
 - [ ] `adapter_registry.available()` includes `"yourarm"`
-- [ ] `pytest dimos/robot/test_all_blueprints_generation.py` passes (regenerates `all_blueprints.py`)
-- [ ] `dimos run coordinator-yourarm` starts successfully
+- [ ] `pytest LIMA/robot/test_all_blueprints_generation.py` passes (regenerates `all_blueprints.py`)
+- [ ] `LIMA run coordinator-yourarm` starts successfully

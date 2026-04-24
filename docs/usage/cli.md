@@ -1,13 +1,13 @@
 # CLI Reference
 
-The `dimos` CLI manages the full lifecycle of a DimOS robot stack — start, stop, inspect, and interact.
+The `LIMA` CLI manages the full lifecycle of a LIMA robot stack — start, stop, inspect, and interact.
 
 ## Global Options
 
 Every [`GlobalConfig`](/docs/usage/configuration.md) field is available as a CLI flag. Flags override environment variables, `.env`, and blueprint defaults.
 
 ```bash
-dimos [GLOBAL OPTIONS] COMMAND [ARGS]
+LIMA [GLOBAL OPTIONS] COMMAND [ARGS]
 ```
 
 | Flag | Type | Default | Description |
@@ -44,23 +44,23 @@ dimos [GLOBAL OPTIONS] COMMAND [ARGS]
 Values cascade (later overrides earlier):
 
 1. `GlobalConfig` default → `simulation = False`
-2. `.env` file → `DIMOS_SIMULATION=true`
-3. Environment variable → `export DIMOS_SIMULATION=true`
+2. `.env` file → `LIMA_SIMULATION=true`
+3. Environment variable → `export LIMA_SIMULATION=true`
 4. Blueprint definition → `.global_config(simulation=True)`
-5. CLI flag → `dimos --simulation run ...`
+5. CLI flag → `LIMA --simulation run ...`
 
-Environment variables and `.env` values must be prefixed with `DIMOS_`.
+Environment variables and `.env` values must be prefixed with `LIMA_`.
 
 ---
 
 ## Commands
 
-### `dimos run`
+### `LIMA run`
 
 Start a robot blueprint.
 
 ```bash
-dimos run <blueprint> [<blueprint> ...] [--daemon] [--disable <module> ...]
+LIMA run <blueprint> [<blueprint> ...] [--daemon] [--disable <module> ...]
 ```
 
 | Option | Description |
@@ -70,22 +70,22 @@ dimos run <blueprint> [<blueprint> ...] [--daemon] [--disable <module> ...]
 
 ```bash
 # Foreground (Ctrl-C to stop)
-dimos run unitree-go2
+LIMA run unitree-go2
 
 # Background (returns immediately)
-dimos run unitree-go2-agentic --daemon
+LIMA run unitree-go2-agentic --daemon
 
 # Replay with Rerun viewer
-dimos --replay --viewer rerun run unitree-go2
+LIMA --replay --viewer rerun run unitree-go2
 
 # Real robot
-dimos run unitree-go2-agentic --robot-ip 192.168.123.161
+LIMA run unitree-go2-agentic --robot-ip 192.168.123.161
 
 # Compose modules dynamically
-dimos run unitree-go2 keyboard-teleop
+LIMA run unitree-go2 keyboard-teleop
 
 # Disable specific modules
-dimos run unitree-go2-agentic --disable OsmSkill WebInput
+LIMA run unitree-go2-agentic --disable OsmSkill WebInput
 ```
 
 When `--daemon` is used, the process:
@@ -99,27 +99,27 @@ When `--daemon` is used, the process:
 Define a module-level `Blueprint` variable and register it in `all_blueprints.py`:
 
 ```bash
-pytest dimos/robot/test_all_blueprints_generation.py
+pytest LIMA/robot/test_all_blueprints_generation.py
 ```
 
 This auto-generates the registry. See [blueprints](/docs/usage/blueprints.md) for composition details.
 
-### `dimos status`
+### `LIMA status`
 
-Show the running DimOS instance.
+Show the running LIMA instance.
 
 ```bash
-dimos status
+LIMA status
 ```
 
 Reads the run registry, verifies the PID is alive, and displays: run ID, PID, blueprint name, uptime, log path, and MCP port.
 
-### `dimos stop`
+### `LIMA stop`
 
-Stop the running DimOS instance.
+Stop the running LIMA instance.
 
 ```bash
-dimos stop [--force]
+LIMA stop [--force]
 ```
 
 | Option | Description |
@@ -128,12 +128,12 @@ dimos stop [--force]
 
 Default behavior: SIGTERM → wait 5s → SIGKILL. Cleans up the run registry entry.
 
-### `dimos restart`
+### `LIMA restart`
 
 Restart the running instance with the same original arguments.
 
 ```bash
-dimos restart [--force]
+LIMA restart [--force]
 ```
 
 | Option | Description |
@@ -142,12 +142,12 @@ dimos restart [--force]
 
 Reads saved CLI args from the run registry, stops the current instance, then re-runs with the same arguments.
 
-### `dimos log`
+### `LIMA log`
 
-View logs from a DimOS run.
+View logs from a LIMA run.
 
 ```bash
-dimos log [OPTIONS]
+LIMA log [OPTIONS]
 ```
 
 | Option | Description |
@@ -159,58 +159,58 @@ dimos log [OPTIONS]
 | `--run`, `-r` | Specific run ID (defaults to most recent) |
 
 ```bash
-dimos log                    # last 50 lines, human-readable
-dimos log -f                 # follow in real time
-dimos log -n 100             # last 100 lines
-dimos log --json | jq .event # raw JSONL, extract events
-dimos log -r 20260306-143022-unitree-go2  # specific run
+LIMA log                    # last 50 lines, human-readable
+LIMA log -f                 # follow in real time
+LIMA log -n 100             # last 100 lines
+LIMA log --json | jq .event # raw JSONL, extract events
+LIMA log -r 20260306-143022-unitree-go2  # specific run
 ```
 
 All processes (main + workers) write to the same `main.jsonl`. Filter by module:
 
 ```bash
-dimos log --json | jq 'select(.logger | contains("RerunBridge"))'
+LIMA log --json | jq 'select(.logger | contains("RerunBridge"))'
 ```
 
-### `dimos list`
+### `LIMA list`
 
 List all available blueprints.
 
 ```bash
-dimos list
+LIMA list
 ```
 
-### `dimos show-config`
+### `LIMA show-config`
 
 Print resolved GlobalConfig values and their sources.
 
 ```bash
-dimos show-config
+LIMA show-config
 ```
 
 ---
 
 ## Agent & MCP Commands
 
-### `dimos agent-send`
+### `LIMA agent-send`
 
 Send a text message to the running agent via LCM.
 
 ```bash
-dimos agent-send "walk forward 2 meters"
+LIMA agent-send "walk forward 2 meters"
 ```
 
 Works with any agentic blueprint — does not require MCP. Publishes directly to the `/human_input` LCM topic.
 
-### `dimos mcp`
+### `LIMA mcp`
 
 Interact with the running MCP server. **Requires a blueprint that includes `McpServer`** — for example `unitree-go2-agentic-mcp`. The MCP server runs at `http://localhost:9990/mcp` by default (`--mcp-port` / `--mcp-host` to override).
 
 To add MCP to a blueprint, include both `McpServer` (exposes skills as HTTP tools) and `mcp_client()` (LLM agent that fetches tools from the server):
 
 ```python
-from dimos.agents.mcp.mcp_client import mcp_client
-from dimos.agents.mcp.mcp_server import McpServer
+from LIMA.agents.mcp.mcp_client import mcp_client
+from LIMA.agents.mcp.mcp_server import McpServer
 
 my_mcp_blueprint = autoconnect(
     my_robot_stack,
@@ -220,22 +220,22 @@ my_mcp_blueprint = autoconnect(
 )
 ```
 
-#### `dimos mcp list-tools`
+#### `LIMA mcp list-tools`
 
 List all available skills exposed by the MCP server.
 
 ```bash
-dimos mcp list-tools
+LIMA mcp list-tools
 ```
 
 Returns JSON with tool names, descriptions, and parameter schemas.
 
-#### `dimos mcp call`
+#### `LIMA mcp call`
 
 Call a skill by name.
 
 ```bash
-dimos mcp call <tool_name> [--arg key=value ...] [--json-args '{}']
+LIMA mcp call <tool_name> [--arg key=value ...] [--json-args '{}']
 ```
 
 | Option | Description |
@@ -244,33 +244,33 @@ dimos mcp call <tool_name> [--arg key=value ...] [--json-args '{}']
 | `--json-args`, `-j` | Arguments as a JSON string |
 
 ```bash
-dimos mcp call relative_move --arg forward=0.5
-dimos mcp call relative_move --json-args '{"forward": 2.0, "left": 0, "degrees": 0}'
-dimos mcp call observe
-dimos mcp call land
+LIMA mcp call relative_move --arg forward=0.5
+LIMA mcp call relative_move --json-args '{"forward": 2.0, "left": 0, "degrees": 0}'
+LIMA mcp call observe
+LIMA mcp call land
 ```
 
-#### `dimos mcp status`
+#### `LIMA mcp status`
 
 Show MCP server status — PID, uptime, deployed modules, skill count.
 
 ```bash
-dimos mcp status
+LIMA mcp status
 ```
 
-#### `dimos mcp modules`
+#### `LIMA mcp modules`
 
 List deployed modules and their skills.
 
 ```bash
-dimos mcp modules
+LIMA mcp modules
 ```
 
 ---
 
 ## Standalone Tools
 
-These are installed as separate entry points and can be run directly without the `dimos` prefix.
+These are installed as separate entry points and can be run directly without the `LIMA` prefix.
 
 ### `humancli`
 
@@ -301,7 +301,7 @@ agentspy
 Live resource monitor TUI — CPU, memory, and process stats. Can also be activated during a run with `--dtop`:
 
 ```bash
-dimos --dtop run unitree-go2
+LIMA --dtop run unitree-go2
 ```
 
 Or run standalone:
@@ -318,7 +318,7 @@ Launch the Rerun visualization bridge as a standalone process (outside of a blue
 rerun-bridge
 ```
 
-Also available as `dimos rerun-bridge`.
+Also available as `LIMA rerun-bridge`.
 
 ---
 
@@ -326,6 +326,6 @@ Also available as `dimos rerun-bridge`.
 
 | Path | Contents |
 |------|----------|
-| `~/.local/state/dimos/runs/<run-id>.json` | Run registry (PID, blueprint, args, ports). Used by `status`/`stop`/`restart`. Cleaned up when processes exit. |
-| `~/.local/state/dimos/logs/<run-id>/main.jsonl` | Structured logs (main process + all workers) |
-| `.env` | Local config overrides (`DIMOS_ROBOT_IP=192.168.123.161`) |
+| `~/.local/state/LIMA/runs/<run-id>.json` | Run registry (PID, blueprint, args, ports). Used by `status`/`stop`/`restart`. Cleaned up when processes exit. |
+| `~/.local/state/LIMA/logs/<run-id>/main.jsonl` | Structured logs (main process + all workers) |
+| `.env` | Local config overrides (`LIMA_ROBOT_IP=192.168.123.161`) |

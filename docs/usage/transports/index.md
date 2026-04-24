@@ -5,7 +5,7 @@ Transports connect **module streams** across **process boundaries** and/or **net
 * **Module**: a running component (e.g., camera, mapping, nav).
 * **Stream**: a unidirectional flow of messages owned by a module (one broadcaster → many receivers).
 * **Topic**: the name/identifier used by a transport or pubsub backend.
-* **Message**: payload carried on a stream (often `dimos.msgs.*`, but can be bytes / images / pointclouds / etc.).
+* **Message**: payload carried on a stream (often `LIMA.msgs.*`, but can be bytes / images / pointclouds / etc.).
 
 Each edge in the graph is a **transported stream** (potentially different protocols). Each node is a **module**:
 
@@ -34,7 +34,7 @@ So: treat the API as uniform, but pick a backend whose semantics match the task.
 Quick view on performance of our pubsub backends:
 
 ```sh skip
-python -m pytest -svm tool -k "not bytes" dimos/protocol/pubsub/benchmark/test_benchmark.py
+python -m pytest -svm tool -k "not bytes" LIMA/protocol/pubsub/benchmark/test_benchmark.py
 ```
 
 ![Benchmark results](../assets/pubsub_benchmark.png)
@@ -81,9 +81,9 @@ We’ll go through these layers top-down.
 
 See [Blueprints](/docs/usage/blueprints.md) for the blueprint API.
 
-From [`unitree/go2/blueprints/__init__.py`](/dimos/robot/unitree/go2/blueprints/__init__.py).
+From [`unitree/go2/blueprints/__init__.py`](/LIMA/robot/unitree/go2/blueprints/__init__.py).
 
-Example: rebind a few streams from the default `LCMTransport` to `ROSTransport` (defined at [`transport.py`](/dimos/core/transport.py#L226)) so you can visualize in **rviz2**.
+Example: rebind a few streams from the default `LCMTransport` to `ROSTransport` (defined at [`transport.py`](/LIMA/core/transport.py#L226)) so you can visualize in **rviz2**.
 
 ```python skip
 nav = autoconnect(
@@ -113,12 +113,12 @@ Each **stream** on a module can use a different transport. Set `.transport` on t
 ```python ansi=false
 import time
 
-from dimos.core.module import Module
-from dimos.core.stream import In
-from dimos.core.transport import LCMTransport
-from dimos.hardware.sensors.camera.module import CameraModule
-from dimos.msgs.sensor_msgs import Image
-from dimos.core.module_coordinator import ModuleCoordinator
+from LIMA.core.module import Module
+from LIMA.core.stream import In
+from LIMA.core.transport import LCMTransport
+from LIMA.hardware.sensors.camera.module import CameraModule
+from LIMA.msgs.sensor_msgs import Image
+from LIMA.core.module_coordinator import ModuleCoordinator
 
 
 class ImageListener(Module):
@@ -131,11 +131,11 @@ class ImageListener(Module):
 
 if __name__ == "__main__":
     # Start local cluster and deploy modules to separate processes
-    dimos = ModuleCoordinator()
-    dimos.start()
+    LIMA = ModuleCoordinator()
+    LIMA.start()
 
-    camera = dimos.deploy(CameraModule, frequency=2.0)
-    listener = dimos.deploy(ImageListener)
+    camera = LIMA.deploy(CameraModule, frequency=2.0)
+    listener = LIMA.deploy(ImageListener)
 
     # Choose a transport for the stream (example: LCM typed channel)
     camera.color_image.transport = LCMTransport("/camera/rgb", Image)
@@ -143,20 +143,20 @@ if __name__ == "__main__":
     # Connect listener input to camera output
     listener.image.connect(camera.color_image)
 
-    dimos.start_all_modules()
+    LIMA.start_all_modules()
 
     time.sleep(2)
-    dimos.stop()
+    LIMA.stop()
 ```
 
 <!--Result:-->
 
 ```
-Initialized dimos local cluster with 2 workers, memory limit: auto
-2026-01-24T13:17:50.190559Z [info     ] Deploying module.                                            [dimos/core/__init__.py] module=CameraModule
-2026-01-24T13:17:50.218466Z [info     ] Deployed module.                                             [dimos/core/__init__.py] module=CameraModule worker_id=1
-2026-01-24T13:17:50.229474Z [info     ] Deploying module.                                            [dimos/core/__init__.py] module=ImageListener
-2026-01-24T13:17:50.250199Z [info     ] Deployed module.                                             [dimos/core/__init__.py] module=ImageListener worker_id=0
+Initialized LIMA local cluster with 2 workers, memory limit: auto
+2026-01-24T13:17:50.190559Z [info     ] Deploying module.                                            [LIMA/core/__init__.py] module=CameraModule
+2026-01-24T13:17:50.218466Z [info     ] Deployed module.                                             [LIMA/core/__init__.py] module=CameraModule worker_id=1
+2026-01-24T13:17:50.229474Z [info     ] Deploying module.                                            [LIMA/core/__init__.py] module=ImageListener
+2026-01-24T13:17:50.250199Z [info     ] Deployed module.                                             [LIMA/core/__init__.py] module=ImageListener worker_id=0
 Received: (480, 640, 3)
 Received: (480, 640, 3)
 Received: (480, 640, 3)
@@ -172,7 +172,7 @@ See [Modules](/docs/usage/modules.md) for more on module architecture.
 
 ![lcmspy](../assets/lcmspy.png)
 
-`dimos topic echo /topic` listens on typed channels like `/topic#pkg.Msg` and decodes automatically:
+`LIMA topic echo /topic` listens on typed channels like `/topic#pkg.Msg` and decodes automatically:
 
 ```sh skip
 Listening on /camera/rgb (inferring from typed LCM channels like '/camera/rgb#pkg.Msg')... (Ctrl+C to stop)
@@ -183,7 +183,7 @@ Image(shape=(480, 640, 3), format=RGB, dtype=uint8, dev=cpu, ts=2026-01-24 20:28
 
 ## Implementing a transport
 
-At the stream layer, a transport is implemented by subclassing `Transport` (see [`core/stream.py`](/dimos/core/stream.py#L83)) and implementing:
+At the stream layer, a transport is implemented by subclassing `Transport` (see [`core/stream.py`](/LIMA/core/stream.py#L83)) and implementing:
 
 * `broadcast(...)`
 * `subscribe(...)`
@@ -211,7 +211,7 @@ Even though transport can be anything (TCP connection, unix socket) for now all 
 * `subscribe(topic, callback) -> unsubscribe`
 
 ```python
-from dimos.protocol.pubsub.spec import PubSub
+from LIMA.protocol.pubsub.spec import PubSub
 import inspect
 
 print(inspect.getsource(PubSub.publish))
@@ -241,8 +241,8 @@ LCM is UDP multicast. It’s very fast on a robot LAN, but it’s **best-effort*
 For local emission it autoconfigures system in a way in which it's more robust and faster then other more common protocols like ROS, DDS
 
 ```python
-from dimos.protocol.pubsub.lcmpubsub import LCM, Topic
-from dimos.msgs.geometry_msgs import Vector3
+from LIMA.protocol.pubsub.lcmpubsub import LCM, Topic
+from LIMA.msgs.geometry_msgs import Vector3
 
 lcm = LCM()
 lcm.start()
@@ -270,7 +270,7 @@ Received velocity: x=1.0, y=0.0, z=0.5
 Shared memory is highest performance, but only works on the **same machine**.
 
 ```python
-from dimos.protocol.pubsub.shmpubsub import PickleSharedMemory
+from LIMA.protocol.pubsub.shmpubsub import PickleSharedMemory
 
 shm = PickleSharedMemory(prefer="cpu")
 shm.start()
@@ -299,7 +299,7 @@ For network communication, DDS uses the Data Distribution Service (DDS) protocol
 from dataclasses import dataclass
 from cyclonedds.idl import IdlStruct
 
-from dimos.protocol.pubsub.impl.ddspubsub import DDS, Topic
+from LIMA.protocol.pubsub.impl.ddspubsub import DDS, Topic
 
 @dataclass
 class SensorReading(IdlStruct):
@@ -333,7 +333,7 @@ Received: [SensorReading(value=22.5)]
 The simplest toy backend is `Memory` (single process). Start from there when implementing a new pubsub backend.
 
 ```python
-from dimos.protocol.pubsub.memory import Memory
+from LIMA.protocol.pubsub.memory import Memory
 
 bus = Memory()
 received = []
@@ -357,7 +357,7 @@ Received 2 messages:
   {'temperature': 23.0}
 ```
 
-See [`memory.py`](/dimos/protocol/pubsub/impl/memory.py) for the complete source.
+See [`memory.py`](/LIMA/protocol/pubsub/impl/memory.py) for the complete source.
 
 ---
 
@@ -365,7 +365,7 @@ See [`memory.py`](/dimos/protocol/pubsub/impl/memory.py) for the complete source
 
 Transports often need to serialize messages before sending and deserialize after receiving.
 
-`PubSubEncoderMixin` at [`pubsub/spec.py`](/dimos/protocol/pubsub/spec.py#L95) provides a clean way to add encoding/decoding to any pubsub implementation.
+`PubSubEncoderMixin` at [`pubsub/spec.py`](/LIMA/protocol/pubsub/spec.py#L95) provides a clean way to add encoding/decoding to any pubsub implementation.
 
 ### Available mixins
 
@@ -380,7 +380,7 @@ Transports often need to serialize messages before sending and deserialize after
 ### Creating a custom mixin
 
 ```python session=jsonencoder no-result
-from dimos.protocol.pubsub.spec import PubSubEncoderMixin
+from LIMA.protocol.pubsub.spec import PubSubEncoderMixin
 import json
 
 class JsonEncoderMixin(PubSubEncoderMixin[str, dict, bytes]):
@@ -394,7 +394,7 @@ class JsonEncoderMixin(PubSubEncoderMixin[str, dict, bytes]):
 Combine with a pubsub implementation via multiple inheritance:
 
 ```python session=jsonencoder no-result
-from dimos.protocol.pubsub.memory import Memory
+from LIMA.protocol.pubsub.memory import Memory
 
 class MyJsonPubSub(JsonEncoderMixin, Memory):
     pass
@@ -403,7 +403,7 @@ class MyJsonPubSub(JsonEncoderMixin, Memory):
 Swap serialization by changing the mixin:
 
 ```python session=jsonencoder no-result
-from dimos.protocol.pubsub.spec import PickleEncoderMixin
+from LIMA.protocol.pubsub.spec import PickleEncoderMixin
 
 class MyPicklePubSub(PickleEncoderMixin, Memory):
     pass
@@ -415,14 +415,14 @@ class MyPicklePubSub(PickleEncoderMixin, Memory):
 
 ### Spec tests
 
-See [`pubsub/test_spec.py`](/dimos/protocol/pubsub/test_spec.py) for the grid tests your new backend should pass.
+See [`pubsub/test_spec.py`](/LIMA/protocol/pubsub/test_spec.py) for the grid tests your new backend should pass.
 
 ### Benchmarks
 
 Add your backend to benchmarks to compare in context:
 
 ```sh skip
-python -m pytest -svm tool -k "not bytes" dimos/protocol/pubsub/benchmark/test_benchmark.py
+python -m pytest -svm tool -k "not bytes" LIMA/protocol/pubsub/benchmark/test_benchmark.py
 ```
 
 ---

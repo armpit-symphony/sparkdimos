@@ -1,5 +1,5 @@
 name: Feature Request
-description: Suggest a new feature or improvement for DimOS
+description: Suggest a new feature or improvement for LIMA
 title: "[Feature]: "
 body:
   - type: textarea

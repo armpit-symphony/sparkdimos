@@ -1,6 +1,6 @@
 # Sensor Streams
 
-Dimos uses reactive streams (RxPY) to handle sensor data. This approach naturally fits robotics where multiple sensors emit data asynchronously at different rates, and downstream processors may be slower than the data sources.
+LIMA uses reactive streams (RxPY) to handle sensor data. This approach naturally fits robotics where multiple sensors emit data asynchronously at different rates, and downstream processors may be slower than the data sources.
 
 ## Guides
 
@@ -16,9 +16,9 @@ Dimos uses reactive streams (RxPY) to handle sensor data. This approach naturall
 
 ```python
 from reactivex import operators as ops
-from dimos.utils.reactive import backpressure
-from dimos.types.timestamped import align_timestamped
-from dimos.msgs.sensor_msgs.Image import sharpness_barrier
+from LIMA.utils.reactive import backpressure
+from LIMA.types.timestamped import align_timestamped
+from LIMA.msgs.sensor_msgs.Image import sharpness_barrier
 
 # Camera at 30fps, lidar at 10Hz
 camera_stream = camera.observable()

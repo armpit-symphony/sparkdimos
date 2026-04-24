@@ -1,6 +1,6 @@
 # Agents
 
-LLM agents run as native DimOS modules. They subscribe to camera, LiDAR, odometry, and spatial memory streams and they control the robot through skills.
+LLM agents run as native LIMA modules. They subscribe to camera, LiDAR, odometry, and spatial memory streams and they control the robot through skills.
 
 ## Architecture
 
@@ -12,7 +12,7 @@ Human Input ──→ Agent ──→ Skill Calls ──→ Robot
           color_image, odom, spatial_memory
 ```
 
-**Agent** (`dimos/agents/agent.py`) is a `Module` with:
+**Agent** (`LIMA/agents/agent.py`) is a `Module` with:
 - `human_input: In[str]`: receives text from `humancli`, `WebInput`, or `agent-send`
 - `agent: Out[BaseMessage]`: publishes agent responses (text, tool calls, images)
 - `agent_idle: Out[bool]`: signals when the agent is waiting for input
@@ -24,8 +24,8 @@ The agent uses LangGraph with a configurable LLM. The default is `gpt-4o` and yo
 Skills are methods decorated with `@skill` on any `Module`. The agent discovers them automatically at startup.
 
 ```python
-from dimos.agents.annotation import skill
-from dimos.core.module import Module
+from LIMA.agents.annotation import skill
+from LIMA.core.module import Module
 
 class MySkillContainer(Module):
     @skill
@@ -69,9 +69,9 @@ There is also an MCP implementation. It replaces the `Agent` with two modules: `
 CLI access:
 
 ```bash
-dimos mcp list-tools                                # List available skills
-dimos mcp call relative_move --arg forward=0.5      # Call a skill
-dimos mcp status                                    # Server status
+LIMA mcp list-tools                                # List available skills
+LIMA mcp call relative_move --arg forward=0.5      # Call a skill
+LIMA mcp status                                    # Server status
 ```
 
 ## Input Methods
@@ -79,7 +79,7 @@ dimos mcp status                                    # Server status
 | Method | How it works |
 |--------|-------------|
 | `humancli` | Standalone terminal — type messages, see responses |
-| `dimos agent-send "text"` | One-shot CLI command via LCM |
+| `LIMA agent-send "text"` | One-shot CLI command via LCM |
 | `WebInput` | Web interface at localhost:7779 with optional Whisper STT |
 
 ## Models

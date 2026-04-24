@@ -281,11 +281,11 @@ disposed
 
 **Rule of thumb:** Whenever you subscribe, save the disposable because you have to unsubscribe at some point by calling `disposable.dispose()`.
 
-**In dimos modules:** Every `Module` has a `self._disposables` (a `CompositeDisposable`) that automatically disposes everything when the module closes:
+**In LIMA modules:** Every `Module` has a `self._disposables` (a `CompositeDisposable`) that automatically disposes everything when the module closes:
 
 ```python session=rx
 import time
-from dimos.core.module import Module
+from LIMA.core.module import Module
 
 class MyModule(Module):
     def start(self):
@@ -325,7 +325,7 @@ Use `callback_to_observable` when the API has separate register and unregister f
 ```python session=create
 import reactivex as rx
 from reactivex import operators as ops
-from dimos.utils.reactive import callback_to_observable
+from LIMA.utils.reactive import callback_to_observable
 
 class MockSensor:
     def __init__(self):
@@ -367,7 +367,7 @@ callbacks after dispose: 0
 Use `to_observable` when the subscribe function returns an unsubscribe callable:
 
 ```python session=create
-from dimos.utils.reactive import to_observable
+from LIMA.utils.reactive import to_observable
 
 class MockPubSub:
     def __init__(self):

@@ -1,6 +1,6 @@
 # Language Interop Examples
 
-Demonstrates controlling a dimos robot from non-Python languages.
+Demonstrates controlling a LIMA robot from non-Python languages.
 
 ## Usage
 

@@ -1,5 +1,5 @@
 
-# DimOS Modules
+# LIMA Modules
 
 Modules are subsystems on a robot that operate autonomously and communicate with other subsystems using standardized messages.
 
@@ -12,8 +12,8 @@ Some examples of modules are:
 Below is an example of a structure for controlling a robot. Black blocks represent modules, and colored lines are connections and message types. It's okay if this doesn't make sense now. It will by the end of this document.
 
 ```python output=assets/go2_nav.svg
-from dimos.core.introspection import to_svg
-from dimos.robot.unitree_webrtc.unitree_go2_blueprints import nav
+from LIMA.core.introspection import to_svg
+from LIMA.robot.unitree_webrtc.unitree_go2_blueprints import nav
 to_svg(nav, "assets/go2_nav.svg")
 ```
 
@@ -25,8 +25,8 @@ to_svg(nav, "assets/go2_nav.svg")
 Let's learn how to build stuff like the above, starting with a simple camera module.
 
 ```python session=camera_module_demo output=assets/camera_module.svg
-from dimos.hardware.sensors.camera.module import CameraModule
-from dimos.core.introspection import to_svg
+from LIMA.hardware.sensors.camera.module import CameraModule
+from LIMA.core.introspection import to_svg
 to_svg(CameraModule.module_info(), "assets/camera_module.svg")
 ```
 
@@ -99,7 +99,7 @@ Image(shape=(480, 640, 3), format=RGB, dtype=uint8, dev=cpu, ts=2025-12-31 15:54
 Let's load a standard 2D detector module and hook it up to a camera.
 
 ```python ansi=false session=detection_module
-from dimos.perception.detection.module2D import Detection2DModule, Config
+from LIMA.perception.detection.module2D import Detection2DModule, Config
 print(Detection2DModule.io())
 ```
 
@@ -126,8 +126,8 @@ Looks like the detector just needs an image input and outputs some sort of detec
 
 ```python ansi=false
 import time
-from dimos.perception.detection.module2D import Detection2DModule, Config
-from dimos.hardware.sensors.camera.module import CameraModule
+from LIMA.perception.detection.module2D import Detection2DModule, Config
+from LIMA.hardware.sensors.camera.module import CameraModule
 
 camera = CameraModule()
 detector = Detection2DModule()
@@ -155,7 +155,7 @@ Detection(Person(1))
 
 As we build module structures, we'll quickly want to utilize all cores on the machine (which Python doesn't allow as a single process) and potentially distribute modules across machines or even the internet.
 
-For this, we use `dimos.core` and DimOS transport protocols.
+For this, we use `LIMA.core` and LIMA transport protocols.
 
 Defining message exchange protocols and message types also gives us the ability to write models in faster languages.
 
@@ -166,8 +166,8 @@ A blueprint is a predefined structure of interconnected modules. You can include
 A basic Unitree Go2 blueprint looks like what we saw before.
 
 ```python  session=blueprints output=assets/go2_agentic.svg
-from dimos.core.introspection import to_svg
-from dimos.robot.unitree_webrtc.unitree_go2_blueprints import agentic
+from LIMA.core.introspection import to_svg
+from LIMA.robot.unitree_webrtc.unitree_go2_blueprints import agentic
 
 to_svg(agentic, "assets/go2_agentic.svg")
 ```

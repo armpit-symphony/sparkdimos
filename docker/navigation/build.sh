@@ -49,7 +49,7 @@ export ROS_DISTRO
 export IMAGE_TAG="${ROS_DISTRO}"
 
 echo -e "${GREEN}================================================${NC}"
-echo -e "${GREEN}Building DimOS + ROS Autonomy Stack Docker Image${NC}"
+echo -e "${GREEN}Building LIMA + ROS Autonomy Stack Docker Image${NC}"
 echo -e "${GREEN}ROS Distribution: ${ROS_DISTRO}${NC}"
 echo -e "${GREEN}Image Tag: ${IMAGE_TAG}${NC}"
 echo -e "${GREEN}SLAM: arise_slam + FASTLIO2 (both included)${NC}"
@@ -62,7 +62,7 @@ cd "$SCRIPT_DIR"
 # Use fastlio2 branch which has both arise_slam and FASTLIO2
 TARGET_BRANCH="fastlio2"
 TARGET_REMOTE="origin"
-CLONE_URL="https://github.com/dimensionalOS/ros-navigation-autonomy-stack.git"
+CLONE_URL="https://github.com/LIMA Robotics/ros-navigation-autonomy-stack.git"
 
 # Clone or checkout ros-navigation-autonomy-stack
 if [ ! -d "ros-navigation-autonomy-stack" ]; then
@@ -112,7 +112,7 @@ echo "  - Install ROS packages and dependencies"
 echo "  - Build the autonomy stack (arise_slam + FASTLIO2)"
 echo "  - Build Livox-SDK2 for Mid-360 lidar"
 echo "  - Build SLAM dependencies (Sophus, Ceres, GTSAM)"
-echo "  - Install Python dependencies for DimOS"
+echo "  - Install Python dependencies for LIMA"
 echo ""
 
 cd ../..
@@ -122,7 +122,7 @@ docker compose -f docker/navigation/docker-compose.yml build
 echo ""
 echo -e "${GREEN}============================================${NC}"
 echo -e "${GREEN}Docker image built successfully!${NC}"
-echo -e "${GREEN}Image: dimos_autonomy_stack:${IMAGE_TAG}${NC}"
+echo -e "${GREEN}Image: lima_autonomy_stack:${IMAGE_TAG}${NC}"
 echo -e "${GREEN}SLAM: arise_slam + FASTLIO2 (both included)${NC}"
 echo -e "${GREEN}============================================${NC}"
 echo ""

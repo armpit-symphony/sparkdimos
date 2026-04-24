@@ -7,9 +7,9 @@ You don't typically want to run a single module, so multiple blueprints are hand
 You create a `Blueprint` from a single module (say `ConnectionModule`) with:
 
 ```python session=blueprint-ex1
-from dimos.core.blueprints import Blueprint
-from dimos.core.core import rpc
-from dimos.core.module import Module
+from LIMA.core.blueprints import Blueprint
+from LIMA.core.core import rpc
+from LIMA.core.module import Module
 
 class ConnectionModule(Module):
     def __init__(self, arg1, arg2, kwarg='value') -> None:
@@ -35,7 +35,7 @@ blueprint = connection('arg1', 'arg2', kwarg='value')
 You can link multiple blueprints together with `autoconnect`:
 
 ```python session=blueprint-ex1
-from dimos.core.blueprints import autoconnect
+from LIMA.core.blueprints import autoconnect
 
 class Module1(Module):
     def __init__(self, arg1) -> None:
@@ -100,11 +100,11 @@ Imagine you have this code:
 ```python session=blueprint-ex1
 from functools import partial
 
-from dimos.core.blueprints import Blueprint, autoconnect
-from dimos.core.core import rpc
-from dimos.core.module import Module
-from dimos.core.stream import Out, In
-from dimos.msgs.sensor_msgs import Image
+from LIMA.core.blueprints import Blueprint, autoconnect
+from LIMA.core.core import rpc
+from LIMA.core.module import Module
+from LIMA.core.stream import Out, In
+from LIMA.msgs.sensor_msgs import Image
 
 class ModuleA(Module):
     image: Out[Image]
@@ -137,7 +137,7 @@ By default `LCMTransport` is used if the object supports `lcm_encode`. If it doe
 You can override transports with the `transports` method. It returns a new blueprint in which the override is set.
 
 ```python session=blueprint-ex1
-from dimos.core.transport import pSHMTransport, pLCMTransport
+from LIMA.core.transport import pSHMTransport, pLCMTransport
 
 base_blueprint = autoconnect(
     module1(arg1=1),
@@ -163,11 +163,11 @@ Note: `expanded_blueprint` does not get the transport overrides because it's cre
 Sometimes you need to rename a connection to match what other modules expect. You can use `remappings` to rename module connections:
 
 ```python session=blueprint-ex2
-from dimos.core.blueprints import autoconnect
-from dimos.core.core import rpc
-from dimos.core.module import Module
-from dimos.core.stream import Out, In
-from dimos.msgs.sensor_msgs import Image
+from LIMA.core.blueprints import autoconnect
+from LIMA.core.core import rpc
+from LIMA.core.module import Module
+from LIMA.core.stream import Out, In
+from LIMA.msgs.sensor_msgs import Image
 
 class ConnectionModule(Module):
     color_image: Out[Image]  # Outputs on 'color_image'
@@ -196,7 +196,7 @@ After remapping:
 If you want to override the topic, you still have to do it manually:
 
 ```python session=blueprint-ex2
-from dimos.core.transport import LCMTransport
+from LIMA.core.transport import LCMTransport
 blueprint.remappings([
     (ConnectionModule, 'color_image', 'rgb_image'),
 ]).transports({
@@ -209,9 +209,9 @@ blueprint.remappings([
 Each module can optionally take global config as a `cfg` option in `__init__`. E.g.:
 
 ```python session=blueprint-ex3
-from dimos.core.core import rpc
-from dimos.core.module import Module
-from dimos.core.global_config import GlobalConfig
+from LIMA.core.core import rpc
+from LIMA.core.module import Module
+from LIMA.core.global_config import GlobalConfig
 
 class ModuleA(Module):
 
@@ -231,8 +231,8 @@ blueprint = ModuleA.blueprint().global_config(n_workers=8)
 Imagine you have this code:
 
 ```python session=blueprint-ex3
-from dimos.core.core import rpc
-from dimos.core.module import Module
+from LIMA.core.core import rpc
+from LIMA.core.module import Module
 
 class Drone(Module):
 
@@ -250,8 +250,8 @@ And you want to call `ModuleA.get_time` in `ModuleB.request_the_time`.
 To do this, you can request a module reference.
 
 ```python session=blueprint-ex3
-from dimos.core.core import rpc
-from dimos.core.module import Module
+from LIMA.core.core import rpc
+from LIMA.core.module import Module
 
 class HelperModule(Module):
     drone_module: Drone
@@ -263,7 +263,7 @@ class HelperModule(Module):
 But what if we want `HelperModule` to work for more than just `Drone`? For that we can use a spec.
 
 ```python session=blueprint-ex3
-from dimos.spec.utils import Spec
+from LIMA.spec.utils import Spec
 from typing import Protocol
 
 class Drone(Module):
@@ -291,10 +291,10 @@ class ModuleB(Module):
 Skills are methods on a `Module` decorated with `@skill`. The agent automatically discovers all skills from launched modules at startup.
 
 ```python session=blueprint-ex4
-from dimos.core.core import rpc
-from dimos.core.module import Module
-from dimos.agents.annotation import skill
-from dimos.core.global_config import GlobalConfig
+from LIMA.core.core import rpc
+from LIMA.core.module import Module
+from LIMA.agents.annotation import skill
+from LIMA.core.global_config import GlobalConfig
 
 class SomeSkill(Module):
 

@@ -1,11 +1,11 @@
 # LCM Messages
 
-DimOS uses [LCM (Lightweight Communications and Marshalling)](https://github.com/lcm-proj/lcm) for inter-process communication on a local machine (similar to how ROS uses DDS). LCM is a simple [UDP multicast](https://lcm-proj.github.io/lcm/content/udp-multicast-protocol.html#lcm-udp-multicast-protocol-description) pubsub protocol with a straightforward [message definition language](https://lcm-proj.github.io/lcm/content/lcm-type-ref.html#lcm-type-specification-language).
+LIMA uses [LCM (Lightweight Communications and Marshalling)](https://github.com/lcm-proj/lcm) for inter-process communication on a local machine (similar to how ROS uses DDS). LCM is a simple [UDP multicast](https://lcm-proj.github.io/lcm/content/udp-multicast-protocol.html#lcm-udp-multicast-protocol-description) pubsub protocol with a straightforward [message definition language](https://lcm-proj.github.io/lcm/content/lcm-type-ref.html#lcm-type-specification-language).
 
 The LCM project provides pubsub clients and code generators for many languages. For us the power of LCM is its message definition format, multi-language classes that encode themselves to a compact binary format. This means LCM messages can be sent over any transport (WebSocket, SSH, shared memory, etc.) between differnt programming languages.
 
 Our messages are ported from ROS (they are structurally compatible in order to facilitate easy communication to ROS if needed)
-Repo that hosts our message definitions and autogenerators is at [dimos-lcm](https://github.com/dimensionalOS/dimos-lcm/)
+Repo that hosts our message definitions and autogenerators is at [LIMA-lcm](https://github.com/LIMA Robotics/LIMA-lcm/)
 
 our LCM implementation significantly [outperforms ROS for local communication](/docs/usage/transports/index.md#benchmarks)
 
@@ -19,19 +19,19 @@ Apart from python, we have examples of LCM integrations for:
 In our [/examples/language-interop/](/examples/language-interop/) dir
 
 Types generated (but no examples yet) for:
-[**C#**](https://github.com/dimensionalOS/dimos-lcm/tree/main/generated/csharp) and [**Java**](https://github.com/dimensionalOS/dimos-lcm/tree/main/generated/java)
+[**C#**](https://github.com/LIMA Robotics/LIMA-lcm/tree/main/generated/csharp) and [**Java**](https://github.com/LIMA Robotics/LIMA-lcm/tree/main/generated/java)
 
 ### Native Modules
 
-Given LCM is so portable, we can easily run dimos [Modules](/docs/usage/modules.md) written in [third party languages](/docs/usage/native_modules.md)
+Given LCM is so portable, we can easily run LIMA [Modules](/docs/usage/modules.md) written in [third party languages](/docs/usage/native_modules.md)
 
-## dimos-lcm Package
+## LIMA-lcm Package
 
-The `dimos-lcm` package provides base message types that mirror [ROS message definitions](https://docs.ros.org/en/melodic/api/sensor_msgs/html/index.html):
+The `LIMA-lcm` package provides base message types that mirror [ROS message definitions](https://docs.ros.org/en/melodic/api/sensor_msgs/html/index.html):
 
 ```python session=lcm_demo ansi=false
-from dimos_lcm.geometry_msgs import Vector3 as LCMVector3
-from dimos_lcm.sensor_msgs.PointCloud2 import PointCloud2 as LCMPointCloud2
+from LIMA_lcm.geometry_msgs import Vector3 as LCMVector3
+from LIMA_lcm.sensor_msgs.PointCloud2 import PointCloud2 as LCMPointCloud2
 
 # LCM messages can encode to binary
 msg = LCMVector3()
@@ -51,16 +51,16 @@ Encoded to 24 bytes: 000000000000f03f00000000000000400000000000000840
 Decoded: x=1.0, y=2.0, z=3.0
 ```
 
-## Dimos Message Overlays
+## LIMA Message Overlays
 
-Dimos subclasses the base LCM types to add Python-friendly features while preserving binary compatibility. For example, `dimos.msgs.geometry_msgs.Vector3` extends the LCM base with:
+LIMA subclasses the base LCM types to add Python-friendly features while preserving binary compatibility. For example, `LIMA.msgs.geometry_msgs.Vector3` extends the LCM base with:
 
 - Multiple constructor overloads (from tuples, numpy arrays, etc.)
 - Math operations (`+`, `-`, `*`, `/`, dot product, cross product)
 - Conversions to numpy, quaternions, etc.
 
 ```python session=lcm_demo ansi=false
-from dimos.msgs.geometry_msgs import Vector3
+from LIMA.msgs.geometry_msgs import Vector3
 
 # Rich constructors
 v1 = Vector3(1, 2, 3)
@@ -93,7 +93,7 @@ A more complex example is `PointCloud2`, which wraps Open3D point clouds while m
 
 ```python session=lcm_demo ansi=false
 import numpy as np
-from dimos.msgs.sensor_msgs import PointCloud2
+from LIMA.msgs.sensor_msgs import PointCloud2
 
 # Create from numpy
 points = np.random.rand(100, 3).astype(np.float32)
@@ -129,9 +129,9 @@ Decoded: 100 points
 Since LCM messages encode to bytes, you can use them over any transport:
 
 ```python session=lcm_demo ansi=false
-from dimos.msgs.geometry_msgs import Vector3
-from dimos.protocol.pubsub.memory import Memory
-from dimos.protocol.pubsub.shmpubsub import PickleSharedMemory
+from LIMA.msgs.geometry_msgs import Vector3
+from LIMA.protocol.pubsub.memory import Memory
+from LIMA.protocol.pubsub.shmpubsub import PickleSharedMemory
 
 # Same message works with any transport
 msg = Vector3(1, 2, 3)
@@ -158,7 +158,7 @@ Raw binary transport: decoded ↗ Vector (Vector([1. 2. 3.]))
 
 ## Available Message Types
 
-Dimos provides overlays for common message types:
+LIMA provides overlays for common message types:
 
 | Package | Messages |
 |---------|----------|
@@ -167,14 +167,14 @@ Dimos provides overlays for common message types:
 | `nav_msgs` | `Odometry`, `Path`, `OccupancyGrid` |
 | `vision_msgs` | `Detection2D`, `Detection3D`, `BoundingBox2D` |
 
-Base LCM types (without Dimos extensions) are available in `dimos_lcm.*`.
+Base LCM types (without LIMA extensions) are available in `LIMA_lcm.*`.
 
 ## Creating Custom Message Types
 
 To create a new message type:
 
-1. Define the LCM message in `.lcm` format (or use existing `dimos_lcm` base)
+1. Define the LCM message in `.lcm` format (or use existing `LIMA_lcm` base)
 2. Create a Python overlay that subclasses the LCM type
 3. Add `lcm_encode()` and `lcm_decode()` methods if custom serialization is needed
 
-See [`PointCloud2.py`](/dimos/msgs/sensor_msgs/PointCloud2.py) and [`Vector3.py`](/dimos/msgs/geometry_msgs/Vector3.py) for examples.
+See [`PointCloud2.py`](/LIMA/msgs/sensor_msgs/PointCloud2.py) and [`Vector3.py`](/LIMA/msgs/geometry_msgs/Vector3.py) for examples.

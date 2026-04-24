@@ -16,7 +16,7 @@ Both ignore quality. You might get a blurry frame when a sharp one was available
 ```python session=qb
 import reactivex as rx
 from reactivex import operators as ops
-from dimos.utils.reactive import quality_barrier
+from LIMA.utils.reactive import quality_barrier
 
 # Simulated sensor data with quality scores
 data = [
@@ -53,8 +53,8 @@ For camera streams, we provide `sharpness_barrier` which uses the image's sharpn
 Let's use real camera data from the Unitree Go2 robot to demonstrate. We use the [Sensor Storage & Replay](/docs/usage/sensor_streams/storage_replay.md) toolkit, which provides access to recorded robot data:
 
 ```python session=qb
-from dimos.utils.testing import TimedSensorReplay
-from dimos.msgs.sensor_msgs.Image import Image, sharpness_barrier
+from LIMA.utils.testing import TimedSensorReplay
+from LIMA.msgs.sensor_msgs.Image import Image, sharpness_barrier
 
 # Load recorded Go2 camera frames
 video_replay = TimedSensorReplay("go2_sf_office/video")
@@ -222,7 +222,7 @@ As we can see the system is trying to strike a balance between requested frequen
 Here's how it's used in the actual camera module:
 
 ```python skip
-from dimos.core.module import Module
+from LIMA.core.module import Module
 
 class CameraModule(Module):
     frequency: float = 2.0  # Target output frequency
@@ -243,7 +243,7 @@ class CameraModule(Module):
 
 The sharpness score (0.0 to 1.0) is computed using Sobel edge detection:
 
-from [`Image.py`](/dimos/msgs/sensor_msgs/Image.py)
+from [`Image.py`](/LIMA/msgs/sensor_msgs/Image.py)
 
 ```python session=qb
 import cv2

@@ -1,11 +1,11 @@
 # Configuration
 
-Dimos provides a `Configurable` base class. See [`service/spec.py`](/dimos/protocol/service/spec.py#L22).
+LIMA provides a `Configurable` base class. See [`service/spec.py`](/LIMA/protocol/service/spec.py#L22).
 
 This allows using dataclasses to specify configuration structure and default values per module.
 
 ```python
-from dimos.protocol.service import Configurable
+from LIMA.protocol.service import Configurable
 from rich import print
 from dataclasses import dataclass
 
@@ -45,13 +45,13 @@ Error: Config.__init__() got an unexpected keyword argument 'something'
 
 # Configurable Modules
 
-[Modules](/docs/usage/modules.md) inherit from `Configurable`, so all of the above applies. Module configs should inherit from `ModuleConfig` ([`core/module.py`](/dimos/core/module.py#L40)), which includes shared configuration for all modules like transport protocols, frame IDs, etc.
+[Modules](/docs/usage/modules.md) inherit from `Configurable`, so all of the above applies. Module configs should inherit from `ModuleConfig` ([`core/module.py`](/LIMA/core/module.py#L40)), which includes shared configuration for all modules like transport protocols, frame IDs, etc.
 
 ```python
 from dataclasses import dataclass
-from dimos.core.core import rpc
-from dimos.core.module import Module, ModuleConfig
-from dimos.core.stream import In, Out
+from LIMA.core.core import rpc
+from LIMA.core.module import Module, ModuleConfig
+from LIMA.core.stream import In, Out
 from rich import print
 
 @dataclass
@@ -72,8 +72,8 @@ class MyModule(Module):
 
 myModule = MyModule(frame_id="frame_id_override", device="CPU")
 
-# In production, use dimos.deploy() instead:
-# myModule = dimos.deploy(MyModule, frame_id="frame_id_override")
+# In production, use LIMA.deploy() instead:
+# myModule = LIMA.deploy(MyModule, frame_id="frame_id_override")
 
 
 ```
@@ -81,8 +81,8 @@ myModule = MyModule(frame_id="frame_id_override", device="CPU")
 <!--Result:-->
 ```
 Config(
-    rpc_transport=<class 'dimos.protocol.rpc.pubsubrpc.LCMRPC'>,
-    tf_transport=<class 'dimos.protocol.tf.tf.LCMTF'>,
+    rpc_transport=<class 'LIMA.protocol.rpc.pubsubrpc.LCMRPC'>,
+    tf_transport=<class 'LIMA.protocol.tf.tf.LCMTF'>,
     frame_id_prefix=None,
     frame_id='frame_id_override',
     publish_interval=0,

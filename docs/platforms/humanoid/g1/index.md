@@ -17,12 +17,12 @@ First, install system dependencies for your platform:
 - [macOS](/docs/installation/osx.md)
 - [Nix](/docs/installation/nix.md)
 
-Then install DimOS:
+Then install LIMA:
 
 ```bash
 uv venv --python "3.12"
 source .venv/bin/activate
-uv pip install 'dimos[base,unitree]'
+uv pip install 'LIMA[base,unitree]'
 ```
 
 ## MuJoCo Simulation
@@ -30,8 +30,8 @@ uv pip install 'dimos[base,unitree]'
 No hardware? Start with simulation:
 
 ```bash
-uv pip install 'dimos[base,unitree,sim]'
-dimos --simulation run unitree-g1-basic-sim
+uv pip install 'LIMA[base,unitree,sim]'
+LIMA --simulation run unitree-g1-basic-sim
 ```
 
 This runs the G1 in MuJoCo with the native A* navigation stack — same blueprint structure, simulated robot. Opens the command center at [localhost:7779](http://localhost:7779) with Rerun 3D visualization.
@@ -40,10 +40,10 @@ This runs the G1 in MuJoCo with the native A* navigation stack — same blueprin
 
 ```bash
 export ROBOT_IP=<YOUR_G1_IP>
-dimos run unitree-g1-basic
+LIMA run unitree-g1-basic
 ```
 
-DimOS connects via WebRTC, starts the ROS navigation stack, and opens the command center.
+LIMA connects via WebRTC, starts the ROS navigation stack, and opens the command center.
 
 ### What's Running
 
@@ -72,7 +72,7 @@ Natural language control with an LLM agent that understands physical space and c
 ```bash
 export OPENAI_API_KEY=<YOUR_KEY>
 export ROBOT_IP=<YOUR_G1_IP>
-dimos run unitree-g1-agentic
+LIMA run unitree-g1-agentic
 ```
 
 Then use the human CLI:
@@ -120,7 +120,7 @@ Direct keyboard control via a pygame-based joystick:
 
 ```bash
 export ROBOT_IP=<YOUR_G1_IP>
-dimos run unitree-g1-joystick
+LIMA run unitree-g1-joystick
 ```
 
 ## Available Blueprints

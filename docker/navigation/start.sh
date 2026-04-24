@@ -102,7 +102,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd "$SCRIPT_DIR"
 
 echo -e "${GREEN}================================================${NC}"
-echo -e "${GREEN}Starting DimOS Docker Container${NC}"
+echo -e "${GREEN}Starting LIMA Docker Container${NC}"
 echo -e "${GREEN}Mode: ${MODE}${NC}"
 echo -e "${GREEN}ROS Distribution: ${ROS_DISTRO}${NC}"
 echo -e "${GREEN}ROS Domain ID: ${ROS_DOMAIN_ID:-42}${NC}"
@@ -244,8 +244,8 @@ if [ "$MODE" = "hardware" ]; then
 fi
 
 # Check if the image exists
-if ! docker images --format '{{.Repository}}:{{.Tag}}' | grep -q "^dimos_autonomy_stack:${IMAGE_TAG}$"; then
-    echo -e "${RED}Docker image dimos_autonomy_stack:${IMAGE_TAG} not found.${NC}"
+if ! docker images --format '{{.Repository}}:{{.Tag}}' | grep -q "^lima_autonomy_stack:${IMAGE_TAG}$"; then
+    echo -e "${RED}Docker image lima_autonomy_stack:${IMAGE_TAG} not found.${NC}"
     echo -e "${YELLOW}Please build it first with:${NC}"
     echo -e "  ./build.sh --${ROS_DISTRO}"
     exit 1
@@ -294,11 +294,11 @@ fi
 
 # Set container name for reference
 if [ "$MODE" = "hardware" ]; then
-    CONTAINER_NAME="dimos_hardware_container"
+    CONTAINER_NAME="lima_hardware_container"
 elif [ "$MODE" = "bagfile" ]; then
-    CONTAINER_NAME="dimos_bagfile_container"
+    CONTAINER_NAME="lima_bagfile_container"
 else
-    CONTAINER_NAME="dimos_simulation_container"
+    CONTAINER_NAME="lima_simulation_container"
 fi
 
 # Export settings for docker-compose
@@ -354,11 +354,11 @@ elif [ "$MODE" = "bagfile" ]; then
     echo "To enter the container from another terminal:"
     echo -e "    ${YELLOW}docker exec -it ${CONTAINER_NAME} bash${NC}"
 else
-    echo "Simulation mode - Auto-starting ROS simulation and DimOS"
+    echo "Simulation mode - Auto-starting ROS simulation and LIMA"
     echo ""
     echo "The container will automatically run:"
     echo "  - ROS navigation stack with route planner"
-    echo "  - DimOS navigation demo"
+    echo "  - LIMA navigation demo"
     echo ""
     echo "To enter the container from another terminal:"
     echo "  docker exec -it ${CONTAINER_NAME} bash"

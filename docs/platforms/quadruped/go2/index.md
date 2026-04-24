@@ -1,6 +1,6 @@
 # Unitree Go2 — Getting Started
 
-The Unitree Go2 is DimOS's primary reference platform. Full autonomous navigation, mapping, and agentic control — no ROS required.
+The Unitree Go2 is LIMA's primary reference platform. Full autonomous navigation, mapping, and agentic control — no ROS required.
 
 ## Requirements
 
@@ -15,12 +15,12 @@ First, install system dependencies for your platform:
 - [macOS](/docs/installation/osx.md)
 - [Nix](/docs/installation/nix.md)
 
-Then install DimOS:
+Then install LIMA:
 
 ```bash
 uv venv --python "3.12"
 source .venv/bin/activate
-uv pip install 'dimos[base,unitree]'
+uv pip install 'LIMA[base,unitree]'
 ```
 
 ## Try It — No Hardware Needed
@@ -28,7 +28,7 @@ uv pip install 'dimos[base,unitree]'
 ```bash
 # Replay a recorded Go2 navigation session
 # First run downloads ~2.4 GB of LiDAR/video data from LFS
-dimos --replay run unitree-go2
+LIMA --replay run unitree-go2
 ```
 
 Opens the command center at [localhost:7779](http://localhost:7779) with Rerun 3D visualization — watch the Go2 map and navigate an office in real time.
@@ -42,7 +42,7 @@ Opens the command center at [localhost:7779](http://localhost:7779) with Rerun 3
 ping $ROBOT_IP
 ```
 
-2. Built-in obstacle avoidance is on. (DimOS handles path planning, but the onboard obstacle avoidance provides an extra safety layer around tight spots)
+2. Built-in obstacle avoidance is on. (LIMA handles path planning, but the onboard obstacle avoidance provides an extra safety layer around tight spots)
 
 3. If video is not in sync with lidar/robot position, sync your clock with an NTP server
 
@@ -54,14 +54,14 @@ or
 sudo sntp -sS pool.ntp.org
 ```
 
-### Ready to run DimOS
+### Ready to run LIMA
 
 ```bash
 export ROBOT_IP=<YOUR_GO2_IP>
-dimos run unitree-go2
+LIMA run unitree-go2
 ```
 
-That's it. DimOS connects via WebRTC (no jailbreak required), starts the full navigation stack, and opens the command center in your browser.
+That's it. LIMA connects via WebRTC (no jailbreak required), starts the full navigation stack, and opens the command center in your browser.
 
 ### What's Running
 
@@ -85,8 +85,8 @@ From the command center ([localhost:7779](http://localhost:7779)):
 ## MuJoCo Simulation
 
 ```bash
-uv pip install 'dimos[base,unitree,sim]'
-dimos --simulation run unitree-go2
+uv pip install 'LIMA[base,unitree,sim]'
+LIMA --simulation run unitree-go2
 ```
 
 Full navigation stack in MuJoCo — same code, simulated robot.
@@ -98,7 +98,7 @@ Natural language control with an LLM agent that understands physical space:
 ```bash
 export OPENAI_API_KEY=<YOUR_KEY>
 export ROBOT_IP=<YOUR_GO2_IP>
-dimos run unitree-go2-agentic
+LIMA run unitree-go2-agentic
 ```
 
 Then use the human CLI to talk to the agent:

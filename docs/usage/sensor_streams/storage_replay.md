@@ -7,7 +7,7 @@ Record sensor streams to disk and replay them with original timing. Useful for t
 ### Recording
 
 ```python skip
-from dimos.utils.testing.replay import TimedSensorStorage
+from LIMA.utils.testing.replay import TimedSensorStorage
 
 # Create storage (directory in data folder)
 storage = TimedSensorStorage("my_recording")
@@ -22,7 +22,7 @@ storage.save(frame1, frame2, frame3)
 ### Replaying
 
 ```python skip
-from dimos.utils.testing.replay import TimedSensorReplay
+from LIMA.utils.testing.replay import TimedSensorReplay
 
 # Load recording
 replay = TimedSensorReplay("my_recording")
@@ -40,7 +40,7 @@ replay.stream(speed=1.0).subscribe(process)
 Stores sensor data with timestamps as pickle files. Each frame is saved as `000.pickle`, `001.pickle`, etc.
 
 ```python skip
-from dimos.utils.testing.replay import TimedSensorStorage
+from LIMA.utils.testing.replay import TimedSensorStorage
 
 storage = TimedSensorStorage("lidar_capture")
 
@@ -78,7 +78,7 @@ Replays stored sensor data with timestamp-aware iteration and seeking.
 ### Basic Iteration
 
 ```python skip
-from dimos.utils.testing.replay import TimedSensorReplay
+from LIMA.utils.testing.replay import TimedSensorReplay
 
 replay = TimedSensorReplay("lidar_capture")
 
@@ -159,7 +159,7 @@ replay.stream(
 
 ## Usage: Stub Connections for Testing
 
-A common pattern is creating replay-based connection stubs for testing without hardware. From [`robot/unitree/go2/connection.py`](/dimos/robot/unitree/go2/connection.py#L83):
+A common pattern is creating replay-based connection stubs for testing without hardware. From [`robot/unitree/go2/connection.py`](/LIMA/robot/unitree/go2/connection.py#L83):
 
 This is a bit primitive. We'd like to write a higher-order API for recording full module I/O for any module, but this is a work in progress at the moment.
 

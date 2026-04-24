@@ -1,6 +1,6 @@
 {
-  "name": "dimos-dev",
-  "image": "ghcr.io/dimensionalos/dev:dev",
+  "name": "LIMA-dev",
+  "image": "ghcr.io/armpit-symphony/lima-robotics/dev:dev",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -10,7 +10,7 @@
     }
   },
   "containerEnv": {
-    "PYTHONPATH": "${localEnv:PYTHONPATH}:/workspaces/dimos",
+    "PYTHONPATH": "${localEnv:PYTHONPATH}:/workspaces/lima",
     "DISPLAY": "${localEnv:DISPLAY}",
     "WAYLAND_DISPLAY": "${localEnv:WAYLAND_DISPLAY}",
     "XDG_RUNTIME_DIR": "${localEnv:XDG_RUNTIME_DIR}"
@@ -19,7 +19,7 @@
     "source=/tmp/.X11-unix,target=/tmp/.X11-unix,type=bind",
     "source=${localEnv:XDG_RUNTIME_DIR},target=${localEnv:XDG_RUNTIME_DIR},type=bind"
   ],
-  "postCreateCommand": "git config --global --add safe.directory /workspaces/dimos && cd /workspaces/dimos && pre-commit install",
+  "postCreateCommand": "git config --global --add safe.directory /workspaces/lima && cd /workspaces/lima && pre-commit install",
   "settings": {
     "notebook.formatOnSave.enabled": true,
     "notebook.codeActionsOnSave": {

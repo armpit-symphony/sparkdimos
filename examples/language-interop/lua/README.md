@@ -16,7 +16,7 @@ Subscribes to robot odometry and publishes twist commands using LCM.
 
 This will:
 1. Clone and build official [LCM](https://github.com/lcm-proj/lcm) Lua bindings
-2. Clone [dimos-lcm](https://github.com/dimensionalOS/dimos-lcm) message definitions
+2. Clone [LIMA-lcm](https://github.com/LIMA Robotics/LIMA-lcm) message definitions
 
 ## Run
 

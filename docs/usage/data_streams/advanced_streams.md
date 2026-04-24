@@ -41,9 +41,9 @@ import time
 import reactivex as rx
 from reactivex import operators as ops
 from reactivex.scheduler import ThreadPoolScheduler
-from dimos.utils.reactive import backpressure
+from LIMA.utils.reactive import backpressure
 
-# We need this scaffolding here. Normally DimOS handles this.
+# We need this scaffolding here. Normally LIMA handles this.
 scheduler = ThreadPoolScheduler(max_workers=4)
 
 # Simulate fast source
@@ -106,9 +106,9 @@ The `LATEST` strategy means: when the slow subscriber finishes processing, it ge
 Most module streams offer backpressured observables.
 
 ```python session=bp
-from dimos.core.module import Module
-from dimos.core.stream import In
-from dimos.msgs.sensor_msgs import Image
+from LIMA.core.module import Module
+from LIMA.core.stream import In
+from LIMA.msgs.sensor_msgs import Image
 
 class MLModel(Module):
     color_image: In[Image]
@@ -248,7 +248,7 @@ Subscribes immediately and keeps updating in the background. Each call returns t
 import time
 import reactivex as rx
 from reactivex import operators as ops
-from dimos.utils.reactive import getter_hot
+from LIMA.utils.reactive import getter_hot
 
 source = rx.interval(0.1).pipe(ops.take(10))
 
@@ -277,7 +277,7 @@ after 700ms: 6
 Each call creates a new subscription, waits for one value, and cleans up. Slower but doesn't hold resources:
 
 ```python session=sync
-from dimos.utils.reactive import getter_cold
+from LIMA.utils.reactive import getter_cold
 
 source = rx.of(0, 1, 2, 3, 4)
 get_val = getter_cold(source, timeout=5.0)

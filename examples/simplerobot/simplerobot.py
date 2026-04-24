@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Copyright 2026 Dimensional Inc.
+# Copyright 2025-2026 LIMA Robotics Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Copyright 2026 Dimensional Inc.
+# Copyright 2025-2026 LIMA Robotics Inc.
 # SPDX-License-Identifier: Apache-2.0
 
 """
-Simple virtual robot demonstrating a dimos Module with In/Out ports.
+Simple virtual robot demonstrating a lima Module with In/Out ports.
 
 Subscribes to Twist commands and publishes PoseStamped.
 """
@@ -29,10 +29,10 @@ from typing import Any
 
 import reactivex as rx
 
-from dimos.core.core import rpc
-from dimos.core.module import Module, ModuleConfig
-from dimos.core.stream import In, Out
-from dimos.msgs.geometry_msgs import Pose, PoseStamped, Quaternion, Twist, Vector3
+from lima.core.core import rpc
+from lima.core.module import Module, ModuleConfig
+from lima.core.stream import In, Out
+from lima.msgs.geometry_msgs import Pose, PoseStamped, Quaternion, Twist, Vector3
 
 
 def apply_twist(pose: Pose, twist: Twist, dt: float) -> Pose:
@@ -104,7 +104,7 @@ class SimpleRobot(Module[SimpleRobotConfig]):
 if __name__ == "__main__":
     import argparse
 
-    from dimos.core.transport import LCMTransport
+    from lima.core.transport import LCMTransport
 
     parser = argparse.ArgumentParser(description="Simple virtual robot")
     parser.add_argument("--headless", action="store_true")

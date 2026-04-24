@@ -1,6 +1,6 @@
-# ROS Docker Integration for DimOS
+# ROS Docker Integration for LIMA
 
-This directory contains Docker configuration files to run DimOS and the ROS autonomy stack in the same container, enabling communication between the two systems.
+This directory contains Docker configuration files to run LIMA and the ROS autonomy stack in the same container, enabling communication between the two systems.
 
 ## Prerequisites
 
@@ -23,9 +23,9 @@ cd docker/navigation
 This will:
 - Clone the ros-navigation-autonomy-stack repository
 - Build a Docker image with both arise_slam and FASTLIO2
-- Set up the environment for both ROS and DimOS
+- Set up the environment for both ROS and LIMA
 
-The resulting image will be named `dimos_autonomy_stack:{distro}` (e.g., `humble`, `jazzy`).
+The resulting image will be named `LIMA_autonomy_stack:{distro}` (e.g., `humble`, `jazzy`).
 Select SLAM method at runtime via `--localization arise_slam` or `--localization fastlio`.
 
 Note that the build will take a while and produce an image of approximately 24 GB.
@@ -47,9 +47,9 @@ Go to the docker dir and clone the ROS navigation stack (choose the branch match
 
 ```bash
 cd docker/navigation
-git clone -b humble git@github.com:dimensionalOS/ros-navigation-autonomy-stack.git
+git clone -b humble git@github.com:armpit-symphony/lima-robotics.git
 # or
-git clone -b jazzy git@github.com:dimensionalOS/ros-navigation-autonomy-stack.git
+git clone -b jazzy git@github.com:armpit-symphony/lima-robotics.git
 ```
 
 Download a [Unity environment model for the Mecanum wheel platform](https://drive.google.com/drive/folders/1G1JYkccvoSlxyySuTlPfvmrWoJUO8oSs?usp=sharing) and unzip the files to `unity_models`.
@@ -64,7 +64,7 @@ mv office_building_1 unity_models
 Then, go back to the root (from docker/navigation) and build the docker image:
 
 ```bash
-cd ../..  # Back to dimos root
+cd ../..  # Back to LIMA root
 ROS_DISTRO=humble docker compose -f docker/navigation/docker-compose.yml build
 # or
 ROS_DISTRO=jazzy docker compose -f docker/navigation/docker-compose.yml build
@@ -76,7 +76,7 @@ ROS_DISTRO=jazzy docker compose -f docker/navigation/docker-compose.yml build
 
 ### Configure the WiFi
 
-[Read this](https://github.com/dimensionalOS/ros-navigation-autonomy-stack/tree/jazzy?tab=readme-ov-file#transmitting-data-over-wifi) to see how to configure the WiFi.
+[Read this](https://github.com/armpit-symphony/lima-robotics/tree/jazzy?tab=readme-ov-file#transmitting-data-over-wifi) to see how to configure the WiFi.
 
 ### Configure the Livox Lidar
 
@@ -138,7 +138,7 @@ ssh -L 8765:localhost:8765 user@robot-ip
 
 Then on your local machine:
 1. Open Foxglove and connect to `ws://localhost:8765`
-2. Load the layout from `dimos/assets/foxglove_dashboards/Overwatch.json` (Layout menu → Import)
+2. Load the layout from `LIMA/assets/foxglove_dashboards/Overwatch.json` (Layout menu → Import)
 3. Click in the 3D panel to drop a target pose (similar to RViz). The "Autonomy ON" indicator should be green, and "Goal Reached" will show when the robot arrives.
 
 <details>
@@ -157,19 +157,19 @@ It doesn't do anything by default. You have to run commands on it by `exec`-ing:
 To enter the container from another terminal:
 
 ```bash
-docker exec -it dimos_hardware_container bash
+docker exec -it LIMA_hardware_container bash
 ```
 
 ##### In the container
 
-In the container to run the full navigation stack you must run both the dimensional python runfile with connection module and the navigation stack.
+In the container to run the full navigation stack you must run both the lima python runfile with connection module and the navigation stack.
 
-###### Dimensional Python + Connection Module
+###### LIMA Robotics Python + Connection Module
 
 For the Unitree G1
 ```bash
-dimos run unitree-g1
-ROBOT_IP=XX.X.X.XXX dimos run unitree-g1 # If ROBOT_IP env variable is not set in .env
+LIMA run unitree-g1
+ROBOT_IP=XX.X.X.XXX LIMA run unitree-g1 # If ROBOT_IP env variable is not set in .env
 ```
 
 ###### Navigation Stack

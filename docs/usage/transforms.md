@@ -69,7 +69,7 @@ Each sensor, joint, and reference point has its own frame.
 
 ## The Transform Class
 
-The `Transform` class at [`geometry_msgs/Transform.py`](/dimos/msgs/geometry_msgs/Transform.py#L21) represents a spatial transformation with:
+The `Transform` class at [`geometry_msgs/Transform.py`](/LIMA/msgs/geometry_msgs/Transform.py#L21) represents a spatial transformation with:
 
 - `frame_id` - The parent frame name
 - `child_frame_id` - The child frame name
@@ -78,7 +78,7 @@ The `Transform` class at [`geometry_msgs/Transform.py`](/dimos/msgs/geometry_msg
 - `ts` - Timestamp for temporal lookups
 
 ```python
-from dimos.msgs.geometry_msgs import Transform, Vector3, Quaternion
+from LIMA.msgs.geometry_msgs import Transform, Vector3, Quaternion
 
 # Camera 0.5m forward and 0.3m up from base, no rotation
 camera_transform = Transform(
@@ -103,7 +103,7 @@ base_link -> camera_link
 Transforms can be composed and inverted:
 
 ```python
-from dimos.msgs.geometry_msgs import Transform, Vector3, Quaternion
+from LIMA.msgs.geometry_msgs import Transform, Vector3, Quaternion
 
 # Create two transforms
 t1 = Transform(
@@ -142,7 +142,7 @@ Inverse: camera_link -> base_link
 For integration with libraries like NumPy or OpenCV:
 
 ```python
-from dimos.msgs.geometry_msgs import Transform, Vector3, Quaternion
+from LIMA.msgs.geometry_msgs import Transform, Vector3, Quaternion
 
 t = Transform(
     translation=Vector3(1.0, 2.0, 3.0),
@@ -166,13 +166,13 @@ print(matrix)
 
 ## Frame IDs in Modules
 
-Modules in DimOS automatically get a `frame_id` property. This is controlled by two config options in [`core/module.py`](/dimos/core/module.py#L78):
+Modules in LIMA automatically get a `frame_id` property. This is controlled by two config options in [`core/module.py`](/LIMA/core/module.py#L78):
 
 - `frame_id` - The base frame name (defaults to the class name)
 - `frame_id_prefix` - Optional prefix for namespacing
 
 ```python
-from dimos.core.module import Module, ModuleConfig
+from LIMA.core.module import Module, ModuleConfig
 from dataclasses import dataclass
 
 @dataclass
@@ -207,7 +207,7 @@ Every module has access to `self.tf`, a transform service that:
 - **Looks up** transforms between any two frames
 - **Buffers** historical transforms for temporal queries
 
-The TF service is implemented in [`tf.py`](/dimos/protocol/tf/tf.py) and is lazily initialized on first access.
+The TF service is implemented in [`tf.py`](/LIMA/protocol/tf/tf.py) and is lazily initialized on first access.
 
 ### Multi-Module Transform Example
 
@@ -221,10 +221,10 @@ This example demonstrates how multiple modules publish and receive transforms. T
 import time
 import reactivex as rx
 from reactivex import operators as ops
-from dimos.core.core import rpc
-from dimos.core.module import Module
-from dimos.msgs.geometry_msgs import Quaternion, Transform, Vector3
-from dimos.core.module_coordinator import ModuleCoordinator
+from LIMA.core.core import rpc
+from LIMA.core.module import Module
+from LIMA.msgs.geometry_msgs import Quaternion, Transform, Vector3
+from LIMA.core.module_coordinator import ModuleCoordinator
 
 class RobotBaseModule(Module):
     """Publishes the robot's position in the world frame at 10Hz."""
@@ -308,29 +308,29 @@ class PerceptionModule(Module):
 
 
 if __name__ == "__main__":
-    dimos = ModuleCoordinator()
-    dimos.start()
+    LIMA = ModuleCoordinator()
+    LIMA.start()
 
-    robot = dimos.deploy(RobotBaseModule)
-    camera = dimos.deploy(CameraModule)
-    perception = dimos.deploy(PerceptionModule)
+    robot = LIMA.deploy(RobotBaseModule)
+    camera = LIMA.deploy(CameraModule)
+    perception = LIMA.deploy(PerceptionModule)
 
-    dimos.start_all_modules()
+    LIMA.start_all_modules()
 
     time.sleep(1.0)
 
     perception.lookup()
 
-    dimos.stop()
+    LIMA.stop()
 
 ```
 
 <!--Result:-->
 ```
-Initialized dimos local cluster with 3 workers, memory limit: auto
-2025-12-29T12:47:01.433394Z [info     ] Deployed module.                                             [dimos/core/__init__.py] module=RobotBaseModule worker_id=1
-2025-12-29T12:47:01.603269Z [info     ] Deployed module.                                             [dimos/core/__init__.py] module=CameraModule worker_id=0
-2025-12-29T12:47:01.698970Z [info     ] Deployed module.                                             [dimos/core/__init__.py] module=PerceptionModule worker_id=2
+Initialized LIMA local cluster with 3 workers, memory limit: auto
+2025-12-29T12:47:01.433394Z [info     ] Deployed module.                                             [LIMA/core/__init__.py] module=RobotBaseModule worker_id=1
+2025-12-29T12:47:01.603269Z [info     ] Deployed module.                                             [LIMA/core/__init__.py] module=CameraModule worker_id=0
+2025-12-29T12:47:01.698970Z [info     ] Deployed module.                                             [LIMA/core/__init__.py] module=PerceptionModule worker_id=2
 LCMTF(3 buffers):
   TBuffer(world -> base_link, 10 msgs, 0.90s [2025-12-29 20:47:01 - 2025-12-29 20:47:02])
   TBuffer(base_link -> camera_link, 9 msgs, 0.80s [2025-12-29 20:47:01 - 2025-12-29 20:47:02])
@@ -361,7 +361,7 @@ Transform tree:
 ```
 
 
-You can also run `foxglove-studio-bridge` in the next terminal (binary provided by DimOS and should be in your Python env) and `foxglove-studio` to view these transforms in 3D. (TODO we need to update this for rerun)
+You can also run `foxglove-studio-bridge` in the next terminal (binary provided by LIMA and should be in your Python env) and `foxglove-studio` to view these transforms in 3D. (TODO we need to update this for rerun)
 
 ![transforms](assets/transforms.png)
 
@@ -417,8 +417,8 @@ text "CameraModule" italic at ((CL.x + CO.x)/2, CL.s.y - 0.25in)
 `self.tf` on module is a transform buffer. This is a standalone class that maintains a temporal buffer of transforms (default 10 seconds) allowing queries at past timestamps, you can use it directly:
 
 ```python
-from dimos.protocol.tf import TF
-from dimos.msgs.geometry_msgs import Transform, Vector3, Quaternion
+from LIMA.protocol.tf import TF
+from LIMA.msgs.geometry_msgs import Transform, Vector3, Quaternion
 import time
 
 tf = TF(autostart=False)

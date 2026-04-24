@@ -30,12 +30,12 @@ echo TOKEN | docker login ghcr.io -u GITHUB_USER --password-stdin
 
 pull dev image (dev branch)
 `sh
-docker pull ghcr.io/dimensionalos/dev:dev
+docker pull ghcr.io/armpit-symphony/lima-robotics/dev:dev
 `
 
 pull dev image (master)
 `sh
-docker pull ghcr.io/dimensionalos/dev:latest
+docker pull ghcr.io/armpit-symphony/lima-robotics/dev:latest
 `
 
 # todo

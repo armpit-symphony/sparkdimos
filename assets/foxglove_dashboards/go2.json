@@ -260,7 +260,7 @@
           "layerId": "foxglove.Urdf",
           "sourceType": "filePath",
           "url": "",
-          "filePath": "/home/lesh/coding/dimos/dimos/robot/unitree/go2/go2.urdf",
+          "filePath": "/home/lesh/coding/LIMA/LIMA/robot/unitree/go2/go2.urdf",
           "parameter": "",
           "topic": "",
           "framePrefix": "",

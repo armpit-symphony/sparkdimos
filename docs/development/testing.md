@@ -28,7 +28,7 @@ Rather than waste time on classifying tests, it's better to separate tests by ho
 
 The purpose of running tests in a loop is to get immediate feedback. The faster the loop, the easier it is to identify a problem since the source is the tiny bit of code you changed.
 
-For the purposes of DimOS, slow tests are marked with `@pytest.mark.slow` and fast tests are all the remaining ones.
+For the purposes of LIMA, slow tests are marked with `@pytest.mark.slow` and fast tests are all the remaining ones.
 
 ## Usage
 
@@ -43,10 +43,10 @@ Run the fast tests:
 This is the same as:
 
 ```bash
-pytest dimos
+pytest LIMA
 ```
 
-The default `addopts` in `pyproject.toml` includes a `-m` filter that excludes the `slow`/`mujoco`/`tool`. So plain `pytest dimos` only runs fast tests.
+The default `addopts` in `pyproject.toml` includes a `-m` filter that excludes the `slow`/`mujoco`/`tool`. So plain `pytest LIMA` only runs fast tests.
 
 ### Slow tests
 
@@ -56,22 +56,22 @@ Run the slow tests:
 ./bin/pytest-slow
 ```
 
-(This is just a shortcut for `pytest -m 'not (tool or mujoco)' dimos`. I.e., run both fast tests and slow tests, but not `tool` or `mujoco`.)
+(This is just a shortcut for `pytest -m 'not (tool or mujoco)' LIMA`. I.e., run both fast tests and slow tests, but not `tool` or `mujoco`.)
 
 When writing or debugging a specific slow test, override `-m` yourself to run it:
 
 ```bash
-pytest -m slow dimos/path/to/test_something.py
+pytest -m slow LIMA/path/to/test_something.py
 ```
 
 ## Writing tests
 
-Test files live next to the code they test. If you have `dimos/core/pubsub.py`, its tests go in `dimos/core/test_pubsub.py`.
+Test files live next to the code they test. If you have `LIMA/core/pubsub.py`, its tests go in `LIMA/core/test_pubsub.py`.
 
 When writing tests you probably want to limit the run to whatever tests you're writing:
 
 ```bash
-pytest -sv dimos/core/test_my_code.py
+pytest -sv LIMA/core/test_my_code.py
 ```
 
 ### Fixtures
@@ -105,7 +105,7 @@ Patching a method:
 
 ```python
 def test_uses_cached_position(mocker):
-    mocker.patch("dimos.hardware.RobotArm.get_position", return_value=(0.0, 0.0, 0.0))
+    mocker.patch("LIMA.hardware.RobotArm.get_position", return_value=(0.0, 0.0, 0.0))
     arm = RobotArm()
     assert arm.get_position() == (0.0, 0.0, 0.0)
 ```

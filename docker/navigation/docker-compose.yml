@@ -1,14 +1,14 @@
 services:
   # Simulation profile
-  dimos_simulation:
+  LIMA_simulation:
     build:
       context: ../..
       dockerfile: docker/navigation/Dockerfile
       network: host
       args:
         ROS_DISTRO: ${ROS_DISTRO:-humble}
-    image: dimos_autonomy_stack:${IMAGE_TAG:-humble}
-    container_name: dimos_simulation_container
+    image: LIMA_autonomy_stack:${IMAGE_TAG:-humble}
+    container_name: LIMA_simulation_container
     profiles: ["", "simulation"]  # Active by default (empty profile) AND with --profile simulation
 
     # Shared memory size for ROS 2 FastDDS
@@ -21,7 +21,7 @@ services:
     # Network configuration - required for ROS communication
     network_mode: host
 
-    # Allow `ip link set ...` (needed by DimOS LCM autoconf) without requiring sudo
+    # Allow `ip link set ...` (needed by LIMA LCM autoconf) without requiring sudo
     cap_add:
       - NET_ADMIN
 
@@ -53,8 +53,8 @@ services:
       # Mount Unity environment models (if available)
       - ./unity_models:/ros2_ws/src/ros-navigation-autonomy-stack/src/base_autonomy/vehicle_simulator/mesh/unity:rw
 
-      # Mount entire dimos directory for live development
-      - ../..:/workspace/dimos:rw
+      # Mount entire LIMA directory for live development
+      - ../..:/workspace/LIMA:rw
 
       # Mount bagfiles directory
       - ./bagfiles:/ros2_ws/bagfiles:rw
@@ -68,21 +68,21 @@ services:
       - /dev/dri:/dev/dri
 
     # Working directory
-    working_dir: /workspace/dimos
+    working_dir: /workspace/LIMA
 
-    # Command to run both ROS and DimOS
+    # Command to run both ROS and LIMA
     command: /usr/local/bin/run_both.sh
 
   # Hardware profile - for real robot
-  dimos_hardware:
+  LIMA_hardware:
     build:
       context: ../..
       dockerfile: docker/navigation/Dockerfile
       network: host
       args:
         ROS_DISTRO: ${ROS_DISTRO:-humble}
-    image: dimos_autonomy_stack:${IMAGE_TAG:-humble}
-    container_name: dimos_hardware_container
+    image: LIMA_autonomy_stack:${IMAGE_TAG:-humble}
+    container_name: LIMA_hardware_container
     profiles: ["hardware"]
 
     # Shared memory size for ROS 2 FastDDS
@@ -151,8 +151,8 @@ services:
       - ${HOME}/.Xauthority:/root/.Xauthority:rw
       # Mount Unity environment models (optional for hardware)
       - ./unity_models:/ros2_ws/src/ros-navigation-autonomy-stack/src/base_autonomy/vehicle_simulator/mesh/unity:rw
-      # Mount entire dimos directory
-      - ../..:/workspace/dimos:rw
+      # Mount entire LIMA directory
+      - ../..:/workspace/LIMA:rw
       # Mount bagfiles directory
       - ./bagfiles:/ros2_ws/bagfiles:rw
       # Mount config files for easy editing
@@ -181,7 +181,7 @@ services:
       # - /dev/video0:/dev/video0
 
     # Working directory
-    working_dir: /workspace/dimos
+    working_dir: /workspace/LIMA
 
     # Command - launch the real robot system with foxglove_bridge
     command:
@@ -192,7 +192,7 @@ services:
         ls -la /dev/input/js0 2>/dev/null || echo "Warning: No joystick found at /dev/input/js0"
         cd /ros2_ws
         source install/setup.bash
-        source /opt/dimos-venv/bin/activate
+        source /opt/LIMA-venv/bin/activate
         # Launch with SLAM method based on LOCALIZATION_METHOD
         if [ "$LOCALIZATION_METHOD" = "fastlio" ]; then
             echo "Using FASTLIO2 localization"
@@ -244,15 +244,15 @@ services:
       - SYS_TIME   # Time synchronization
 
   # Bagfile profile - for bagfile playback with use_sim_time=true
-  dimos_bagfile:
+  LIMA_bagfile:
     build:
       context: ../..
       dockerfile: docker/navigation/Dockerfile
       network: host
       args:
         ROS_DISTRO: ${ROS_DISTRO:-humble}
-    image: dimos_autonomy_stack:${IMAGE_TAG:-humble}
-    container_name: dimos_bagfile_container
+    image: LIMA_autonomy_stack:${IMAGE_TAG:-humble}
+    container_name: LIMA_bagfile_container
     profiles: ["bagfile"]
 
     # Shared memory size for ROS 2 FastDDS

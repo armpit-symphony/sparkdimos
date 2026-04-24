@@ -77,22 +77,22 @@ echo "Installing lcm.so to $LUA_CPATH_DIR"
 sudo mkdir -p "$LUA_CPATH_DIR"
 sudo cp lcm-lua/lcm.so "$LUA_CPATH_DIR/"
 
-# Get dimos-lcm message definitions
-DIMOS_LCM_DIR="$SCRIPT_DIR/dimos-lcm"
+# Get lima-lcm message definitions
+LIMA_LCM_DIR="$SCRIPT_DIR/lima-lcm"
 MSGS_DST="$SCRIPT_DIR/msgs"
 
 echo "Getting message definitions..."
-if [ -d "$DIMOS_LCM_DIR" ]; then
-    echo "Updating dimos-lcm..."
-    cd "$DIMOS_LCM_DIR" && git pull
+if [ -d "$LIMA_LCM_DIR" ]; then
+    echo "Updating lima-lcm..."
+    cd "$LIMA_LCM_DIR" && git pull
 else
-    echo "Cloning dimos-lcm..."
-    git clone --depth 1 https://github.com/dimensionalOS/dimos-lcm.git "$DIMOS_LCM_DIR"
+    echo "Cloning lima-lcm..."
+    git clone --depth 1 https://github.com/armpit-symphony/lima-robotics.git "$LIMA_LCM_DIR"
 fi
 
 # Link/copy messages
 rm -rf "$MSGS_DST"
-cp -r "$DIMOS_LCM_DIR/generated/lua_lcm_msgs" "$MSGS_DST"
+cp -r "$LIMA_LCM_DIR/generated/lua_lcm_msgs" "$MSGS_DST"
 echo "Messages installed to $MSGS_DST"
 
 echo ""

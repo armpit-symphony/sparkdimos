@@ -1,4 +1,4 @@
-# Copyright 2026 Dimensional Inc.
+# Copyright 2025-2026 LIMA Robotics Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
 
 from typing import Protocol
 
-from dimos.core.blueprints import autoconnect
-from dimos.core.core import rpc
-from dimos.core.module import Module
-from dimos.spec.utils import Spec
+from lima.core.blueprints import autoconnect
+from lima.core.core import rpc
+from lima.core.module import Module
+from lima.spec.utils import Spec
 
 
 # this would be defined in some other file (this could be imported from a library)
@@ -41,7 +41,7 @@ class ComputeSpec(Spec, Protocol):
 
 
 class Client(Module):
-    # this says: "hey dimos, give me access to a module that has a compute1 and compute2 method"
+    # this says: "hey lima, give me access to a module that has a compute1 and compute2 method"
     calc: ComputeSpec
 
     @rpc

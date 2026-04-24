@@ -1,6 +1,6 @@
-# Dimensional AGENTS.md
+# LIMA Robotics AGENTS.md
 
-## What is DimOS
+## What is LIMA
 
 The agentic operating system for generalist robotics. `Modules` communicate via typed streams over LCM, ROS2, DDS, or other transports. `Blueprints` compose modules into runnable robot stacks. `Skills` give agents the ability to execute physical on-hardware function like `grab()`, `follow_object()`, or `jump()`
 
@@ -13,26 +13,26 @@ The agentic operating system for generalist robotics. `Modules` communicate via 
 uv sync --all-extras --no-extra dds
 
 # List all runnable blueprints
-dimos list
+LIMA list
 
 # --- Go2 quadruped ---
-dimos --replay run unitree-go2                  # perception + mapping, replay data
-dimos --replay run unitree-go2 --daemon         # same, backgrounded
-dimos --replay run unitree-go2-agentic          # + LLM agent (GPT-4o) + skills
-dimos --replay run unitree-go2-agentic-mcp      # + McpServer + McpClient (MCP tools live)
-dimos run unitree-go2-agentic --robot-ip 192.168.123.161  # real Go2 hardware
+LIMA --replay run unitree-go2                  # perception + mapping, replay data
+LIMA --replay run unitree-go2 --daemon         # same, backgrounded
+LIMA --replay run unitree-go2-agentic          # + LLM agent (GPT-4o) + skills
+LIMA --replay run unitree-go2-agentic-mcp      # + McpServer + McpClient (MCP tools live)
+LIMA run unitree-go2-agentic --robot-ip 192.168.123.161  # real Go2 hardware
 
 # --- G1 humanoid ---
-dimos --simulation run unitree-g1-agentic-sim   # G1 in MuJoCo sim + agent + skills
-dimos run unitree-g1-agentic --robot-ip 192.168.123.161   # real G1 hardware
+LIMA --simulation run unitree-g1-agentic-sim   # G1 in MuJoCo sim + agent + skills
+LIMA run unitree-g1-agentic --robot-ip 192.168.123.161   # real G1 hardware
 
 # --- Inspect & control ---
-dimos status
-dimos log              # last 50 lines, human-readable
-dimos log -f           # follow/tail in real time
-dimos agent-send "say hello"
-dimos stop             # graceful SIGTERM → SIGKILL
-dimos restart          # stop + re-run with same original args
+LIMA status
+LIMA log              # last 50 lines, human-readable
+LIMA log -f           # follow/tail in real time
+LIMA agent-send "say hello"
+LIMA stop             # graceful SIGTERM → SIGKILL
+LIMA restart          # stop + re-run with same original args
 ```
 
 ### Blueprint quick-reference
@@ -46,7 +46,7 @@ dimos restart          # stop + re-run with same original args
 | `arm-teleop-xarm7` | xArm7 | real | — | — | Quest VR teleop |
 | `dual-xarm6-planner` | xArm6×2 | real | — | — | Dual-arm motion planner |
 
-Run `dimos list` for the full list.
+Run `LIMA list` for the full list.
 
 ---
 
@@ -56,17 +56,17 @@ Run `dimos list` for the full list.
 
 ```bash
 # Start the MCP-enabled blueprint first:
-dimos --replay run unitree-go2-agentic-mcp --daemon
+LIMA --replay run unitree-go2-agentic-mcp --daemon
 
 # Then use MCP tools:
-dimos mcp list-tools                                              # all available skills as JSON
-dimos mcp call move --arg x=0.5 --arg duration=2.0               # call by key=value args
-dimos mcp call move --json-args '{"x": 0.5, "duration": 2.0}'    # call by JSON
-dimos mcp status      # PID, module list, skill list
-dimos mcp modules     # module → skills mapping
+LIMA mcp list-tools                                              # all available skills as JSON
+LIMA mcp call move --arg x=0.5 --arg duration=2.0               # call by key=value args
+LIMA mcp call move --json-args '{"x": 0.5, "duration": 2.0}'    # call by JSON
+LIMA mcp status      # PID, module list, skill list
+LIMA mcp modules     # module → skills mapping
 
 # Send a message to the running agent (works without McpServer too):
-dimos agent-send "walk forward 2 meters then wave"
+LIMA agent-send "walk forward 2 meters then wave"
 ```
 
 The MCP server runs at `http://localhost:9990/mcp` (`GlobalConfig.mcp_port`).
@@ -76,8 +76,8 @@ The MCP server runs at `http://localhost:9990/mcp` (`GlobalConfig.mcp_port`).
 Use **both** `McpServer` and `mcp_client()` — do not mix with `agent()`.
 
 ```python
-from dimos.agents.mcp.mcp_client import mcp_client
-from dimos.agents.mcp.mcp_server import McpServer
+from LIMA.agents.mcp.mcp_client import mcp_client
+from LIMA.agents.mcp.mcp_server import McpServer
 
 unitree_go2_agentic_mcp = autoconnect(
     unitree_go2_spatial,   # robot stack
@@ -87,21 +87,21 @@ unitree_go2_agentic_mcp = autoconnect(
 )
 ```
 
-Reference: `dimos/robot/unitree/go2/blueprints/agentic/unitree_go2_agentic_mcp.py`
+Reference: `LIMA/robot/unitree/go2/blueprints/agentic/unitree_go2_agentic_mcp.py`
 
 ---
 
 ## Repo Structure
 
 ```
-dimos/
+LIMA/
 ├── core/                    # Module system, blueprints, workers, transports
 │   ├── module.py            # Module base class, In/Out streams, @rpc, @skill
 │   ├── blueprints.py        # Blueprint composition (autoconnect)
 │   ├── global_config.py     # GlobalConfig (env vars, CLI flags, .env)
 │   └── run_registry.py      # Per-run tracking + log paths
 ├── robot/
-│   ├── cli/dimos.py         # CLI entry point (typer)
+│   ├── cli/LIMA.py         # CLI entry point (typer)
 │   ├── all_blueprints.py    # Auto-generated blueprint registry (DO NOT EDIT MANUALLY)
 │   ├── unitree/             # Unitree robot implementations (Go2, G1, B1)
 │   │   ├── unitree_skill_container.py  # Go2 @skill methods
@@ -128,7 +128,7 @@ docs/
 ├── usage/blueprints.md      # Blueprint composition guide
 ├── usage/configuration.md   # GlobalConfig + Configurable pattern
 ├── development/testing.md   # Fast/slow tests, pytest usage
-├── development/dimos_run.md # CLI usage, adding blueprints
+├── development/LIMA_run.md # CLI usage, adding blueprints
 └── agents/                  # Agent system documentation
 ```
 
@@ -141,10 +141,10 @@ docs/
 Autonomous subsystems. Communicate via `In[T]`/`Out[T]` typed streams. Run in forkserver worker processes.
 
 ```python
-from dimos.core.module import Module
-from dimos.core.stream import In, Out
-from dimos.core.core import rpc
-from dimos.msgs.sensor_msgs import Image
+from LIMA.core.module import Module
+from LIMA.core.stream import In, Out
+from LIMA.core.core import rpc
+from LIMA.msgs.sensor_msgs import Image
 
 class MyModule(Module):
     color_image: In[Image]
@@ -164,7 +164,7 @@ class MyModule(Module):
 Compose modules with `autoconnect()`. Streams auto-connect by `(name, type)` matching.
 
 ```python
-from dimos.core.blueprints import autoconnect
+from LIMA.core.blueprints import autoconnect
 
 my_blueprint = autoconnect(module_a(), module_b(), module_c())
 ```
@@ -177,19 +177,19 @@ To run a blueprint directly from Python:
 autoconnect(module_a(), module_b(), module_c()).build().loop()
 ```
 
-Expose as a module-level variable for `dimos run` to find it. Add to the registry by running `pytest dimos/robot/test_all_blueprints_generation.py`.
+Expose as a module-level variable for `LIMA run` to find it. Add to the registry by running `pytest LIMA/robot/test_all_blueprints_generation.py`.
 
 ### GlobalConfig
 
-Singleton config. Values cascade: defaults → `.env` → env vars → blueprint → CLI flags. Env vars prefixed `DIMOS_`. Key fields: `robot_ip`, `simulation`, `replay`, `viewer`, `n_workers`, `mcp_port`.
+Singleton config. Values cascade: defaults → `.env` → env vars → blueprint → CLI flags. Env vars prefixed `LIMA_`. Key fields: `robot_ip`, `simulation`, `replay`, `viewer`, `n_workers`, `mcp_port`.
 
 ### Transports
 
 - **LCMTransport**: Default. Multicast UDP.
 - **SHMTransport/pSHMTransport**: Shared memory — use for images and point clouds.
 - **pLCMTransport**: Pickled LCM — use for complex Python objects.
-- **ROSTransport**: ROS topic bridge — interop with ROS nodes (`dimos/core/transport.py`).
-- **DDSTransport**: DDS pub/sub — available when `DDS_AVAILABLE`; install with `uv sync --extra dds` (`dimos/protocol/pubsub/impl/ddspubsub.py`).
+- **ROSTransport**: ROS topic bridge — interop with ROS nodes (`LIMA/core/transport.py`).
+- **DDSTransport**: DDS pub/sub — available when `DDS_AVAILABLE`; install with `uv sync --extra dds` (`LIMA/protocol/pubsub/impl/ddspubsub.py`).
 
 ---
 
@@ -203,21 +203,21 @@ Every `GlobalConfig` field is a CLI flag: `--robot-ip`, `--simulation/--no-simul
 
 | Command | Description |
 |---------|-------------|
-| `dimos run <blueprint> [--daemon]` | Start a blueprint |
-| `dimos status` | Show running instance (run ID, PID, blueprint, uptime, log path) |
-| `dimos stop [--force]` | SIGTERM → SIGKILL after 5s; `--force` = immediate SIGKILL |
-| `dimos restart [--force]` | Stop + re-exec with original args |
-| `dimos list` | List all non-demo blueprints |
-| `dimos show-config` | Print resolved GlobalConfig values |
-| `dimos log [-f] [-n N] [--json] [-r <run-id>]` | View per-run logs |
-| `dimos mcp list-tools / call / status / modules` | MCP tools (requires McpServer in blueprint) |
-| `dimos agent-send "<text>"` | Send text to the running agent via LCM |
-| `dimos lcmspy / agentspy / humancli / top` | Debug/diagnostic tools |
-| `dimos topic echo <topic> / send <topic> <expr>` | LCM topic pub/sub |
-| `dimos rerun-bridge` | Launch Rerun visualization standalone |
+| `LIMA run <blueprint> [--daemon]` | Start a blueprint |
+| `LIMA status` | Show running instance (run ID, PID, blueprint, uptime, log path) |
+| `LIMA stop [--force]` | SIGTERM → SIGKILL after 5s; `--force` = immediate SIGKILL |
+| `LIMA restart [--force]` | Stop + re-exec with original args |
+| `LIMA list` | List all non-demo blueprints |
+| `LIMA show-config` | Print resolved GlobalConfig values |
+| `LIMA log [-f] [-n N] [--json] [-r <run-id>]` | View per-run logs |
+| `LIMA mcp list-tools / call / status / modules` | MCP tools (requires McpServer in blueprint) |
+| `LIMA agent-send "<text>"` | Send text to the running agent via LCM |
+| `LIMA lcmspy / agentspy / humancli / top` | Debug/diagnostic tools |
+| `LIMA topic echo <topic> / send <topic> <expr>` | LCM topic pub/sub |
+| `LIMA rerun-bridge` | Launch Rerun visualization standalone |
 
-Log files: `~/.local/state/dimos/logs/<run-id>/main.jsonl`
-Run registry: `~/.local/state/dimos/runs/<run-id>.json`
+Log files: `~/.local/state/LIMA/logs/<run-id>/main.jsonl`
+Run registry: `~/.local/state/LIMA/runs/<run-id>.json`
 
 ---
 
@@ -225,7 +225,7 @@ Run registry: `~/.local/state/dimos/runs/<run-id>.json`
 
 ### The `@skill` Decorator
 
-`dimos/agents/annotation.py`. Sets `__rpc__ = True` and `__skill__ = True`.
+`LIMA/agents/annotation.py`. Sets `__rpc__ = True` and `__skill__ = True`.
 
 - `@rpc` alone: callable via RPC, not exposed to LLM
 - `@skill`: implies `@rpc` AND exposes method to the LLM as a tool. **Do not stack both.**
@@ -244,9 +244,9 @@ Supported param types: `str`, `int`, `float`, `bool`, `list[str]`, `list[float]`
 #### Minimal correct skill
 
 ```python
-from dimos.agents.annotation import skill
-from dimos.core.core import rpc
-from dimos.core.module import Module
+from LIMA.agents.annotation import skill
+from LIMA.core.core import rpc
+from LIMA.core.module import Module
 
 class MySkillContainer(Module):
     @rpc
@@ -273,8 +273,8 @@ my_skill_container = MySkillContainer.blueprint
 
 | Robot | File | Variable |
 |-------|------|----------|
-| Go2 (default) | `dimos/agents/system_prompt.py` | `SYSTEM_PROMPT` |
-| G1 humanoid | `dimos/robot/unitree/g1/system_prompt.py` | `G1_SYSTEM_PROMPT` |
+| Go2 (default) | `LIMA/agents/system_prompt.py` | `SYSTEM_PROMPT` |
+| G1 humanoid | `LIMA/robot/unitree/g1/system_prompt.py` | `G1_SYSTEM_PROMPT` |
 
 Pass the robot-specific prompt: `agent(system_prompt=G1_SYSTEM_PROMPT)`. Agent defaults to Go2 — wrong prompt causes hallucinated skills.
 
@@ -285,7 +285,7 @@ To call methods on another module, declare a `Spec` Protocol and annotate an att
 ```python
 # my_module_spec.py
 from typing import Protocol
-from dimos.spec.utils import Spec
+from LIMA.spec.utils import Spec
 
 class NavigatorSpec(Spec, Protocol):
     def set_goal(self, goal: PoseStamped) -> bool: ...
@@ -302,13 +302,13 @@ class MySkillContainer(Module):
         return "Navigating"
 ```
 
-If multiple modules match the spec, use `.remappings()` to resolve. Source: `dimos/spec/utils.py`, `dimos/core/blueprints.py`.
+If multiple modules match the spec, use `.remappings()` to resolve. Source: `LIMA/spec/utils.py`, `LIMA/core/blueprints.py`.
 
 **Legacy**: existing skill containers use `rpc_calls: list[str]` + `get_rpc_calls("ClassName.method")`. This still works but wiring failures are silent and only surface at runtime. Don't use it in new code.
 
 ### Adding a New Skill
 
-1. Pick the right container (robot-specific or `dimos/agents/skills/`).
+1. Pick the right container (robot-specific or `LIMA/agents/skills/`).
 2. `@skill` + mandatory docstring + type annotations on all params.
 3. If it needs another module's RPC, use the Spec pattern.
 4. Return a descriptive `str`.
@@ -327,10 +327,10 @@ uv run pytest
 ./bin/pytest-slow
 
 # Single file
-uv run pytest dimos/core/test_blueprints.py -v
+uv run pytest LIMA/core/test_blueprints.py -v
 
 # Mypy
-uv run mypy dimos/
+uv run mypy LIMA/
 ```
 
 `uv run pytest` excludes `slow`, `tool`, and `mujoco` markers. CI (`./bin/pytest-slow`) includes slow, excludes tool and mujoco. See `docs/development/testing.md`.
@@ -354,10 +354,10 @@ Code style rules:
 
 ## `all_blueprints.py` is auto-generated
 
-`dimos/robot/all_blueprints.py` is generated by `test_all_blueprints_generation.py`. After adding or renaming blueprints:
+`LIMA/robot/all_blueprints.py` is generated by `test_all_blueprints_generation.py`. After adding or renaming blueprints:
 
 ```bash
-pytest dimos/robot/test_all_blueprints_generation.py
+pytest LIMA/robot/test_all_blueprints_generation.py
 ```
 
 CI asserts the file is current — if it's stale, CI fails.
@@ -380,6 +380,6 @@ CI asserts the file is current — if it's stale, CI fails.
 - Visualization: `docs/usage/visualization.md`
 - Configuration: `docs/usage/configuration.md`
 - Testing: `docs/development/testing.md`
-- CLI / dimos run: `docs/development/dimos_run.md`
+- CLI / LIMA run: `docs/development/LIMA_run.md`
 - LFS data: `docs/development/large_file_management.md`
 - Agent system: `docs/agents/`

@@ -1,7 +1,7 @@
 {
   "imports": {
-    "@dimos/lcm": "jsr:@dimos/lcm",
-    "@dimos/msgs": "jsr:@dimos/msgs"
+    "@LIMA/lcm": "jsr:@LIMA/lcm",
+    "@LIMA/msgs": "jsr:@LIMA/msgs"
   },
   "tasks": {
     "start": "deno run --allow-net --unstable-net main.ts"

@@ -1,5 +1,5 @@
 name: Bug Report
-description: Report a bug in DimOS
+description: Report a bug in LIMA
 title: "[Bug]: "
 body:
   - type: textarea

@@ -1,32 +1,32 @@
 # Viewer Backends
 
-Dimos supports three visualization backends: Rerun (web or native) and Foxglove.
+LIMA supports three visualization backends: Rerun (web or native) and Foxglove.
 
 ## Quick Start
 
 Choose your viewer via the CLI (preferred):
 
 ```bash
-# Rerun native viewer (default) - dimos-viewer with built-in teleop + click-to-navigate
-dimos run unitree-go2
+# Rerun native viewer (default) - LIMA-viewer with built-in teleop + click-to-navigate
+LIMA run unitree-go2
 
 # Explicitly select the viewer mode:
-dimos --viewer rerun run unitree-go2
-dimos --viewer rerun-web run unitree-go2
-dimos --viewer foxglove run unitree-go2
+LIMA --viewer rerun run unitree-go2
+LIMA --viewer rerun-web run unitree-go2
+LIMA --viewer foxglove run unitree-go2
 ```
 
 Alternative (environment variable):
 
 ```bash
-# Rerun native viewer (default) - dimos-viewer with built-in teleop + click-to-navigate
-VIEWER=rerun dimos run unitree-go2
+# Rerun native viewer (default) - LIMA-viewer with built-in teleop + click-to-navigate
+VIEWER=rerun LIMA run unitree-go2
 
 # Rerun web viewer - browser dashboard + teleop at http://localhost:7779
-VIEWER=rerun-web dimos run unitree-go2
+VIEWER=rerun-web LIMA run unitree-go2
 
 # Foxglove - Use Foxglove Studio instead of Rerun
-VIEWER=foxglove dimos run unitree-go2
+VIEWER=foxglove LIMA run unitree-go2
 ```
 
 ## Viewer Modes Explained
@@ -34,7 +34,7 @@ VIEWER=foxglove dimos run unitree-go2
 ### Rerun Native (`rerun`) — Default
 
 **What you get:**
-- [dimos-viewer](https://github.com/dimensionalOS/dimos-viewer), a custom Dimensional fork of Rerun with built-in keyboard teleop and click-to-navigate
+- [LIMA-viewer](https://github.com/LIMA Robotics/LIMA-viewer), a custom LIMA Robotics fork of Rerun with built-in keyboard teleop and click-to-navigate
 - Native desktop application (opens automatically)
 - Better performance with larger maps/higher resolution
 - No browser or web server required
@@ -66,9 +66,9 @@ VIEWER=foxglove dimos run unitree-go2
 To enable rerun within your own blueprint simply include `RerunBridgeModule`:
 
 ```python
-from dimos.visualization.rerun.bridge import RerunBridgeModule
-from dimos.hardware.sensors.camera.module import CameraModule
-from dimos.protocol.pubsub.impl.lcmpubsub import LCM
+from LIMA.visualization.rerun.bridge import RerunBridgeModule
+from LIMA.hardware.sensors.camera.module import CameraModule
+from LIMA.protocol.pubsub.impl.lcmpubsub import LCM
 
 camera_demo = autoconnect(
     CameraModule.blueprint(),
@@ -96,7 +96,7 @@ This happens on lower-end hardware (NUC, older laptops) with large maps.
 
 ### Increase Voxel Size
 
-Edit [`dimos/robot/unitree/go2/blueprints/__init__.py`](/dimos/robot/unitree/go2/blueprints/__init__.py) line 82:
+Edit [`LIMA/robot/unitree/go2/blueprints/__init__.py`](/LIMA/robot/unitree/go2/blueprints/__init__.py) line 82:
 
 ```python
 # Before (high detail, slower on large maps)

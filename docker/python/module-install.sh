@@ -1,21 +1,21 @@
 #!/usr/bin/env bash
-# DimOS Module Install (generic)
-# Converts any Dockerfile into a DimOS module container
+# LIMA Module Install (generic)
+# Converts any Dockerfile into a LIMA module container
 #
 # Usage in Dockerfile:
 #   RUN --mount=from=ghcr.io/dimensionalos/ros-python:dev,source=/app,target=/tmp/d \
 #       bash /tmp/d/docker/python/module-install.sh /tmp/d
-#   ENTRYPOINT ["/dimos/entrypoint.sh"]
+#   ENTRYPOINT ["/lima/entrypoint.sh"]
 
 set -euo pipefail
 
 SRC="${1:-/tmp/d}"
 
-# ---- Copy source into image (skip if already at /dimos/source) ----
-if [ "${SRC}" != "/dimos/source" ]; then
-    mkdir -p /dimos/source
-    cp -r "${SRC}/dimos" "${SRC}/pyproject.toml" /dimos/source/
-    [ -f "${SRC}/README.md" ] && cp "${SRC}/README.md" /dimos/source/ || true
+# ---- Copy source into image (skip if already at /lima/source) ----
+if [ "${SRC}" != "/lima/source" ]; then
+    mkdir -p /lima/source
+    cp -r "${SRC}/lima" "${SRC}/pyproject.toml" /lima/source/
+    [ -f "${SRC}/README.md" ] && cp "${SRC}/README.md" /lima/source/ || true
 fi
 
 # ---- Find Python + Pip (conda env > venv > uv > system) ----
@@ -24,11 +24,11 @@ PIP=""
 
 # 1. Check for Conda environment
 if [ -z "$PYTHON" ] && command -v conda >/dev/null 2>&1; then
-    DIMOS_CONDA_ENV="${DIMOS_CONDA_ENV:-app}"
-    if conda env list 2>/dev/null | awk '{print $1}' | grep -qx "${DIMOS_CONDA_ENV}"; then
-        PYTHON="conda run --no-capture-output -n ${DIMOS_CONDA_ENV} python"
-        PIP="conda run -n ${DIMOS_CONDA_ENV} pip"
-        echo "Using Conda env: ${DIMOS_CONDA_ENV}"
+    LIMA_CONDA_ENV="${LIMA_CONDA_ENV:-app}"
+    if conda env list 2>/dev/null | awk '{print $1}' | grep -qx "${LIMA_CONDA_ENV}"; then
+        PYTHON="conda run --no-capture-output -n ${LIMA_CONDA_ENV} python"
+        PIP="conda run -n ${LIMA_CONDA_ENV} pip"
+        echo "Using Conda env: ${LIMA_CONDA_ENV}"
     fi
 fi
 
@@ -58,16 +58,16 @@ if [ -z "$PYTHON" ]; then
     echo "Using system Python"
 fi
 
-# ---- Install DimOS (deps from pyproject.toml[docker]) ----
-${PIP} install --no-cache-dir -e "/dimos/source[docker]"
+# ---- Install LIMA (deps from pyproject.toml[docker]) ----
+${PIP} install --no-cache-dir -e "/lima/source[docker]"
 
 # ---- Create entrypoint ----
-cat > /dimos/entrypoint.sh <<EOF
+cat > /lima/entrypoint.sh <<EOF
 #!/usr/bin/env bash
 set -euo pipefail
-export PYTHONPATH="/dimos/source:/dimos/third_party:\${PYTHONPATH:-}"
-exec ${PYTHON} -m dimos.core.docker_runner run "\$@"
+export PYTHONPATH="/lima/source:/lima/third_party:\${PYTHONPATH:-}"
+exec ${PYTHON} -m lima.core.docker_runner run "\$@"
 EOF
 
-chmod +x /dimos/entrypoint.sh
-echo "DimOS module installed. Use: ENTRYPOINT [\"/dimos/entrypoint.sh\"]"
+chmod +x /lima/entrypoint.sh
+echo "LIMA module installed. Use: ENTRYPOINT [\"/lima/entrypoint.sh\"]"

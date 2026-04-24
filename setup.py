@@ -1,4 +1,4 @@
-# Copyright 2025-2026 Dimensional Inc.
+# Copyright 2025-2026 LIMA Robotics Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -67,8 +67,8 @@ if not python_is_macos_universal_binary():
 # C++ extensions
 ext_modules = [
     Pybind11Extension(
-        "dimos.navigation.replanning_a_star.min_cost_astar_ext",
-        [os.path.join("dimos", "navigation", "replanning_a_star", "min_cost_astar_cpp.cpp")],
+        "lima.navigation.replanning_a_star.min_cost_astar_ext",
+        [os.path.join("lima", "navigation", "replanning_a_star", "min_cost_astar_cpp.cpp")],
         extra_compile_args=extra_compile_args,
         define_macros=[
             ("NDEBUG", "1"),

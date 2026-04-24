@@ -10,13 +10,13 @@
 # =============================================================================
 
 services:
-  dimos_simulation:
+  LIMA_simulation:
     volumes:
       # Mount ROS navigation stack source for config editing
       - ./ros-navigation-autonomy-stack/src/slam/arise_slam_mid360/config:/ros2_ws/src/ros-navigation-autonomy-stack/src/slam/arise_slam_mid360/config:rw
       - ./ros-navigation-autonomy-stack/src/base_autonomy/local_planner/config:/ros2_ws/src/ros-navigation-autonomy-stack/src/base_autonomy/local_planner/config:rw
 
-  dimos_hardware:
+  LIMA_hardware:
     volumes:
       # Mount ROS navigation stack source for config editing
       - ./ros-navigation-autonomy-stack/src/slam/arise_slam_mid360/config:/ros2_ws/src/ros-navigation-autonomy-stack/src/slam/arise_slam_mid360/config:rw

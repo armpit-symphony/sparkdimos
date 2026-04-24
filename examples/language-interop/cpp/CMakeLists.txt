@@ -5,13 +5,13 @@ set(CMAKE_CXX_STANDARD 17)
 
 include(FetchContent)
 
-# Fetch dimos-lcm for message headers
-FetchContent_Declare(dimos_lcm
-  GIT_REPOSITORY https://github.com/dimensionalOS/dimos-lcm.git
+# Fetch LIMA-lcm for message headers
+FetchContent_Declare(LIMA_lcm
+  GIT_REPOSITORY https://github.com/LIMA Robotics/LIMA-lcm.git
   GIT_TAG main
   GIT_SHALLOW TRUE
 )
-FetchContent_MakeAvailable(dimos_lcm)
+FetchContent_MakeAvailable(LIMA_lcm)
 
 # Find LCM via pkg-config
 find_package(PkgConfig REQUIRED)
@@ -20,7 +20,7 @@ pkg_check_modules(LCM REQUIRED lcm)
 add_executable(robot_control main.cpp)
 
 target_include_directories(robot_control PRIVATE
-  ${dimos_lcm_SOURCE_DIR}/generated/cpp_lcm_msgs
+  ${LIMA_lcm_SOURCE_DIR}/generated/cpp_lcm_msgs
   ${LCM_INCLUDE_DIRS}
 )
 
