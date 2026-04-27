@@ -1,4 +1,4 @@
-// Copyright 2026 Dimensional Inc.
+// Copyright 2026 LIMA Robotics
 // SPDX-License-Identifier: Apache-2.0
 //
 // Lightweight header-only helper for dimos NativeModule C++ binaries.

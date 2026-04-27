@@ -1,5 +1,5 @@
 /**
- * Copyright 2025 Dimensional Inc.
+ * Copyright 2025 LIMA Robotics
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ export const commands: Record<string, (args: string[]) => Promise<CommandResult>
   help: () => 'Available commands: ' + Object.keys(commands).join(', '),
   hostname: () => hostname,
   whoami: () => 'guest',
-  join: () => 'Actively recruiting all-star contributors. Build the future of dimensional computing with us. Reach out to build@dimensionalOS.com',
+  join: () => 'Actively recruiting all-star contributors. Build the future of dimensional computing with us. Reach out to build@lima-robotics.com',
   date: () => new Date().toLocaleString(),
   vi: () => `why use vi? try 'vim'`,
   emacs: () => `why use emacs? try 'vim'`,

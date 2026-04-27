@@ -67,7 +67,7 @@ class PostgresStore(TimeSeriesStore[T], Resource):
     def __init__(
         self,
         table: str,
-        db: str = "dimensional",
+        db: str = "dim",
         host: str = "localhost",
         port: int = 5432,
         user: str | None = None,
@@ -283,7 +283,7 @@ class PostgresStore(TimeSeriesStore[T], Resource):
         return (row[0], pickle.loads(row[1]))
 
 
-def reset_db(db: str = "dimensional", host: str = "localhost", port: int = 5432) -> None:
+def reset_db(db: str = "dim", host: str = "localhost", port: int = 5432) -> None:
     """Drop and recreate database. Simple migration strategy.
 
     WARNING: This deletes all data in the database!

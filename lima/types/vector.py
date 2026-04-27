@@ -364,7 +364,7 @@ def to_list(value: VectorLike) -> list[float]:
         return list(value)  # type: ignore[arg-type]
 
 
-# Helper functions to check dimensionality
+# Helper functions to check dimity
 def is_2d(value: VectorLike) -> bool:
     """Check if a vector-compatible value is 2D.
 

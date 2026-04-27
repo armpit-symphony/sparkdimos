@@ -84,7 +84,7 @@ try:
     from lima.memory.timeseries.postgres import PostgresStore
 
     # Test connection
-    _test_conn = psycopg2.connect(dbname="dimensional")
+    _test_conn = psycopg2.connect(dbname="dim")
     _test_conn.close()
 
     def make_postgres_store(_tmpdir: str) -> TimeSeriesStore[SampleData]:
@@ -103,7 +103,7 @@ try:
         yield
         if _postgres_tables:
             try:
-                conn = psycopg2.connect(dbname="dimensional")
+                conn = psycopg2.connect(dbname="dim")
                 conn.autocommit = True
                 with conn.cursor() as cur:
                     for table in _postgres_tables:

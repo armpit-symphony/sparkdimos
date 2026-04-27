@@ -107,7 +107,7 @@ def test_mcp_module_handles_errors() -> None:
 
 def test_mcp_module_initialize_and_unknown() -> None:
     response = asyncio.run(handle_request({"method": "initialize", "id": 1}, [], {}))
-    assert response["result"]["serverInfo"]["name"] == "dimensional"
+    assert response["result"]["serverInfo"]["name"] == "dim"
 
     response = asyncio.run(handle_request({"method": "unknown/method", "id": 2}, [], {}))
     assert response["error"]["code"] == -32601

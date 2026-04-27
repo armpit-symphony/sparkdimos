@@ -80,7 +80,7 @@ def _handle_initialize(req_id: Any) -> dict[str, Any]:
         {
             "protocolVersion": "2025-11-25",
             "capabilities": {"tools": {}},
-            "serverInfo": {"name": "dimensional", "version": "1.0.0"},
+            "serverInfo": {"name": "lima", "version": "1.0.0"},
         },
     )
 

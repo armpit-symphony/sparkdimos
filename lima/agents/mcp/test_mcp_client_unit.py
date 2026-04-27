@@ -34,7 +34,7 @@ def _mock_post(url: str, **kwargs: object) -> MagicMock:
         result = {
             "protocolVersion": "2024-11-05",
             "capabilities": {"tools": {}},
-            "serverInfo": {"name": "dimensional", "version": "1.0.0"},
+            "serverInfo": {"name": "lima", "version": "1.0.0"},
         }
     elif method == "tools/list":
         result = {

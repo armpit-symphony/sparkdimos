@@ -8,7 +8,7 @@
     livox-sdk.inputs.nixpkgs.follows = "nixpkgs";
     livox-sdk.inputs.flake-utils.follows = "flake-utils";
     dimos-lcm = {
-      url = "github:dimensionalOS/dimos-lcm/main";
+      url = "github:dimOS/dimos-lcm/main";
       flake = false;
     };
     fast-lio = {

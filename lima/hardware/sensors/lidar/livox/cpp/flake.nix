@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     dimos-lcm = {
-      url = "github:dimensionalOS/dimos-lcm/main";
+      url = "github:dimOS/dimos-lcm/main";
       flake = false;
     };
   };

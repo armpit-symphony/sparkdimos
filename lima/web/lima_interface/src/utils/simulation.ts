@@ -1,5 +1,5 @@
 /**
- * Copyright 2025 Dimensional Inc.
+ * Copyright 2025 LIMA Robotics
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -145,7 +145,7 @@ export class SimulationManager {
                 instanceId: instanceInfo.instance_id,
                 url: import.meta.env.DEV
                     ? `http://${instanceInfo.public_ip}:${instanceInfo.port}`
-                    : `https://sim.dimensionalos.com`,
+                    : `https://sim.dim.com`,
                 expiresAt: Date.now() + SimulationManager.INACTIVITY_TIMEOUT
             };
 

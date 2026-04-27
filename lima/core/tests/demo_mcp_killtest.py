@@ -120,14 +120,14 @@ def section(title: str) -> None:
 def test_mcp_basic_ops() -> int:
     failures = 0
     [
-        ("initialize", lambda: (mcp_call("initialize"), "initialize \u2192 dimensional")),
+        ("initialize", lambda: (mcp_call("initialize"), "initialize \u2192 dim")),
     ]
 
     # initialize
     try:
         result = mcp_call("initialize")
-        assert result["result"]["serverInfo"]["name"] == "dimensional"
-        p("initialize \u2192 dimensional")
+        assert result["result"]["serverInfo"]["name"] == "dim"
+        p("initialize \u2192 dim")
     except Exception as e:
         p(f"initialize failed: {e}", ok=False)
         failures += 1

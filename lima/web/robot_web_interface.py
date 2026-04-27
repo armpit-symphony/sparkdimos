@@ -14,7 +14,7 @@
 
 """
 Robot Web Interface wrapper for LIMA.
-Provides a clean interface to the dimensional-interface FastAPI server.
+Provides a clean interface to the dim-interface FastAPI server.
 """
 
 from lima.web.lima_interface.api.server import FastAPIServer

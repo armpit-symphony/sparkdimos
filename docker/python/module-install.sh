@@ -3,7 +3,7 @@
 # Converts any Dockerfile into a LIMA module container
 #
 # Usage in Dockerfile:
-#   RUN --mount=from=ghcr.io/dimensionalos/ros-python:dev,source=/app,target=/tmp/d \
+#   RUN --mount=from=ghcr.io/lima-robotics/ros-python:dev,source=/app,target=/tmp/d \
 #       bash /tmp/d/docker/python/module-install.sh /tmp/d
 #   ENTRYPOINT ["/lima/entrypoint.sh"]
 

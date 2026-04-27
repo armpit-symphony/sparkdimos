@@ -133,7 +133,7 @@ class TestMCPLifecycle:
     def test_mcp_responds_after_build(self, mcp_shared: ModuleCoordinator) -> None:
         """After blueprint.build(), MCP should accept requests."""
         result = _adapter().call("initialize")
-        assert result["result"]["serverInfo"]["name"] == "dimensional"
+        assert result["result"]["serverInfo"]["name"] == "dim"
 
     def test_tools_list_includes_stress_skills(self, mcp_shared: ModuleCoordinator) -> None:
         """tools/list should include echo, ping, slow, info from StressTestModule."""

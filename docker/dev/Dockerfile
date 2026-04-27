@@ -1,4 +1,4 @@
-ARG FROM_IMAGE=ghcr.io/dimensionalos/ros-python:dev
+ARG FROM_IMAGE=ghcr.io/dim/ros-python:dev
 FROM ${FROM_IMAGE}
 
 ARG GIT_COMMIT=unknown
@@ -30,7 +30,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 ENV PATH="/root/.local/bin:$PATH"
 
 # Copy files and add version to motd
-COPY /assets/dimensionalascii.txt /etc/motd
+COPY /assets/limaascii.txt /etc/motd
 COPY /docker/dev/bash.sh /root/.bash.sh
 COPY /docker/dev/tmux.conf /root/.tmux.conf
 
