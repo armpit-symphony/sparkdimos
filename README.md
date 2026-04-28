@@ -1,6 +1,6 @@
 
 
-<h2>The Robotics Runtime for Sparkbot — Powered by MCP</h2>
+<h2>LIMA Robo OS — The Generalist Robotics Runtime Powered by MCP</h2>
 
 [![Discord](https://img.shields.io/discord/1341146487186391173?style=flat-square&logo=discord&logoColor=white&label=Discord&color=5865F2)](https://discord.gg/LIMA)
 [![Stars](https://img.shields.io/github/stars/armpit-symphony/lima-robotics?style=flat-square)](https://github.com/armpit-symphony/lima-robotics/stargazers)
@@ -33,7 +33,7 @@ LIMA Robotics is the modern operating system for generalist robotics. We are set
 
 With a simple install and no ROS required, build physical applications entirely in python that run on any humanoid, quadruped, or drone.
 
-LIMA Robotics is Sparkbot-native — control your robots in natural language and build (local & hosted) multi-agent systems that work seamlessly with your hardware. Agents run as native modules — subscribing to any embedded stream, from perception (lidar, camera) and spatial memory down to control loops and motor drivers.
+LIMA Robo OS is the flagship product of LIMA Robotics — control your robots in natural language and build (local & hosted) multi-agent systems that work seamlessly with your hardware. Agents run as native modules — subscribing to any embedded stream, from perception (lidar, camera) and spatial memory down to control loops and motor drivers.
 <table>
   <tr>
     <td align="center" width="50%">
@@ -128,7 +128,7 @@ stable | beta | alpha | experimental
 </div>
 
 > [!IMPORTANT]
-> Direct Sparkbot to [AGENTS.md](AGENTS.md) and our [CLI and MCP](#agent-cli-and-mcp) interfaces to start building powerful LIMA Robotics applications.
+> Direct LIMA Robo OS to [AGENTS.md](AGENTS.md) and our [CLI and MCP](#agent-cli-and-mcp) interfaces to start building powerful LIMA Robotics applications.
 
 # Installation
 

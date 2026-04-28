@@ -1,6 +1,6 @@
-# Sparkbot LIMA — Command Contract
+# LIMA Robo OS — Command Contract
 
-Every robotics command through Sparkbot LIMA follows this contract:
+Every robotics command through LIMA Robo OS follows this contract:
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -54,7 +54,7 @@ Always available. Bypasses all approval gates. Logs stop event immediately.
 ```
 Emergency stop contract fields:
 - command_id: <UUID>
-- source_user: "sparkbot" (hardcoded, not user-supplied)
+- source_user: "LIMA Robo OS" (hardcoded, not user-supplied)
 - robot_id: <target robot>
 - environment: "real_hardware" (always)
 - requested_action: "emergency_stop"
@@ -77,7 +77,7 @@ Every command must be logged with:
 - Telemetry snapshot (robot pose, battery, sensors at execution time)
 - Result or error
 
-Audit log location: `~/.sparkbot/lima-audit/YYYY-MM-DD.jsonl`
+Audit log location: `~/.LIMA Robo OS/lima-audit/YYYY-MM-DD.jsonl`
 
 Each line is a JSON object:
 
@@ -127,4 +127,4 @@ LIMA produces:
 
 **Guardian decision:** `N/A` (LOW risk — no approval needed)
 
-Result returned to Sparkbot: `"Robot moved 0.5m forward. Battery: 85%."`
+Result returned to LIMA Robo OS: `"Robot moved 0.5m forward. Battery: 85%."`

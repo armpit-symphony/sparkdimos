@@ -2,8 +2,8 @@
 
 **LIMA** = Local Intelligent Machine Agent.
 
-This package provides the Sparkbot-native robotics integration layer. It wraps DimOS
-and exposes safe, audited robotics commands through MCP for Sparkbot agents.
+This package provides the LIMA Robotics integration layer for LIMA Robo OS. It wraps DimOS
+and exposes safe, audited robotics commands through MCP for LIMA Robo OS agents.
 
 ## Status
 

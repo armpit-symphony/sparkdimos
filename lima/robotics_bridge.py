@@ -1,5 +1,5 @@
 """
-LIMA Robotics Bridge — Sparkbot Integration Layer
+LIMA Robotics Bridge — LIMA Robo OS Integration Layer
 
 Provides safe, audited robotics command interface for Sparkbot.
 Wraps DimOS MCP server with Guardian safety gates.
@@ -51,7 +51,7 @@ class RobotCommandResult:
 
 class RoboticsBridge:
     """
-    Sparkbot-native bridge to DimOS robotics runtime via MCP.
+    LIMA-native bridge to DimOS robotics runtime via MCP.
     
     This class wraps DimOS MCP server calls with safety gates,
     risk classification, and audit logging for Sparkbot.

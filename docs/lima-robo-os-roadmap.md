@@ -1,13 +1,13 @@
-# Sparkbot LIMA — Robotics Integration Roadmap
+# LIMA Robo OS — Robotics Integration Roadmap
 
 ## What is LIMA?
 
 - **LIMA** = Local Intelligent Machine Agent
-- **Product:** Sparkbot LIMA — "Give Sparkbot a body"
-- LIMA is the Sparkbot-native robotics runtime
+- **Product:** LIMA Robo OS — "Give LIMA Robo OS a body"
+- LIMA is the LIMA Robo OS-native robotics runtime
 
-LIMA bridges Sparkbot's conversational AI to real-world robotics. It wraps DimOS
-with safety gates, audit logging, and Sparkbot-native APIs so users can command
+LIMA bridges LIMA Robo OS's conversational AI to real-world robotics. It wraps DimOS
+with safety gates, audit logging, and LIMA Robo OS-native APIs so users can command
 robots through natural language.
 
 ---
@@ -16,13 +16,13 @@ robots through natural language.
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                        Sparkbot (Operator)                       │
+│                        LIMA Robo OS (Operator)                       │
 │                    chat / CLI / API interface                     │
 └───────────────────────────┬─────────────────────────────────────┘
                             │
                             ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                   Sparkbot Robotics API                           │
+│                   LIMA Robo OS Robotics API                           │
 │           /api/v1/robotics/status, command, tools                 │
 └───────────────────────────┬─────────────────────────────────────┘
                             │
@@ -50,11 +50,11 @@ robots through natural language.
 
 ### DimOS Integration Layer
 
-- **LIMA acts as Sparkbot's interface to DimOS.** Sparkbot talks to LIMA; LIMA
+- **LIMA acts as LIMA Robo OS's interface to DimOS.** LIMA Robo OS talks to LIMA; LIMA
   talks to DimOS and robots.
-- **LIMA does NOT replace DimOS.** It wraps DimOS for Sparkbot — adds safety,
+- **LIMA does NOT replace DimOS.** It wraps DimOS for LIMA Robo OS — adds safety,
   auditability, and natural-language interpretation on top of existing MCP tools.
-- LIMA translates Sparkbot commands into MCP tool calls and formats responses
+- LIMA translates LIMA Robo OS commands into MCP tool calls and formats responses
   for conversational UI.
 
 ---
@@ -64,10 +64,10 @@ robots through natural language.
 **Command:** `dimos --simulation run unitree-go2-agentic-mcp`
 
 This runs a Unitree Go2 robot in simulation with an MCP agentic layer. The goal
-is to prove end-to-end command flow from Sparkbot natural language to robot
+is to prove end-to-end command flow from LIMA Robo OS natural language to robot
 execution and telemetry back.
 
-### Sparkbot Commands to Prove
+### LIMA Robo OS Commands to Prove
 
 | Command | Expected Behavior |
 |---------|-------------------|
@@ -79,8 +79,8 @@ execution and telemetry back.
 
 ### Acceptance Test
 
-Sparkbot sends a command via MCP → DimOS executes → robot status/logs returned
-to Sparkbot. Result includes telemetry snapshot and audit entry.
+LIMA Robo OS sends a command via MCP → DimOS executes → robot status/logs returned
+to LIMA Robo OS. Result includes telemetry snapshot and audit entry.
 
 ---
 
@@ -117,12 +117,12 @@ Run `dimos --simulation run unitree-go2-agentic-mcp`. Verify:
 
 **Deliverables:**
 - Working simulation loop
-- Sparkbot can send commands and receive robot state
+- LIMA Robo OS can send commands and receive robot state
 - Audit trail visible in logs
 
-### Phase 2 — Sparkbot API Bridge
+### Phase 2 — LIMA Robo OS API Bridge
 
-Build Sparkbot-side robotics connector with endpoints:
+Build LIMA Robo OS-side robotics connector with endpoints:
 
 | Endpoint | Purpose |
 |----------|---------|
@@ -132,7 +132,7 @@ Build Sparkbot-side robotics connector with endpoints:
 | `POST /api/v1/robotics/emergency-stop` | Immediate halt |
 
 **Deliverables:**
-- REST API registered with Sparkbot
+- REST API registered with LIMA Robo OS
 - `RobotCommand` contract enforced
 - Risk classification applied to every command
 
@@ -147,14 +147,14 @@ Implement approval workflow:
 - **Unknown commands** → blocked by default
 
 Guardian can approve via:
-- Sparkbot chat confirmation
+- LIMA Robo OS chat confirmation
 - Dashboard button
 - Breakglass procedure for emergencies
 
 **Deliverables:**
 - Guardian approval UI/widget
 - PIN-protected breakglass
-- Full audit trail in `~/.sparkbot/lima-audit/`
+- Full audit trail in `~/.LIMA Robo OS/lima-audit/`
 
 ### Phase 4 — Real Hardware Adapter
 
@@ -172,7 +172,7 @@ After simulation proves out, add real Unitree Go2 hardware support:
 
 ### Phase 5 — Dashboard / Workstation UI
 
-Add Sparkbot UI for robotics monitoring and control:
+Add LIMA Robo OS UI for robotics monitoring and control:
 
 - Live robot telemetry panel
 - Command history and audit viewer
@@ -181,7 +181,7 @@ Add Sparkbot UI for robotics monitoring and control:
 - Emergency stop button (always visible)
 
 **Deliverables:**
-- `sparkbot-ui/robotics/` module
+- `LIMA Robo OS-ui/robotics/` module
 - Web dashboard or terminal UI
 - Mobile companion (optional)
 
